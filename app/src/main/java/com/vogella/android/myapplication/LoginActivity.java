@@ -1,7 +1,9 @@
 package com.vogella.android.myapplication;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences.Editor;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -30,6 +33,11 @@ public class LoginActivity extends AppCompatActivity  {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
+    private static final String SPF_NAME = "vidslogin"; //  <--- Add this
+    private static final String USERNAME = "username";  //  <--- To save username
+    private static final String PASSWORD = "password";  //  <--- To save password
+    private String SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT = "rememberAccount";
+
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
@@ -40,26 +48,55 @@ public class LoginActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        
-        _loginButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
+        // check remember me feature:
+        if(checkIfActiveUser()){
+            finish();
+        }else {
 
-        _signupLink.setOnClickListener(new View.OnClickListener() {
+            _loginButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                // Start the Signup activity
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    login();
+                }
+            });
+
+            _signupLink.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // Start the Signup activity
+                    Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                    startActivityForResult(intent, REQUEST_SIGNUP);
+                    finish();
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }
+            });
+
+        }
+    }
+
+    public Boolean checkIfActiveUser(){
+        Boolean activeStatus =  false;
+        //  ADD THIS  TO  READ  SAVED  username & password  NEXT-TIME OPENING Application
+        SharedPreferences loginPreferences = getSharedPreferences(SPF_NAME, Context.MODE_PRIVATE);
+        _emailText.setText(loginPreferences.getString(USERNAME, ""));
+        _passwordText.setText(loginPreferences.getString(PASSWORD, ""));
+
+        return activeStatus;
+    }
+
+    // Write data to SharedPreferences object.
+    private void writeToSharedPreferences(Context context, String userName, String password, boolean rememberAccount){
+        // Get SharedPreferences object, the shared preferences file name is this activity class name.
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SPF_NAME, MODE_PRIVATE);
+        Editor editor = sharedPreferences.edit();
+        editor.putString(USERNAME, userName);
+        editor.putString(PASSWORD, password);
+        editor.putBoolean(SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT, rememberAccount);
+
+        editor.apply();
     }
 
     public void login() {

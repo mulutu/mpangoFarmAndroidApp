@@ -1,25 +1,30 @@
 package com.vogella.android.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import butterknife.BindView;
 
 
 public class MainActivity extends AppCompatActivity {
 
-   private Button btn1, btn2;
+    private Button btn1, btn2;
+
+    @BindView(R.id.input_email) EditText _emailText;
+    @BindView(R.id.input_password) EditText _passwordText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        // check remember me feature:
 
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
