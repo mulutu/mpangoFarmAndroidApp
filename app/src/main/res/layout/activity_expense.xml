@@ -76,7 +76,11 @@
                 android:id="@+id/Supplier"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:spinnerMode="dropdown"/>
+                android:layout_marginBottom="20dp"
+                android:dropDownWidth="match_parent"
+                android:textColor="#FF0000"
+                android:padding="5dip"
+                android:visibility="visible" />
         </TableRow>
 
         <TableRow

@@ -13,23 +13,33 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import android.widget.AdapterView.OnItemSelectedListener;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ExpenseActivity extends AppCompatActivity {
+import static android.widget.Toast.LENGTH_LONG;
+
+
+public class ExpenseActivity extends AppCompatActivity implements OnItemSelectedListener{
 
     private static final String TAG = "ExpenseActivity";
 
@@ -38,12 +48,16 @@ public class ExpenseActivity extends AppCompatActivity {
     private Calendar calendar;
     //private TextView dateView;
     private int year, month, day;
+    //private String selectedItem;
 
-    private Spinner Supplier;
+    String[] suppliers;
+
+    //Spinner Supplier;
 
     @BindView(R.id.expenseAmount)  EditText _expenseAmount;
     @BindView(R.id.expenseDate) EditText _expenseDate;
     @BindView(R.id.Supplier) Spinner _supplier;
+
     @BindView(R.id.btnSubmitExpense) Button _btnSubmitExpense;
 
     @Override
@@ -53,13 +67,11 @@ public class ExpenseActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        _btnSubmitExpense.setOnClickListener(new View.OnClickListener() {
+        //Supplier = (Spinner)findViewById(R.id.Supplier);
+        String[] objects = { "January", "Feburary", "March", "April", "May",
+                "June", "July", "August", "September", "October", "November","December" };
 
-            @Override
-            public void onClick(View v) {
-                submitExpense();
-            }
-        });
+
 
         // Expense date DatePicker
         _expenseDate.setOnClickListener(new View.OnClickListener() {
@@ -84,38 +96,65 @@ public class ExpenseActivity extends AppCompatActivity {
         });
 
         // supplier dropdown
-        String[] items = new String[]{"1", "2", "three"};
+        //String[] items = new  String[]{"1", "2", "three"};
+        // Spinner click listener
+       // _supplier.setOnItemSelectedListener(this);
+
         int userID = 1;
-        getListOfSuppliers(userID);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        //set the spinners adapter to the previously created one.
-        _supplier.setAdapter(adapter);
+        //List<String> list = getListOfSuppliers(userID);
+        //String[] objectsx = getListOfSuppliers(userID);
+        // Creating adapter for spinner
+        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // attaching data adapter to spinner
+        //_supplier.setAdapter(dataAdapter);
+        _supplier.setAdapter(dataAdapter);
+        Toast.makeText(this, "Selected-subb: " + suppliers.length, LENGTH_LONG).show();
+
+        _supplier.setOnItemSelectedListener(this);
+
+        _btnSubmitExpense.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                submitExpense();
+            }
+        });
+
+        //_supplier.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+
 
     }
 
-    public void getListOfSuppliers(int userID){
-        String URL_SUPPLIERS = "http://localhost:8084/MpangoFarmEngineApplication/api/financials/suppliers/user/" + userID;
+    public String[] getListOfSuppliers(int userID){
 
+        String URL_SUPPLIERS = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/suppliers/user/" + userID;
         final String  _TAG = "EXPENSE: ";
-
-        JsonObjectRequest jsonObjectReq = new JsonObjectRequest(Request.Method.GET, URL_SUPPLIERS, null,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                URL_SUPPLIERS,
+                null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("LOGIN RESPONSE", response.toString());
-
+                    public void onResponse(JSONArray response) {
                         String supplierName = "";
                         int supplierId;
-                        Long userId;
-
+                        //String[] suppliers;
+                        //suppliers = new String[response.length()];
                         try {
-                            supplierName = response.getString("supplierNames");
-                            supplierId = response.getInt("id");
-                            Log.d(_TAG, supplierId + " " + supplierName);
+                            for(int i=0;i<response.length();i++){
+                                JSONObject supplier = response.getJSONObject(i);
+                                supplierName = supplier.getString("supplierNames");
+                                supplierId = supplier.getInt("id");
+                                Log.d(_TAG, supplierId + " " + supplierName);
+                                suppliers[i] = supplierName;
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(_TAG, e.getMessage());
                         }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -124,9 +163,10 @@ public class ExpenseActivity extends AppCompatActivity {
                 Log.d(_TAG, "Error: " + error.getMessage());
             }
         });
-
         // Adding JsonObject request to request queue
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,_TAG);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
+
+        return suppliers;
     }
 
 
@@ -137,8 +177,40 @@ public class ExpenseActivity extends AppCompatActivity {
 
         String expenseAmount = _expenseAmount.getText().toString();
         String expenseDate =  _expenseDate.getText().toString();
+       // String supplierName = selectedItem;
+
+        //Toast.makeText(this, "Selected-subb: " + supplierName, LENGTH_LONG).show();
 
         Log.d(TAG, "expenseAmount=" +  expenseAmount);
         Log.d(TAG, "expenseDate=" +  expenseDate);
+        //Log.d(TAG, "supplierName=" +  selectedItem);
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(getApplicationContext(), "Selected-subb: " + _supplier.getItemAtPosition(position).toString(), LENGTH_LONG).show();
+        //selectedItem = Supplier.getItemAtPosition(position).toString();
+
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    /*@Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, LENGTH_LONG).show();
+        Log.d(TAG, "SELECT=" +  "Selected: " + item );
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Toast.makeText(parent.getContext(), "Selected: NOTHING ", LENGTH_LONG).show();
+        Log.d(TAG, "SELECT=" +  "Selected: NOTHING");
+    }*/
 }
