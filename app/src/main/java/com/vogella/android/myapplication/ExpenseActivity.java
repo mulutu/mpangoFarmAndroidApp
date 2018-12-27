@@ -52,6 +52,7 @@ public class ExpenseActivity extends AppCompatActivity {
             }
         });
 
+        // Expense date DatePicker
         _expenseDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +74,7 @@ public class ExpenseActivity extends AppCompatActivity {
             }
         });
 
+        // supplier dropdown
         String[] items = new String[]{"1", "2", "three"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         //set the spinners adapter to the previously created one.
