@@ -14,6 +14,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -76,13 +85,49 @@ public class ExpenseActivity extends AppCompatActivity {
 
         // supplier dropdown
         String[] items = new String[]{"1", "2", "three"};
+        int userID = 1;
+        getListOfSuppliers(userID);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         //set the spinners adapter to the previously created one.
         _supplier.setAdapter(adapter);
 
     }
 
+    public void getListOfSuppliers(int userID){
+        String URL_SUPPLIERS = "http://localhost:8084/MpangoFarmEngineApplication/api/financials/suppliers/user/" + userID;
 
+        final String  _TAG = "EXPENSE: ";
+
+        JsonObjectRequest jsonObjectReq = new JsonObjectRequest(Request.Method.GET, URL_SUPPLIERS, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("LOGIN RESPONSE", response.toString());
+
+                        String supplierName = "";
+                        int supplierId;
+                        Long userId;
+
+                        try {
+                            supplierName = response.getString("supplierNames");
+                            supplierId = response.getInt("id");
+                            Log.d(_TAG, supplierId + " " + supplierName);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d(_TAG, e.getMessage());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(_TAG, "Error: " + error.getMessage());
+                Log.d(_TAG, "Error: " + error.getMessage());
+            }
+        });
+
+        // Adding JsonObject request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,_TAG);
+    }
 
 
     public void submitExpense() {
