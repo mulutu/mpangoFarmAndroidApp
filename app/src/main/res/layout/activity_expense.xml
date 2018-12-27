@@ -7,14 +7,17 @@
     tools:context=".ExpenseActivity">
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="368dp"
         android:layout_height="495dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="13dp" >
+            android:layout_height="13dp">
 
             <TextView
                 android:id="@+id/txtExpenseAmount"
@@ -31,18 +34,16 @@
                 android:ems="10"
                 android:hint="Amount"
                 android:inputType="numberDecimal"
-                android:text="Amount"
                 tools:layout_editor_absoluteX="44dp"
-                tools:layout_editor_absoluteY="31dp"
-                tools:text="Amount" />
+                tools:layout_editor_absoluteY="31dp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/expenseDate"
+                android:id="@+id/txtExpenseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="expenseDate"
@@ -56,9 +57,26 @@
                 android:ems="10"
                 android:hint="Date"
                 android:inputType="text"
-                android:text="Date"
                 tools:layout_editor_absoluteX="42dp"
                 tools:layout_editor_absoluteY="183dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/txtSupplier"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Supplier"
+                tools:text="Supplier" />
+
+            <Spinner
+                android:id="@+id/Supplier"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:spinnerMode="dropdown"/>
         </TableRow>
 
         <TableRow
@@ -67,20 +85,19 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="30dp" />
     </TableLayout>
 
     <Button
         android:id="@+id/btnSubmitExpense"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="105dp"
+        android:layout_marginLeft="105dp"
+        android:layout_marginBottom="75dp"
         android:text="Submit"
-        tools:layout_editor_absoluteX="105dp"
-        tools:layout_editor_absoluteY="388dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="Submit" />
 
 </android.support.constraint.ConstraintLayout>

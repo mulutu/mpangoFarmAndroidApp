@@ -19,10 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,10 +31,12 @@ public class LoginActivity extends AppCompatActivity  {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    private static final String SPF_NAME = "vidslogin"; //  <--- Add this
-    private static final String USERNAME = "username";  //  <--- To save username
-    private static final String PASSWORD = "password";  //  <--- To save password
+    private static final String SHARED_PREFERENCES_KEY_NAME = "vidslogin"; //  <--- Add this
+    private static final String SHARED_PREFERENCES_KEY_USERNAME = "username";  //  <--- To save username
+    private static final String SHARED_PREFERENCES_KEY_PASSWORD = "password";  //  <--- To save password
     private String SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT = "rememberAccount";
+
+
 
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
@@ -49,11 +49,14 @@ public class LoginActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        final Context context = getApplicationContext();
+
+        Log.d(TAG, "ONCREATE");
+
         // check remember me feature:
-        if(checkIfActiveUser()){
+        if(checkIfActiveUser(context)){
             finish();
         }else {
-
             _loginButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -77,26 +80,51 @@ public class LoginActivity extends AppCompatActivity  {
         }
     }
 
-    public Boolean checkIfActiveUser(){
+    public Boolean checkIfActiveUser(Context context){
+        Log.d(TAG, "checkIfActiveUser");
         Boolean activeStatus =  false;
-        //  ADD THIS  TO  READ  SAVED  username & password  NEXT-TIME OPENING Application
-        SharedPreferences loginPreferences = getSharedPreferences(SPF_NAME, Context.MODE_PRIVATE);
-        _emailText.setText(loginPreferences.getString(USERNAME, ""));
-        _passwordText.setText(loginPreferences.getString(PASSWORD, ""));
+        String rememberAccount = readValueFromSharedPreferences(context, SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT);
 
+        if(SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT.equalsIgnoreCase(readValueFromSharedPreferences(context, "rememberAccount" ))) {
+            activeStatus = true;
+
+        }
+        Log.d(TAG, "STATUS=" + activeStatus);
         return activeStatus;
     }
 
     // Write data to SharedPreferences object.
-    private void writeToSharedPreferences(Context context, String userName, String password, boolean rememberAccount){
+    private void writeToSharedPreferences(Context context, String userName, String password, String rememberAccount){
+        Log.d(TAG, "WRITE=" + userName);
         // Get SharedPreferences object, the shared preferences file name is this activity class name.
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SPF_NAME, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY_NAME, MODE_PRIVATE);
         Editor editor = sharedPreferences.edit();
-        editor.putString(USERNAME, userName);
-        editor.putString(PASSWORD, password);
-        editor.putBoolean(SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT, rememberAccount);
+        editor.putString(SHARED_PREFERENCES_KEY_USERNAME, userName);
+        editor.putString(SHARED_PREFERENCES_KEY_PASSWORD, password);
+        editor.putString(SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT, rememberAccount);
+
+        Log.d(TAG, "WRITE SUCCESS=" + userName + "= rememberAccount");
 
         editor.apply();
+    }
+
+    // Get key related value in SharedPreferences object.
+    private String readValueFromSharedPreferences(Context context, String key) {
+        Log.d(TAG, "READ---");
+        // Get SharedPreferences object, the shared preferences file name is this activity class name.
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY_NAME, MODE_PRIVATE);
+        String ret = "";
+
+        if(SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT.equalsIgnoreCase(key)) {
+            //boolean value = sharedPreferences.getBoolean(key, false);
+            //ret = String.valueOf(value);
+            ret = key;
+            Log.d(TAG, "KEY="+key);
+        }else {
+            ret = sharedPreferences.getString(key, "");
+            Log.d(TAG, "RET="+key);
+        }
+        return ret;
     }
 
     public void login() {
@@ -117,11 +145,11 @@ public class LoginActivity extends AppCompatActivity  {
 
    }
 
-    public void volleyJsonObjectRequest(String email, String password){
+    public void volleyJsonObjectRequest(final String email, final String password){
 
         String url = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/login/";
 
-        JSONObject postparams = new JSONObject();
+        final JSONObject postparams = new JSONObject();
         try {
             postparams.put("email", email);
             postparams.put("username", email);
@@ -162,6 +190,7 @@ public class LoginActivity extends AppCompatActivity  {
 
                         if(userEnabled){
                             Log.d("LOGIN ENABLED ?", userType);
+                            writeToSharedPreferences(getApplicationContext(), email, password, SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT);
                             onLoginSuccess();
                             progressDialog.dismiss();
                         }else{
