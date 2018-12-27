@@ -63,14 +63,10 @@ public class ExpenseActivity extends AppCompatActivity {
                 // date picker dialog
                 datePickerDialog = new DatePickerDialog(ExpenseActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
-
                             @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 // set day of month , month and year value in the edit text
-                                _expenseDate.setText(dayOfMonth + "/"
-                                        + (monthOfYear + 1) + "/" + year);
-
+                                _expenseDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -79,7 +75,7 @@ public class ExpenseActivity extends AppCompatActivity {
 
         String[] items = new String[]{"1", "2", "three"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-//set the spinners adapter to the previously created one.
+        //set the spinners adapter to the previously created one.
         _supplier.setAdapter(adapter);
 
     }
