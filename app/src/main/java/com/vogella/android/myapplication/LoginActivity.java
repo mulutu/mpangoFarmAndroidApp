@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity  {
 
         String url = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/login/";
 
-        final JSONObject postparams = new JSONObject();
+        JSONObject postparams = new JSONObject();
         try {
             postparams.put("email", email);
             postparams.put("username", email);

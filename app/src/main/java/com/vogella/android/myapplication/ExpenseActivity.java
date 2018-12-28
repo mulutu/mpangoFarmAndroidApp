@@ -2,6 +2,7 @@ package com.vogella.android.myapplication;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,10 +29,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,38 +46,26 @@ import static android.widget.Toast.LENGTH_LONG;
 
 
 public class ExpenseActivity extends AppCompatActivity implements OnItemSelectedListener{
-
     private static final String TAG = "ExpenseActivity";
-
     private DatePicker datePicker;
     DatePickerDialog datePickerDialog;
     private Calendar calendar;
-    //private TextView dateView;
     private int year, month, day;
-    //private String selectedItem;
+    private int _supplierId;
+    private String _supplierName;
 
-    String[] suppliers;
-
-    //Spinner Supplier;
+    private int userID = 1;
 
     @BindView(R.id.expenseAmount)  EditText _expenseAmount;
     @BindView(R.id.expenseDate) EditText _expenseDate;
     @BindView(R.id.Supplier) Spinner _supplier;
-
     @BindView(R.id.btnSubmitExpense) Button _btnSubmitExpense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense);
-
         ButterKnife.bind(this);
-
-        //Supplier = (Spinner)findViewById(R.id.Supplier);
-        String[] objects = { "January", "Feburary", "March", "April", "May",
-                "June", "July", "August", "September", "October", "November","December" };
-
-
 
         // Expense date DatePicker
         _expenseDate.setOnClickListener(new View.OnClickListener() {
@@ -88,32 +82,15 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 // set day of month , month and year value in the edit text
-                                _expenseDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                                _expenseDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                //_expenseDate.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
+                                //sdfsdfsdfsdsd
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
             }
         });
-
-        // supplier dropdown
-        //String[] items = new  String[]{"1", "2", "three"};
-        // Spinner click listener
-       // _supplier.setOnItemSelectedListener(this);
-
-        int userID = 1;
-        //List<String> list = getListOfSuppliers(userID);
-        //String[] objectsx = getListOfSuppliers(userID);
-        // Creating adapter for spinner
-        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // attaching data adapter to spinner
-        //_supplier.setAdapter(dataAdapter);
-        _supplier.setAdapter(dataAdapter);
-        Toast.makeText(this, "Selected-subb: " + suppliers.length, LENGTH_LONG).show();
-
-        _supplier.setOnItemSelectedListener(this);
-
+        getListOfSuppliers(userID);
         _btnSubmitExpense.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -121,14 +98,9 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
                 submitExpense();
             }
         });
-
-        //_supplier.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-
-
     }
 
-    public String[] getListOfSuppliers(int userID){
-
+    public void getListOfSuppliers(int userID){
         String URL_SUPPLIERS = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/suppliers/user/" + userID;
         final String  _TAG = "EXPENSE: ";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -140,21 +112,20 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
                     public void onResponse(JSONArray response) {
                         String supplierName = "";
                         int supplierId;
-                        //String[] suppliers;
-                        //suppliers = new String[response.length()];
+                        String[] objects = new String[response.length()];
                         try {
                             for(int i=0;i<response.length();i++){
                                 JSONObject supplier = response.getJSONObject(i);
                                 supplierName = supplier.getString("supplierNames");
                                 supplierId = supplier.getInt("id");
                                 Log.d(_TAG, supplierId + " " + supplierName);
-                                suppliers[i] = supplierName;
+                                objects[i] = supplierName;
                             }
+                            spinnerSuppliersArray(objects);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(_TAG, e.getMessage());
                         }
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -165,52 +136,108 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         });
         // Adding JsonObject request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
-
-        return suppliers;
     }
 
+    public void spinnerSuppliersArray(String[] objects){
+        Toast.makeText(getApplicationContext(), "LIST ARRAY SIZE:  " + objects.length, LENGTH_LONG).show();
+        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        _supplier.setAdapter(dataAdapter);
+        _supplier.setOnItemSelectedListener(this);
+    }
 
     public void submitExpense() {
         Log.d(TAG, "submitExpense");
+        //_btnSubmitExpense.setEnabled(false);
+        BigDecimal expenseAmount = new BigDecimal(_expenseAmount.getText().toString());
+        String expenseDateStr = _expenseDate.getText().toString();
 
-        _btnSubmitExpense.setEnabled(false);
+        /*Date expenseDate = null;
+        try {
+            expenseDate=new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss.SSS").parse(expenseDateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }*/
 
-        String expenseAmount = _expenseAmount.getText().toString();
-        String expenseDate =  _expenseDate.getText().toString();
-       // String supplierName = selectedItem;
+       /* SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date date = fmt.parse(expenseDateStr);
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd-MM-yyyy");
+            fmtOut.format(date);
+            expenseDate = date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }*/
 
-        //Toast.makeText(this, "Selected-subb: " + supplierName, LENGTH_LONG).show();
 
-        Log.d(TAG, "expenseAmount=" +  expenseAmount);
-        Log.d(TAG, "expenseDate=" +  expenseDate);
-        //Log.d(TAG, "supplierName=" +  selectedItem);
+
+        int supplierId =  _supplierId;
+        //String supplierId =  "1";
+        String expNotes = " test desc " + _supplierName;
+
+        Toast.makeText(this, "supplier name: " + _supplierName + " \n ID: " + _supplierId + "\n AMT: " + expenseAmount + "\n DATE: " + expenseDateStr, LENGTH_LONG).show();
+
+        //post expense
+        String URL_ADD_EXPENSE = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/expense/";
+
+        JSONObject postparams = new JSONObject();
+        try {
+            postparams.put("expenseDate", expenseDateStr);
+            postparams.put("amount", expenseAmount);
+            postparams.put("supplierId", supplierId);
+            postparams.put("paymentMethodId", 1);
+            postparams.put("accountId", 1);
+            postparams.put("projectId", 1);
+            postparams.put("notes", expNotes);
+            postparams.put("userId", userID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "EXPENSE POST ERROR: " + e.getMessage(), LENGTH_LONG).show();
+        }
+
+        //JSONObject parameters = new JSONObject((Map) newExpense);
+
+        Toast.makeText(getApplicationContext(), "EXPENSE POSTPARAMS: " + postparams.toString(), LENGTH_LONG).show();
+
+        // Expense newExpense = new Expense(Amount, SupplierId, PaymentMethodId, AccountId, ProjectId, Notes, UserId);
+
+        String  REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
+
+        final ProgressDialog progressDialog = new ProgressDialog(ExpenseActivity.this, R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Posting...");
+        progressDialog.show();
+
+        JsonObjectRequest jsonObjectReq = new JsonObjectRequest(
+                Request.Method.POST,
+                URL_ADD_EXPENSE,
+                postparams,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(getApplicationContext(), "EXPENSE RESPONSE: " + response.toString(), LENGTH_LONG).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("LOGIN RESPONSE", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(), "EXPENSE FAIL RESPONSE: " + error.getMessage(), LENGTH_LONG).show();
+                progressDialog.hide();
+            }
+        });
+        // Adding JsonObject request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,REQUEST_TAG);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getApplicationContext(), "Selected-subb: " + _supplier.getItemAtPosition(position).toString(), LENGTH_LONG).show();
-        //selectedItem = Supplier.getItemAtPosition(position).toString();
-
-
+        //Toast.makeText(getApplicationContext(), "Selected-subb: " + _supplier.getItemAtPosition(position).toString(), LENGTH_LONG).show();
+        _supplierId = position;
+        _supplierName = _supplier.getItemAtPosition(position).toString();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-    /*@Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, LENGTH_LONG).show();
-        Log.d(TAG, "SELECT=" +  "Selected: " + item );
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        Toast.makeText(parent.getContext(), "Selected: NOTHING ", LENGTH_LONG).show();
-        Log.d(TAG, "SELECT=" +  "Selected: NOTHING");
-    }*/
 }
