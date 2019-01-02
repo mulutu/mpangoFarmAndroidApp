@@ -26,6 +26,9 @@ public class TabbedActivity extends AppCompatActivity {
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
                     return true;
+                case R.id.navigation_settings:
+                    mTextMessage.setText(R.string.title_settings);
+                    return true;
             }
             return false;
         }

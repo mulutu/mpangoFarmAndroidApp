@@ -85,11 +85,36 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tvProject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Project" />
+
+            <Spinner
+                android:id="@+id/txtProjectID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="30dp" >
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account" />
+
+            <Spinner
+                android:id="@+id/txtAccountID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </TableRow>
     </TableLayout>
 
     <Button

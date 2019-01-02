@@ -4,14 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.BindView;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -70,6 +74,22 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "SETTINGS::: ", LENGTH_LONG).show();
+            return true;
+        }else if(id == R.id.action_logout){
+            Context context = getApplicationContext();
+            //SharedPreferences sharedPreferences = context.getSharedPreferences("vidslogin", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            sharedPreferences.edit().remove("rememberAccount").commit();
+            sharedPreferences.edit().remove("userid").commit();
+            sharedPreferences.edit().remove("username").commit();
+            sharedPreferences.edit().remove("password").commit();
+            sharedPreferences.edit().remove("vidslogin").commit();
+            sharedPreferences.edit().clear().commit(); // jksd fsdh ghksdf gkhsdf ghdfsjk ghsdfjkhg jksdfhjk ghdjk
+
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivity(i);
+            finish(); // jkdfhgjkdfhjkd sfjkd gjksdfh gjkhdf jghsdfjk gdfkhgjksdf
             return true;
         }
 

@@ -24,10 +24,6 @@
         <activity
             android:name=".SignupActivity"
             android:theme="@style/AppTheme.Dark" />
-        <activity
-            android:name=".MessageInfo"
-            android:label="@string/title_activity_message_info"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ExpenseActivity" />
         <activity android:name=".IncomeActivity" />
         <activity

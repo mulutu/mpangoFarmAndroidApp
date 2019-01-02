@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,14 +28,17 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.widget.Toast.LENGTH_LONG;
+
 public class LoginActivity extends AppCompatActivity  {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
     private static final String SHARED_PREFERENCES_KEY_NAME = "vidslogin"; //  <--- Add this
+    private static final String SHARED_PREFERENCES_KEY_USER_ID = "userid";  //  <--- To save username
     private static final String SHARED_PREFERENCES_KEY_USERNAME = "username";  //  <--- To save username
     private static final String SHARED_PREFERENCES_KEY_PASSWORD = "password";  //  <--- To save password
-    private String SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT = "rememberAccount";
+    private static final String SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT = "rememberAccount";
 
 
 
@@ -85,44 +89,57 @@ public class LoginActivity extends AppCompatActivity  {
         Boolean activeStatus =  false;
         String rememberAccount = readValueFromSharedPreferences(context, SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT);
 
-        if(SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT.equalsIgnoreCase(readValueFromSharedPreferences(context, "rememberAccount" ))) {
-            activeStatus = true;
+        Toast.makeText(getApplicationContext(), "ACTIVE USER? : " + rememberAccount, LENGTH_LONG).show();
 
+        if(rememberAccount.equalsIgnoreCase("true")){ // dskfsdjfhsdjk
+            activeStatus = true; // hksdf sdfhsd jhfjksdhjf
         }
         Log.d(TAG, "STATUS=" + activeStatus);
         return activeStatus;
     }
 
     // Write data to SharedPreferences object.
-    private void writeToSharedPreferences(Context context, String userName, String password, String rememberAccount){
+    private void writeToSharedPreferences(Context context, Integer userID, String userName, String password, boolean rememberAccount){
         Log.d(TAG, "WRITE=" + userName);
         // Get SharedPreferences object, the shared preferences file name is this activity class name.
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY_NAME, MODE_PRIVATE);
+        //SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();
+        editor.putInt(SHARED_PREFERENCES_KEY_USER_ID, userID);
         editor.putString(SHARED_PREFERENCES_KEY_USERNAME, userName);
         editor.putString(SHARED_PREFERENCES_KEY_PASSWORD, password);
-        editor.putString(SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT, rememberAccount);
+        editor.putBoolean(SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT, rememberAccount);
 
-        Log.d(TAG, "WRITE SUCCESS=" + userName + "= rememberAccount");
+        Log.d(TAG, "WRITE SUCCESS=" + rememberAccount + "= rememberAccount");
+        Log.d(TAG, "WRITE SUCCESS=" + userID + "= userID");
+        Log.d(TAG, "WRITE SUCCESS=" + userName + "= userName");
 
         editor.apply();
+        editor.commit();
     }
 
     // Get key related value in SharedPreferences object.
     private String readValueFromSharedPreferences(Context context, String key) {
         Log.d(TAG, "READ---");
         // Get SharedPreferences object, the shared preferences file name is this activity class name.
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY_NAME, MODE_PRIVATE);
+        //SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY_NAME, Context.MODE_PRIVATE);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String ret = "";
 
-        if(SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT.equalsIgnoreCase(key)) {
-            //boolean value = sharedPreferences.getBoolean(key, false);
-            //ret = String.valueOf(value);
-            ret = key;
-            Log.d(TAG, "KEY="+key);
+        if(SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT.equalsIgnoreCase(key)) { // jh kgh gjkh
+            //Log.d(TAG, "READ VAL: key1=" + String.valueOf(sharedPreferences.getBoolean(key, false)));
+
+            Boolean value = sharedPreferences.getBoolean(key, false);
+            ret = String.valueOf(value);
+            //ret = key;  // jhksd fkjsdhfksdhjsd dgfh gdfh gdfhsj gdfsjgh sdfjk
+            //ret = "true";
+            Log.d(TAG, "READ VAL: keyyy ="+key);
+            Log.d(TAG, "READ VAL: ret ="+ret);
         }else {
             ret = sharedPreferences.getString(key, "");
-            Log.d(TAG, "RET="+key);
+            Log.d(TAG, "READ VAL: ELSE KEY="+key);
+            Log.d(TAG, "READ VAL: ELSE RET="+ret);
         }
         return ret;
     }
@@ -177,12 +194,12 @@ public class LoginActivity extends AppCompatActivity  {
 
                         String userType = "";
                         Boolean userEnabled = false;
-                        Long userId;
+                        int userId = 0;
 
                         try {
                             userType = response.getString("userType");
                             userEnabled = response.getBoolean("enabled");
-                            userId = response.getLong("id");
+                            userId = response.getInt("id");
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d("LOGIN JSON E", e.getMessage());
@@ -190,7 +207,8 @@ public class LoginActivity extends AppCompatActivity  {
 
                         if(userEnabled){
                             Log.d("LOGIN ENABLED ?", userType);
-                            writeToSharedPreferences(getApplicationContext(), email, password, SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT);
+                            boolean rememberAccount = true;
+                            writeToSharedPreferences(getApplicationContext(), userId, email, password, rememberAccount);
                             onLoginSuccess();
                             progressDialog.dismiss();
                         }else{
@@ -202,7 +220,8 @@ public class LoginActivity extends AppCompatActivity  {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("LOGIN ERROR", "Error: " + error.getMessage());
                 Log.d("LOGIN RESPONSE", "Error: " + error.getMessage());
-                progressDialog.hide();
+                //progressDialog.hide();
+                progressDialog.dismiss();
                 onLoginFailed();
             }
         });
