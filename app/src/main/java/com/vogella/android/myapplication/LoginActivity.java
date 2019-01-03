@@ -89,8 +89,6 @@ public class LoginActivity extends AppCompatActivity  {
         Boolean activeStatus =  false;
         String rememberAccount = readValueFromSharedPreferences(context, SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT);
 
-        Toast.makeText(getApplicationContext(), "ACTIVE USER? : " + rememberAccount, LENGTH_LONG).show();
-
         if(rememberAccount.equalsIgnoreCase("true")){ // dskfsdjfhsdjk
             activeStatus = true; // hksdf sdfhsd jhfjksdhjf
         }

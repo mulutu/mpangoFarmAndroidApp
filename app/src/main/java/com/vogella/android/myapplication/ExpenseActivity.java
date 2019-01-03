@@ -1,7 +1,6 @@
 package com.vogella.android.myapplication;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView;
 
@@ -31,14 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,6 +55,8 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
 
     private int userID = 1;
 
+    private static final int REQUEST_CALENDAR = 0;
+
     @BindView(R.id.expenseAmount)  EditText _expenseAmount;
     @BindView(R.id.expenseDate) EditText _expenseDate;
     @BindView(R.id.Supplier) Spinner _supplier;
@@ -78,10 +71,18 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         setContentView(R.layout.activity_expense);
         ButterKnife.bind(this);
 
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String datePickedStr = extras.getString("dateStr");
+            _expenseDate.setText(datePickedStr);
+        }
+
         // Expense date DatePicker
         _expenseDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 // calender class's instance and get current date , month and year from calender
                 final Calendar c = Calendar.getInstance();
                 int mYear = c.get(Calendar.YEAR); // current year
@@ -93,12 +94,18 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 // set day of month , month and year value in the edit text
-                                //_expenseDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                                _expenseDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                                //sdfsdfsdfsdsd
+                                _expenseDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
+                */
+
+                // create a view with calendar
+                // Start the Signup activity
+                Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+                startActivityForResult(intent, REQUEST_CALENDAR);
+                finish();
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
         getListOfSuppliers(userID);
@@ -152,7 +159,6 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
     }
 
     public void spinnerAccountsArray(String[] objects){
-        Toast.makeText(getApplicationContext(), "LIST ARRAY SIZE:  " + objects.length, LENGTH_LONG).show();
         ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         _accounts.setAdapter(dataAdapter);
@@ -198,7 +204,6 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
     }
 
     public void spinnerProjectsArray(String[] objects){
-        Toast.makeText(getApplicationContext(), "LIST ARRAY SIZE:  " + objects.length, LENGTH_LONG).show();
         ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         _projects.setAdapter(dataAdapter);
@@ -244,7 +249,6 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
     }
 
     public void spinnerSuppliersArray(String[] objects){
-        Toast.makeText(getApplicationContext(), "LIST ARRAY SIZE:  " + objects.length, LENGTH_LONG).show();
         ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         _supplier.setAdapter(dataAdapter);
@@ -260,21 +264,6 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         int supplierId =  _supplierId;
         String expNotes = " test desc " + _supplierName;
 
-        /*String formattedTime = "";
-        try {
-            //expenseDate_=new SimpleDateFormat("yyyy-MM-dd").parse(expenseDate);
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date expenseDate_ = sdf.parse(expenseDateStr);
-            formattedTime = output.format(expenseDate_);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } */
-
-        Toast.makeText(this, "supplier name: " + _supplierName + " \n ID: " + _supplierId + "\n AMT: " + expenseAmount + "\n DATE: " + expenseDateStr, LENGTH_LONG).show();
-
         JSONObject postparams = new JSONObject();
         try {
             postparams.put("expenseDate", expenseDateStr); //sdjf hsdjksdfhjhsdfj
@@ -287,7 +276,6 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
             postparams.put("userId", userID);
         } catch (JSONException e) {
             e.printStackTrace();
-            //Toast.makeText(getApplicationContext(), "EXPENSE POST ERROR: " + e.getMessage(), LENGTH_LONG).show();
         }
 
         String  REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
@@ -307,7 +295,6 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
                         try {
                             int status = response.getInt("status");
                             String message = response.getString("message");
-                            Toast.makeText(getApplicationContext(), "EXPENSE RESPONSE: " + status + " -> " +  message, LENGTH_LONG).show();
                             if(status == 0 && message.equalsIgnoreCase("CREATED")){
                                 //progressDialog.hide();
                                 progressDialog.dismiss();
@@ -324,7 +311,6 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("LOGIN RESPONSE", "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), "EXPENSE FAIL RESPONSE: " + error.getMessage(), LENGTH_LONG).show();
                 progressDialog.dismiss();
             }
         });
@@ -334,17 +320,15 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //Toast.makeText(getApplicationContext(), "Selected-subb: " + _supplier.getItemAtPosition(position).toString(), LENGTH_LONG).show();
         if(parent.getId() == R.id.Supplier) {
             _supplierId = position;
             _supplierName = _supplier.getItemAtPosition(position).toString();
-        }
-        else if(parent.getId() == R.id.txtProjectID){
+        }else if(parent.getId() == R.id.txtProjectID){
             _projectId = position;
-            _projectName = _supplier.getItemAtPosition(position).toString();
+            _projectName = _projects.getItemAtPosition(position).toString();
         }else if(parent.getId() == R.id.txtAccountID){
             _accountId = position;
-            _accountName = _supplier.getItemAtPosition(position).toString();
+            _accountName = _accounts.getItemAtPosition(position).toString();
         }
     }
 

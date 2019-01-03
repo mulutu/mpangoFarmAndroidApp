@@ -78,8 +78,9 @@
                 android:layout_height="30dp"
                 android:layout_marginBottom="20dp"
                 android:dropDownWidth="match_parent"
-                android:textColor="#FF0000"
+                android:ems="10"
                 android:padding="5dip"
+                android:textColor="#FF0000"
                 android:visibility="visible" />
         </TableRow>
 
@@ -96,7 +97,12 @@
             <Spinner
                 android:id="@+id/txtProjectID"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="30dp"
+                android:layout_marginBottom="20dp"
+                android:dropDownWidth="match_parent"
+                android:textColor="#FF0000"
+                android:padding="5dip"
+                android:visibility="visible"/>
 
         </TableRow>
 
@@ -113,7 +119,12 @@
             <Spinner
                 android:id="@+id/txtAccountID"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="30dp"
+                android:layout_marginBottom="20dp"
+                android:dropDownWidth="match_parent"
+                android:textColor="#FF0000"
+                android:padding="5dip"
+                android:visibility="visible" />
         </TableRow>
     </TableLayout>
 

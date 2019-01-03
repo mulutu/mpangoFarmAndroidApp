@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(this, "SETTINGS::: ", LENGTH_LONG).show();
             return true;
         }else if(id == R.id.action_logout){
             Context context = getApplicationContext();
