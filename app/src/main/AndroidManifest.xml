@@ -26,9 +26,6 @@
             android:theme="@style/AppTheme.Dark" />
         <activity android:name=".ExpenseActivity" />
         <activity android:name=".IncomeActivity" />
-        <activity
-            android:name=".TabbedActivity"
-            android:label="@string/title_activity_tabbed" />
         <activity android:name=".CalendarActivity"></activity>
     </application>
 

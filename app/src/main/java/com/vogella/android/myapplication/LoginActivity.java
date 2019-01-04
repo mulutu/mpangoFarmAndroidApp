@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity  {
 
     public Boolean checkIfActiveUser(Context context){
         Log.d(TAG, "checkIfActiveUser");
-        Boolean activeStatus =  false;
+        Boolean activeStatus =  true; //false;
         String rememberAccount = readValueFromSharedPreferences(context, SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT);
 
         if(rememberAccount.equalsIgnoreCase("true")){ // dskfsdjfhsdjk
