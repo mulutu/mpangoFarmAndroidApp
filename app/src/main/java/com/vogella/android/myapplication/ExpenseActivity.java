@@ -140,7 +140,12 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
                                 accountId = supplier.getInt("id");
                                 Log.d(_TAG, accountId + " " + accountName);
                                 objects[i] = accountName;
+
+                                if(i==response.length()){
+                                    objects[i] = "Select Account";
+                                }
                             }
+
                             spinnerAccountsArray(objects);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -159,10 +164,22 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
     }
 
     public void spinnerAccountsArray(String[] objects){
-        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        _accounts.setAdapter(dataAdapter);
-        _accounts.setOnItemSelectedListener(this);
+        //ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
+        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //_accounts.setAdapter(dataAdapter);
+        //_accounts.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        //adapter.notifyDataSetChanged();
+        _accounts.setPrompt("Select...");
+        _accounts.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        adapter,
+                        R.layout.contact_spinner_row_nothing_selected,
+                        // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+                        this));
+        //_accounts.setOnItemSelectedListener(this);
     }
 
     public void getListOfProjects(int userID){
@@ -204,10 +221,22 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
     }
 
     public void spinnerProjectsArray(String[] objects){
-        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        _projects.setAdapter(dataAdapter);
-        _projects.setOnItemSelectedListener(this);
+        //ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
+        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //_projects.setAdapter(dataAdapter);
+        //_projects.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        //adapter.notifyDataSetChanged();
+        _projects.setPrompt("Select...");
+        _projects.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        adapter,
+                        R.layout.contact_spinner_row_nothing_selected,
+                        // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+                        this));
+        //_projects.setOnItemSelectedListener(this);
     }
 
     public void getListOfSuppliers(int userID){
@@ -249,10 +278,22 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
     }
 
     public void spinnerSuppliersArray(String[] objects){
-        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        _supplier.setAdapter(dataAdapter);
-        _supplier.setOnItemSelectedListener(this);
+        //ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
+        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //_supplier.setAdapter(dataAdapter);
+        //_supplier.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        //adapter.notifyDataSetChanged();
+        _supplier.setPrompt("Select...");
+        _supplier.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        adapter,
+                        R.layout.contact_spinner_row_nothing_selected,
+                        // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+                        this));
+        //_supplier.setOnItemSelectedListener(this);
     }
 
     public void submitExpense() {
