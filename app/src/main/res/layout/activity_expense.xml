@@ -57,6 +57,7 @@
                 android:ems="10"
                 android:hint="Date"
                 android:inputType="text"
+                android:textColor="@color/bg_row_background"
                 tools:layout_editor_absoluteX="42dp"
                 tools:layout_editor_absoluteY="183dp" />
         </TableRow>
@@ -77,11 +78,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginBottom="20dp"
+                android:background="@color/aluminum"
                 android:dropDownWidth="match_parent"
                 android:ems="10"
                 android:padding="5dip"
-                android:textColor="#FF0000"
-                android:visibility="visible" />
+                android:textColor="#FF0000" />
         </TableRow>
 
         <TableRow
