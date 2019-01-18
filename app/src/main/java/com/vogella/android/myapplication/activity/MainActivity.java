@@ -1,4 +1,4 @@
-package com.vogella.android.myapplication;
+package com.vogella.android.myapplication.activity;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,26 +10,17 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 
-import android.app.FragmentManager;
-
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.vogella.android.myapplication.fragment.HomeFragment;
+import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.fragment.TransactionsFragment;
 
 import butterknife.BindView;
-
-import static android.widget.Toast.LENGTH_LONG;
 
 
 public class MainActivity extends AppCompatActivity {

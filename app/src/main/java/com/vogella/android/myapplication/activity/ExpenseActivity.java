@@ -1,12 +1,10 @@
-package com.vogella.android.myapplication;
+package com.vogella.android.myapplication.activity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -23,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.vogella.android.myapplication.util.AppSingleton;
+import com.vogella.android.myapplication.R;
 
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -32,7 +32,6 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -41,37 +40,32 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.widget.Toast.LENGTH_LONG;
-
 
 public class ExpenseActivity extends AppCompatActivity implements OnItemSelectedListener{
+
     private static final String TAG = "ExpenseActivity";
     private DatePicker datePicker;
     DatePickerDialog datePickerDialog;
     private Calendar calendar;
     private int year, month, day;
-
     private int _supplierId;
     private String _supplierName;
-
     private int _projectId;
     private String _projectName;
-
     private int _accountId, POS;
     private String _accountName;
-
     private int userID = 1;
-
-    List<Integer> accountsArray =  new ArrayList<>();
-
     private static final int REQUEST_CALENDAR = 0;
+
+    Map<Integer, Integer> accountsMap =  new HashMap<>();
+    Map<Integer, Integer> suppliersMap =  new HashMap<>();
+    Map<Integer, Integer> projectsMap =  new HashMap<>();
 
     @BindView(R.id.expenseAmount)  EditText _expenseAmount;
     @BindView(R.id.expenseDate) EditText _expenseDate;
     @BindView(R.id.Supplier) Spinner _supplier;
     @BindView(R.id.txtProjectID) Spinner _projects;
     @BindView(R.id.txtAccountID) Spinner _accounts;
-
     @BindView(R.id.btnSubmitExpense) Button _btnSubmitExpense;
 
     @Override
@@ -79,8 +73,6 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense);
         ButterKnife.bind(this);
-
-
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -92,42 +84,37 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         _expenseDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // calender class's instance and get current date , month and year from calender
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR); // current year
-                int mMonth = c.get(Calendar.MONTH); // current month
-                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-                // date picker dialog
-                datePickerDialog = new DatePickerDialog(ExpenseActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                // set day of month , month and year value in the edit text
-                                _expenseDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                            }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-
-
-                // create a view with calendar
-                // Start the Signup activity
-                //Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
-                //startActivityForResult(intent, REQUEST_CALENDAR);
-                //finish();
-                //overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                displayDatePicker();
             }
         });
         getListOfSuppliers(userID);
         getListOfProjects(userID);
         getListOfAccounts(userID);
-        _btnSubmitExpense.setOnClickListener(new View.OnClickListener() {
 
+        _btnSubmitExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitExpense();
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(parent.getId() == R.id.Supplier) {
+            POS = position;
+            _supplierId = suppliersMap.get(position);
+            _supplierName = _supplier.getItemAtPosition(position).toString();
+        }else if(parent.getId() == R.id.txtProjectID){
+            POS = position;
+            _projectId = projectsMap.get(position);
+            _projectName = _projects.getItemAtPosition(position).toString();
+        }else if(parent.getId() == R.id.txtAccountID){
+            POS = position;
+            _accountId = accountsMap.get(position);
+            //_accountId = position;
+            _accountName = _accounts.getItemAtPosition(position).toString();
+        }
     }
 
     public void getListOfAccounts(int userID){
@@ -142,18 +129,16 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
                     public void onResponse(JSONArray response) {
                         String accountName = "";
                         int accountId;
-                        String[] objects = new String[response.length()];
+                        List<String> objectsx =  new ArrayList<String>();
                         try {
                             for(int i=0;i<response.length();i++){
                                 JSONObject supplier = response.getJSONObject(i);
                                 accountName = supplier.getString("accountTypeName");
                                 accountId = supplier.getInt("id");
-                                Log.d(_TAG, accountId + " " + accountName);
-                                objects[i] = accountName;
-
-                                accountsArray.add(accountId);
+                                objectsx.add(accountName);
+                                accountsMap.put(i,accountId);
                             }
-                            spinnerAccountsArray(objects);
+                            spinnerAccountsArray(objectsx);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(_TAG, e.getMessage());
@@ -170,23 +155,11 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
     }
 
-    public void spinnerAccountsArray(String[] objects){
-        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    public void spinnerAccountsArray(List<String> objects){
+        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_text2, objects);
+        dataAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown2);
         _accounts.setAdapter(dataAdapter);
         _accounts.setOnItemSelectedListener(this);
-
-        /*ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, objects);
-        adapter.setDropDownViewResource(R.layout.spinner_layout);
-        adapter.notifyDataSetChanged();
-        _accounts.setPrompt("Select..."); // jksdfhjksd hfjksdh fjsdh fjksdhfsdh fjsdh fjksdh fjksdh fjksdh fskdlh
-        _accounts.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        adapter,
-                        R.layout.contact_spinner_row_nothing_selected,
-                        // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
-                        this));
-        //_accounts.setOnItemSelectedListener(this);*/
     }
 
     public void getListOfProjects(int userID){
@@ -201,16 +174,16 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
                     public void onResponse(JSONArray response) {
                         String projectName = "";
                         int projectId;
-                        String[] objects = new String[response.length()];
+                        List<String> objectsx =  new ArrayList<String>();
                         try {
                             for(int i=0;i<response.length();i++){
                                 JSONObject supplier = response.getJSONObject(i);
                                 projectName = supplier.getString("projectName");
                                 projectId = supplier.getInt("id");
-                                Log.d(_TAG, projectId + " " + projectName);
-                                objects[i] = projectName;
+                                objectsx.add(projectName);
+                                projectsMap.put(i,projectId);
                             }
-                            spinnerProjectsArray(objects);
+                            spinnerProjectsArray(objectsx);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(_TAG, e.getMessage());
@@ -227,23 +200,11 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
     }
 
-    public void spinnerProjectsArray(String[] objects){
-        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    public void spinnerProjectsArray(List<String> objects){
+        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_text2, objects);
+        dataAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown2);
         _projects.setAdapter(dataAdapter);
         _projects.setOnItemSelectedListener(this);
-
-        /*ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, objects);
-        adapter.setDropDownViewResource(R.layout.spinner_layout);
-        //adapter.notifyDataSetChanged();
-        _projects.setPrompt("Select...");
-        _projects.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        adapter,
-                        R.layout.contact_spinner_row_nothing_selected,
-                        // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
-                        this));
-        //_projects.setOnItemSelectedListener(this); */
     }
 
     public void getListOfSuppliers(int userID){
@@ -258,21 +219,16 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
                     public void onResponse(JSONArray response) {
                         String supplierName = "";
                         int supplierId;
-                        String[] objects = new String[response.length()];
-                        Integer[] supplierIds = new Integer[response.length()];
+                        List<String> objectsx =  new ArrayList<String>();
                         try {
                             for(int i=0;i<response.length();i++){
                                 JSONObject supplier = response.getJSONObject(i);
                                 supplierName = supplier.getString("supplierNames");
                                 supplierId = supplier.getInt("id");
-                                Log.d(_TAG, supplierId + " " + supplierName);
-                                objects[i] = supplierName;
-                                supplierIds[i] = supplierId;
+                                objectsx.add(supplierName);
+                                suppliersMap.put(i,supplierId);
                             }
-                            //objects[response.length()] = "Select supplier";
-                            objects = Arrays.copyOf(objects, objects.length + 1);
-                            objects[objects.length-1] = "Select supplier";
-                            spinnerSuppliersArray(objects);
+                            spinnerSuppliersArray(objectsx);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(_TAG, e.getMessage());
@@ -289,31 +245,11 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
     }
 
-    public void spinnerSuppliersArray(String[] objects){
-        //ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, objects);
-        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //_supplier.setAdapter(dataAdapter);
-        //_supplier.setOnItemSelectedListener(this);
-
-        //Context context = null;
-        HintAdapter adapter = new HintAdapter(getApplicationContext(), R.layout.spinner_item, objects );
-        adapter.setDropDownViewResource(R.layout.spinner_layout);
-        //Spinner spinnerFilmType = (Spinner) findViewById(R.id.spinner);
-        _supplier.setAdapter(adapter);
-        // show hint
-        _supplier.setSelection(adapter.getCount());
-
-        /*ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, objects);
-        adapter.setDropDownViewResource(R.layout.spinner_layout);
-        //adapter.notifyDataSetChanged();
-        _supplier.setPrompt("Select...");
-        _supplier.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        adapter,
-                        R.layout.contact_spinner_row_nothing_selected,
-                        // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
-                        this));
-        //_supplier.setOnItemSelectedListener(this);*/
+    public void spinnerSuppliersArray(List<String> objects){
+        ArrayAdapter dataAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_text2, objects);
+        dataAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown2);
+        _supplier.setAdapter(dataAdapter);
+        _supplier.setOnItemSelectedListener(this); // hsd fsdk fjsdh jkf hsdhf sdj fhsdjhkf sdjfh sdjk fhsdhfjsd sdfh fhsdjkf sdjkf sdjhdfjk
     }
 
     public void submitExpense() {
@@ -326,7 +262,7 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         String expNotes = " test desc " + _supplierName;
 
         // Toast
-        Toast.makeText(getApplicationContext(),"ACCOUNTS: POS -:" + POS + " _accountName->" + _accountName + " _accountId->" + _accountId, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"ACCOUNTS:  _accountName->" + _accountName + " _accountId->>" + _accountId, Toast.LENGTH_LONG).show();
 
         JSONObject postparams = new JSONObject();
         try {
@@ -382,23 +318,34 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,REQUEST_TAG);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(parent.getId() == R.id.Supplier) {
-            _supplierId = position;
-            _supplierName = _supplier.getItemAtPosition(position).toString();
-        }else if(parent.getId() == R.id.txtProjectID){
-            _projectId = position;
-            _projectName = _projects.getItemAtPosition(position).toString();
-        }else if(parent.getId() == R.id.txtAccountID){
-            POS = position;
-            _accountId = accountsArray.get(position);
-            _accountName = _accounts.getItemAtPosition(position).toString();
-        }
-    }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void displayDatePicker(){
+        // calender class's instance and get current date , month and year from calender
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR); // current year
+        int mMonth = c.get(Calendar.MONTH); // current month
+        int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+        // date picker dialog
+        datePickerDialog = new DatePickerDialog(ExpenseActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // set day of month , month and year value in the edit text
+                        _expenseDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+        // create a view with calendar
+        // Start the Signup activity
+        //Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+        //startActivityForResult(intent, REQUEST_CALENDAR);
+        //finish();
+        //overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 }

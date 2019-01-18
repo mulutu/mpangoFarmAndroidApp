@@ -1,4 +1,4 @@
-package com.vogella.android.myapplication;
+package com.vogella.android.myapplication.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +16,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.vogella.android.myapplication.util.MyDividerItemDecoration;
+import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.util.RecyclerTouchListener;
+import com.vogella.android.myapplication.adapter.TransactionAdapter;
+import com.vogella.android.myapplication.model.Transaction;
+import com.vogella.android.myapplication.util.AppSingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +32,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 

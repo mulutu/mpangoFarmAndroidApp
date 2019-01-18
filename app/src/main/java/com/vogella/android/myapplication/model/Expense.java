@@ -1,4 +1,4 @@
-package com.vogella.android.myapplication;
+package com.vogella.android.myapplication.model;
 
 import java.math.BigDecimal;
 import java.util.Date;

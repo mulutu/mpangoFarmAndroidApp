@@ -1,4 +1,4 @@
-package com.vogella.android.myapplication;
+package com.vogella.android.myapplication.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.vogella.android.myapplication.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

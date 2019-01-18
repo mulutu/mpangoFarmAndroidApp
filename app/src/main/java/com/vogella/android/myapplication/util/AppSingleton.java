@@ -1,4 +1,4 @@
-package com.vogella.android.myapplication;
+package com.vogella.android.myapplication.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;

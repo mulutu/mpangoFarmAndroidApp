@@ -1,4 +1,4 @@
-package com.vogella.android.myapplication;
+package com.vogella.android.myapplication.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -21,14 +21,14 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.vogella.android.myapplication.util.AppSingleton;
+import com.vogella.android.myapplication.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.widget.Toast.LENGTH_LONG;
 
 public class LoginActivity extends AppCompatActivity  {
     private static final String TAG = "LoginActivity";
