@@ -20,7 +20,7 @@
             android:layout_height="13dp">
 
             <TextView
-                android:id="@+id/txtIncomeAmount"
+                android:id="@+id/tvIncomeAmount"
                 android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:contentDescription="incomeAmount"
@@ -28,7 +28,7 @@
                 tools:text="Amount" />
 
             <EditText
-                android:id="@+id/incomeAmount"
+                android:id="@+id/txtIncomeAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -44,7 +44,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/txtIncomeDate"
+                android:id="@+id/tvIncomeDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="incomeDate"
@@ -52,7 +52,7 @@
                 tools:text="Date" />
 
             <EditText
-                android:id="@+id/incomeDate"
+                android:id="@+id/txtIncomeDate"
                 android:layout_width="242dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner_border"
@@ -67,7 +67,7 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/txtCustomer"
+                android:id="@+id/tvCustomerID"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="Customer"
@@ -82,7 +82,7 @@
                 android:orientation="horizontal">
 
                 <Spinner
-                    android:id="@+id/CustomerID"
+                    android:id="@+id/spCustomerID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -108,7 +108,7 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/tvProject"
+                android:id="@+id/tvProjectID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Project" />
@@ -122,7 +122,7 @@
                 android:orientation="horizontal">
 
                 <Spinner
-                    android:id="@+id/txtProjectID"
+                    android:id="@+id/spProjectID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -148,7 +148,7 @@
             android:layout_height="30dp" >
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tvAccountID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Account" />
@@ -162,7 +162,7 @@
                 android:orientation="horizontal">
 
                 <Spinner
-                    android:id="@+id/txtAccountID"
+                    android:id="@+id/spAccountID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

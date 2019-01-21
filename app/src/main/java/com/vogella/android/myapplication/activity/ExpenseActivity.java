@@ -254,7 +254,7 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
 
     public void submitExpense() {
         Log.d(TAG, "submitExpense");
-        String URL_ADD_EXPENSE = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/expense/";
+        String URL_ADD_EXPENSE = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/expense/";
         //_btnSubmitExpense.setEnabled(false);
         BigDecimal expenseAmount = new BigDecimal(_expenseAmount.getText().toString());
         String expenseDateStr = _expenseDate.getText().toString();
