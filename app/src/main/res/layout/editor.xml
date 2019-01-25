@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.IncomeActivity">
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TableRow
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tveditor"
+                android:layout_width="144dp"
+                android:layout_height="32dp"
+                android:contentDescription="incomeAmount"
+                android:padding="5dp"
+                android:text="Expected Output:"
+                android:textAlignment="center"
+                tools:text="Expected Output:" />
+
+            <TextView
+                android:id="@+id/txtOne"
+                android:layout_width="113dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/spinner_border"
+                android:ems="10"
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
+
+            <!--TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/editor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|top" / -->
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tvone"
+                android:layout_width="144dp"
+                android:layout_height="32dp"
+                android:padding="5dp"
+                android:text="Actual Output:"
+                android:textAlignment="center"
+                tools:text="Actual Output:" />
+
+            <TextView
+                android:id="@+id/txtTwo"
+                android:layout_width="113dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/spinner_border"
+                android:ems="10"
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/editor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|top" />
+
+        </TableRow>
+    </TableLayout>
+</android.support.constraint.ConstraintLayout>

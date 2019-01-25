@@ -20,4 +20,6 @@
     <string name="my_cart">My Cart</string>
     <string name="delete">DELETE</string>
 
+    <string name="hint">Editor #%d</string>
+
 </resources>

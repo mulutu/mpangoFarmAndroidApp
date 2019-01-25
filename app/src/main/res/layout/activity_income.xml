@@ -8,69 +8,84 @@
 
     <TableLayout
         android:id="@+id/tableLayout"
-        android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="13dp">
+            android:layout_height="20dp"
+            android:padding="5dp"
+            >
 
             <TextView
                 android:id="@+id/tvIncomeAmount"
-                android:layout_width="125dp"
-                android:layout_height="wrap_content"
+                android:layout_width="113dp"
+                android:layout_height="32dp"
                 android:contentDescription="incomeAmount"
                 android:text="Amount"
+                android:textAlignment="center"
+                android:padding="5dp"
                 tools:text="Amount" />
 
             <EditText
                 android:id="@+id/txtIncomeAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="113dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/spinner_border"
                 android:ems="10"
                 android:hint="Amount"
                 android:inputType="numberDecimal"
-                android:background="@drawable/spinner_border"
-                tools:layout_editor_absoluteX="44dp"
-                tools:layout_editor_absoluteY="31dp" />
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
+
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/tvIncomeDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="113dp"
+                android:layout_height="32dp"
                 android:contentDescription="incomeDate"
                 android:text="Date"
+                android:textAlignment="center"
+                android:padding="5dp"
                 tools:text="Date" />
 
             <EditText
                 android:id="@+id/txtIncomeDate"
-                android:layout_width="242dp"
-                android:layout_height="wrap_content"
+                android:layout_width="227dp"
+                android:paddingLeft="5dp"
+                android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
                 android:hint="Date"
-                android:inputType="text"
-                android:textColor="@color/bg_row_background" />
+                android:inputType="text"/>
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/tvCustomerID"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_width="113dp"
+                android:layout_height="32dp"
                 android:text="Customer"
+                android:textAlignment="center"
+                android:padding="5dp"
                 tools:text="Customer" />
 
             <RelativeLayout
@@ -84,12 +99,13 @@
                 <Spinner
                     android:id="@+id/spCustomerID"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="32dp"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="5dp"
                     android:background="@android:color/transparent"
                     android:gravity="center"
-                    android:layout_marginLeft="5dp"
                     android:spinnerMode="dropdown" />
 
                 <ImageView
@@ -105,12 +121,15 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/tvProjectID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="113dp"
+                android:layout_height="32dp"
+                android:textAlignment="center"
+                android:padding="5dp"
                 android:text="Project" />
 
             <RelativeLayout
@@ -124,12 +143,12 @@
                 <Spinner
                     android:id="@+id/spProjectID"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="32dp"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
                     android:background="@android:color/transparent"
                     android:gravity="center"
-                    android:layout_marginLeft="5dp"
                     android:spinnerMode="dropdown" />
 
                 <ImageView
@@ -145,17 +164,20 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="30dp" >
+            android:layout_height="match_parent"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/tvAccountID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="113dp"
+                android:layout_height="32dp"
+                android:textAlignment="center"
+                android:padding="5dp"
                 android:text="Account" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="248dp"
+                android:layout_height="match_parent"
                 android:layout_marginRight="3dp"
                 android:layout_weight=".28"
                 android:background="@drawable/spinner_border"
@@ -167,9 +189,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
                     android:background="@android:color/transparent"
                     android:gravity="center"
-                    android:layout_marginLeft="5dp"
                     android:spinnerMode="dropdown" />
 
                 <ImageView
