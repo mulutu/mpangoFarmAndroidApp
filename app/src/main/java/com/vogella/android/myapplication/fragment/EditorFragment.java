@@ -24,6 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +67,7 @@ public class EditorFragment extends Fragment {
 
         TextView tvOne = (TextView)result.findViewById(R.id.txtOne);
         TextView tvTwo = (TextView)result.findViewById(R.id.txtTwo);
+        TextView tvProfit = (TextView)result.findViewById(R.id.txtProfit);
 
 
         Project project = (Project) getArguments().getSerializable("proj");
@@ -70,9 +75,18 @@ public class EditorFragment extends Fragment {
 
         int expected = project.getExpectedOutput();
         int actual = project.getActualOutput();
+        BigDecimal totalExpenses = project.getTotalExpenses();
+        BigDecimal totalIncomes = project.getTotalIncomes();
 
-        tvOne.setText(Integer.toString(expected));
-        tvTwo.setText(Integer.toString(actual));
+        MathContext mc = new MathContext(2); // 2 precision
+
+        BigDecimal profit = totalIncomes.subtract(totalExpenses, MathContext.DECIMAL64);
+
+        //if (gp.compareTo(BigDecimal.ZERO) > 0){ }
+
+        tvOne.setText( currencyFormat(totalIncomes.toString()));
+        tvTwo.setText( currencyFormat(totalExpenses.toString()));
+        tvProfit.setText( currencyFormat(profit.toString()));
 
         tv.setText(projDesc);
 
@@ -82,6 +96,19 @@ public class EditorFragment extends Fragment {
         //editor.setHint(getTitle(getActivity(), position));
 
         return(result);
+    }
+
+    private String currencyFormat(String amount){
+        double harga = Double.parseDouble(amount);
+        DecimalFormat df = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setCurrencySymbol("");
+        dfs.setMonetaryDecimalSeparator('.');
+        dfs.setGroupingSeparator(',');
+        df.setDecimalFormatSymbols(dfs);
+        String k = df.format(harga);
+
+        return k;
     }
 
 

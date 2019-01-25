@@ -28,11 +28,10 @@
                 android:id="@+id/tveditor"
                 android:layout_width="144dp"
                 android:layout_height="32dp"
-                android:contentDescription="incomeAmount"
                 android:padding="5dp"
-                android:text="Expected Output:"
+                android:text="Total Income:"
                 android:textAlignment="center"
-                tools:text="Expected Output:" />
+                tools:text="Total Income:" />
 
             <TextView
                 android:id="@+id/txtOne"
@@ -61,12 +60,37 @@
                 android:layout_width="144dp"
                 android:layout_height="32dp"
                 android:padding="5dp"
-                android:text="Actual Output:"
+                android:text="Total Expenses:"
                 android:textAlignment="center"
-                tools:text="Actual Output:" />
+                tools:text="Total Expenses:" />
 
             <TextView
                 android:id="@+id/txtTwo"
+                android:layout_width="113dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/spinner_border"
+                android:ems="10"
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tvProfit"
+                android:layout_width="144dp"
+                android:layout_height="32dp"
+                android:padding="5dp"
+                android:text="Gross Profit:"
+                android:textAlignment="center"
+                tools:text="Gross Profit:" />
+
+            <TextView
+                android:id="@+id/txtProfit"
                 android:layout_width="113dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"

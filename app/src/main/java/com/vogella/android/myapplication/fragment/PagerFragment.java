@@ -26,6 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +109,9 @@ public class PagerFragment extends Fragment {
                         int expectedOutput = 0;
                         int actualOutput = 0;
 
+                        //BigDecimal totalExpenses = new BigDecimal("0");
+                        //BigDecimal totalIncomes = new BigDecimal("0");
+
                         try {
                             for(int i=0;i<response.length();i++){
                                 JSONObject supplier = response.getJSONObject(i);
@@ -119,14 +124,25 @@ public class PagerFragment extends Fragment {
                                 expectedOutput = supplier.getInt("expectedOutput");
                                 actualOutput = supplier.getInt("actualOutput");
 
+                                String totalExpenses =  supplier.getString("totalExpeses");
+                                String totalIncomes = supplier.getString("totalIncomes");
+
                                 Project project = new Project();
                                 project.setId(projectId);
                                 project.setProjectName(projectName);
                                 project.setFarmId(farmId);
                                 project.setDescription(projectDesc);
-
                                 project.setExpectedOutput(expectedOutput);
                                 project.setExpectedOutput(actualOutput);
+
+                                MathContext mc = new MathContext(2); // 2 precision
+
+                                project.setTotalExpenses(new BigDecimal(totalExpenses, MathContext.DECIMAL64));
+                                project.setTotalIncomes(new BigDecimal(totalIncomes, MathContext.DECIMAL64));
+
+                                // Toast
+                                //Toast.makeText(getContext(),"PageFragment:-> totalExpenses" + totalExpenses.toString(), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(),"PageFragment:-> totalIncomes" + totalIncomes.toString(), Toast.LENGTH_LONG).show();
 
                                 projects.add(project);
 
@@ -139,8 +155,7 @@ public class PagerFragment extends Fragment {
 
                         pager.setAdapter(buildAdapter());
 
-                        // Toast
-                        Toast.makeText(getContext(),"PageFragment:-> PROJECTS ARRAY" + projects.size(), Toast.LENGTH_LONG).show();
+
 
                     }
                 }, new Response.ErrorListener() {

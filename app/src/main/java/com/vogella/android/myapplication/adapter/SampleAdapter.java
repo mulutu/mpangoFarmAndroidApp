@@ -54,7 +54,7 @@ public class SampleAdapter extends FragmentPagerAdapter {
 
     @Override
     public String getPageTitle(int position) {
-        Toast.makeText(ctxt,"SampleAdapter :-> getPageTitle() ARRAY SIZE->" + projects.size(), Toast.LENGTH_LONG).show(); // jhsd afasd fhasdkfhasd hfjkasd fsd hkk
+        //Toast.makeText(ctxt,"SampleAdapter :-> getPageTitle() ARRAY SIZE->" + projects.size(), Toast.LENGTH_LONG).show(); // jhsd afasd fhasdkfhasd hfjkasd fsd hkk
         Project proj = projects.get(position);
         String title = proj.getProjectName();
         return(EditorFragment.getTitle(ctxt, position, title ));

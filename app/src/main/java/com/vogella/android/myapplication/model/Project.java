@@ -1,6 +1,7 @@
 package com.vogella.android.myapplication.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Project implements Serializable {
@@ -15,19 +16,39 @@ public class Project implements Serializable {
     private String unitDescription;
     private String Description;
 
+    private BigDecimal totalExpenses;
+    private BigDecimal totalIncomes;
+
     public Project() {
         //id = 0;
     }
+
+
 
     public Project(int userId, int farmId, String projectName, String description) {
         UserId = userId;
         FarmId = farmId;
         ProjectName = projectName;
         Description = description;
+
         DateCreated = new Date();
     }
 
+    public BigDecimal getTotalExpenses() {
+        return totalExpenses;
+    }
 
+    public void setTotalExpenses(BigDecimal totalExpenses) {
+        this.totalExpenses = totalExpenses;
+    }
+
+    public BigDecimal getTotalIncomes() {
+        return totalIncomes;
+    }
+
+    public void setTotalIncomes(BigDecimal totalIncomes) {
+        this.totalIncomes = totalIncomes;
+    }
 
 
     public String getUnitDescription() {
