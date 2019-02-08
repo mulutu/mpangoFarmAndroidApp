@@ -88,7 +88,7 @@ public class EditorFragment extends Fragment {
         tvTwo.setText( currencyFormat(totalExpenses.toString()));
         tvProfit.setText( currencyFormat(profit.toString()));
 
-        tv.setText(projDesc);
+        //tv.setText(projDesc);
 
         //tv.setText(getText(getActivity(), position));
         //EditText editor=(EditText)result.findViewById(R.id.editor);

@@ -1,6 +1,8 @@
 package com.vogella.android.myapplication.activity;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +13,20 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.vogella.android.myapplication.fragment.EditorFragment;
 import com.vogella.android.myapplication.fragment.HomeFragment;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.fragment.PagerFragment;
 import com.vogella.android.myapplication.fragment.TransactionsFragment;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -37,9 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-
-
-
 
         setupNavigationView();
     }
@@ -64,24 +69,57 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Perform action when any item is selected.
-     *
-     * @param item Item that is selected.
-     */
     protected void selectFragment(MenuItem item) {
 
         item.setChecked(true);
 
         switch (item.getItemId()) {
+
             case R.id.navigation_home:
-                // Action to perform when Home Menu item is selected.
-                pushFragment(new HomeFragment());
+
+                Fragment fr = getSupportFragmentManager().findFragmentByTag("homefragment");
+                if(fr != null) {
+                    getSupportFragmentManager().beginTransaction().show(fr).commit();
+                }else{
+                    pushFragment(new HomeFragment(), "homefragment");
+                }
+
+                List<Fragment> allFrags = getSupportFragmentManager().getFragments();
+                for (Fragment fragment : allFrags) {
+                    if(fragment!=null){
+                        //Log.d("HOME:-> FRAGMENTS TAG: ", fragment.getTag());
+                        if(fragment.getTag()!=null) {
+                            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+                            if (fragment.getTag().equalsIgnoreCase("homefragment")) {
+                                trx.show(fragment);
+                                //pushFragment(new HomeFragment(), "homefragment");
+                            }else{
+                                trx.show(fragment);
+                            }
+                            trx.commit();
+                            //List<Fragment> childFr = fragment.getChildFragmentManager().getFragments();
+                            //Log.d("HOME CHILD LIST SIZE: ", String.valueOf(childFr.size()));
+                        }
+                    }
+                }
+
                 break;
+
             case R.id.navigation_transactions:
-                // Action to perform when Bag Menu item is selected.
-                pushFragment(new TransactionsFragment());
+
+                List<Fragment> allFragments = getSupportFragmentManager().getFragments();
+                for (Fragment fragment : allFragments) {
+                    if(fragment!=null){
+                        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+                        trx.hide(fragment);
+                        trx.commit();
+                    }
+                }
+
+                pushFragment(new TransactionsFragment(), "txnsFragment");
+
                 break;
+
             case R.id.navigation_notifications:
                 // Action to perform when Account Menu item is selected.
                 //pushFragment(new AccountFragment());
@@ -89,12 +127,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Method to push any fragment into given id.
-     *
-     * @param fragment An instance of Fragment to show into the given id.
-     */
-    protected void pushFragment(Fragment fragment) {
+
+    protected void pushFragment(Fragment fragment, String tag) {
         if (fragment == null)
             return;
 
@@ -107,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }*/
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.rootLayout, fragment);
+        transaction.replace(R.id.rootLayout, fragment, tag);
+        transaction.show(fragment);
         transaction.commit();
         //return true;
     }

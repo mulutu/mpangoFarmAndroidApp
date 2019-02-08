@@ -7,37 +7,53 @@
     tools:context=".activity.IncomeActivity">
 
     <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/tableLayoutIncome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_margin="5dp"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:padding="5dp"
-            >
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="18sp"
+                    android:text="New Income"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/tvIncomeAmount"
-                android:layout_width="113dp"
+                android:layout_width="85dp"
                 android:layout_height="32dp"
                 android:contentDescription="incomeAmount"
+                android:padding="5dp"
                 android:text="Amount"
                 android:textAlignment="center"
-                android:padding="5dp"
                 tools:text="Amount" />
 
             <EditText
                 android:id="@+id/txtIncomeAmount"
-                android:layout_width="113dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
@@ -58,20 +74,20 @@
                 android:layout_width="113dp"
                 android:layout_height="32dp"
                 android:contentDescription="incomeDate"
+                android:padding="5dp"
                 android:text="Date"
                 android:textAlignment="center"
-                android:padding="5dp"
                 tools:text="Date" />
 
             <EditText
                 android:id="@+id/txtIncomeDate"
-                android:layout_width="227dp"
-                android:paddingLeft="5dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
                 android:hint="Date"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:paddingLeft="5dp" />
         </TableRow>
 
         <TableRow
@@ -83,9 +99,9 @@
                 android:id="@+id/tvCustomerID"
                 android:layout_width="113dp"
                 android:layout_height="32dp"
+                android:padding="5dp"
                 android:text="Customer"
                 android:textAlignment="center"
-                android:padding="5dp"
                 tools:text="Customer" />
 
             <RelativeLayout
@@ -98,14 +114,14 @@
 
                 <Spinner
                     android:id="@+id/spCustomerID"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
-                    android:paddingLeft="5dp"
                     android:background="@android:color/transparent"
                     android:gravity="center"
+                    android:paddingLeft="5dp"
                     android:spinnerMode="dropdown" />
 
                 <ImageView
@@ -128,9 +144,9 @@
                 android:id="@+id/tvProjectID"
                 android:layout_width="113dp"
                 android:layout_height="32dp"
-                android:textAlignment="center"
                 android:padding="5dp"
-                android:text="Project" />
+                android:text="Project"
+                android:textAlignment="center" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -171,12 +187,12 @@
                 android:id="@+id/tvAccountID"
                 android:layout_width="113dp"
                 android:layout_height="32dp"
-                android:textAlignment="center"
                 android:padding="5dp"
-                android:text="Account" />
+                android:text="Account"
+                android:textAlignment="center" />
 
             <RelativeLayout
-                android:layout_width="248dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="3dp"
                 android:layout_weight=".28"
