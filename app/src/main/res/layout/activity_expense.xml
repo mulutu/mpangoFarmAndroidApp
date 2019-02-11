@@ -8,7 +8,7 @@
 
     <TableLayout
         android:id="@+id/tableLayoutIncome"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_margin="5dp"
         android:padding="10dp"
@@ -25,6 +25,7 @@
             android:padding="5dp">
 
             <LinearLayout>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -53,7 +54,7 @@
 
             <EditText
                 android:id="@+id/expenseAmount"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
@@ -81,7 +82,7 @@
 
             <EditText
                 android:id="@+id/expenseDate"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
@@ -223,18 +224,65 @@
 
             </RelativeLayout>
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/txtExpNotes"
+                android:layout_width="85dp"
+                android:layout_height="32dp"
+                android:contentDescription="expenseDesc"
+                android:padding="5dp"
+                android:text="Description"
+                android:textAlignment="center"
+                tools:text="Description" />
+
+            <EditText
+                android:id="@+id/expenseNotes"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:background="@drawable/spinner_border"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="Description..."
+                android:inputType="text|textMultiLine"
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/btnSubmit"
+                android:layout_width="85dp"
+                android:layout_height="32dp"
+                android:contentDescription="incomeAmount"
+                android:padding="5dp"
+                android:text=""
+                android:textAlignment="center"
+                tools:text="" />
+
+            <Button
+                android:id="@+id/btnSubmitExpense"
+                android:layout_width="168dp"
+                android:layout_height="48dp"
+                android:text="Submit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Submit" />
+
+
+        </TableRow>
     </TableLayout>
 
-    <Button
-        android:id="@+id/btnSubmitExpense"
-        android:layout_width="168dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="105dp"
-        android:layout_marginLeft="105dp"
-        android:layout_marginBottom="75dp"
-        android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Submit" />
+
 
 </android.support.constraint.ConstraintLayout>

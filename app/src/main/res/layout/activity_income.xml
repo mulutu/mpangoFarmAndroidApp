@@ -53,7 +53,7 @@
 
             <EditText
                 android:id="@+id/txtIncomeAmount"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
@@ -81,7 +81,7 @@
 
             <EditText
                 android:id="@+id/txtIncomeDate"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
@@ -220,18 +220,64 @@
 
             </RelativeLayout>
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/txtIncNotes"
+                android:layout_width="85dp"
+                android:layout_height="32dp"
+                android:contentDescription="incomeDesc"
+                android:padding="5dp"
+                android:text="Description"
+                android:textAlignment="center"
+                tools:text="Description" />
+
+            <EditText
+                android:id="@+id/incomeNotes"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:background="@drawable/spinner_border"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="Description..."
+                android:inputType="text|textMultiLine"
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/btnSubmit"
+                android:layout_width="85dp"
+                android:layout_height="32dp"
+                android:contentDescription="incomeAmount"
+                android:padding="5dp"
+                android:text=""
+                android:textAlignment="center"
+                tools:text="" />
+
+            <Button
+                android:id="@+id/btnSubmitIncome"
+                android:layout_width="168dp"
+                android:layout_height="48dp"
+                android:text="Submit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Submit" />
+
+
+        </TableRow>
     </TableLayout>
 
-    <Button
-        android:id="@+id/btnSubmitIncome"
-        android:layout_width="168dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="105dp"
-        android:layout_marginLeft="105dp"
-        android:layout_marginBottom="75dp"
-        android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Submit" />
 
 </android.support.constraint.ConstraintLayout>

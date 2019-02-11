@@ -66,6 +66,7 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
     @BindView(R.id.Supplier) Spinner _supplier;
     @BindView(R.id.txtProjectID) Spinner _projects;
     @BindView(R.id.txtAccountID) Spinner _accounts;
+    @BindView(R.id.expenseNotes) EditText _notes;
     @BindView(R.id.btnSubmitExpense) Button _btnSubmitExpense;
 
     @Override
@@ -259,7 +260,7 @@ public class ExpenseActivity extends AppCompatActivity implements OnItemSelected
         BigDecimal expenseAmount = new BigDecimal(_expenseAmount.getText().toString());
         String expenseDateStr = _expenseDate.getText().toString();
         int supplierId =  _supplierId;
-        String expNotes = " test desc " + _supplierName;
+        String expNotes = _notes.getText().toString();
 
         // Toast
         Toast.makeText(getApplicationContext(),"ACCOUNTS:  _accountName->" + _accountName + " _accountId->>" + _accountId, Toast.LENGTH_LONG).show();

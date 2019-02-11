@@ -58,6 +58,7 @@ public class IncomeActivity extends AppCompatActivity implements AdapterView.OnI
     @BindView(R.id.spCustomerID) Spinner _spCustomerID;
     @BindView(R.id.spProjectID) Spinner _spProjectID;
     @BindView(R.id.spAccountID) Spinner _spAccountID;
+    @BindView(R.id.incomeNotes) EditText _notes;
     @BindView(R.id.btnSubmitIncome) Button _btnSubmitIncome;
 
     @Override
@@ -270,7 +271,7 @@ public class IncomeActivity extends AppCompatActivity implements AdapterView.OnI
         BigDecimal incomeAmount = new BigDecimal(_txtIncomeAmount.getText().toString());
         String incomeDateStr = _txtIncomeDate.getText().toString();
         //int customerId =  _customerID;
-        String incomeNotes = " test income desc ";
+        String incomeNotes = _notes.getText().toString();
 
         JSONObject postparams = new JSONObject();
         try {

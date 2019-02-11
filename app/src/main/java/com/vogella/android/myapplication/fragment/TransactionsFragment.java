@@ -15,7 +15,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.util.RecyclerTouchListener;
@@ -46,6 +48,7 @@ public class TransactionsFragment extends Fragment {
     private List<Transaction> incomeList = new ArrayList<>();
 
     final String  _TAG = "TRANSACTIONS FRAGMENT: ";
+    final String  TAG = "REQUEST_QUEUE";
 
 
     @Override
@@ -77,8 +80,8 @@ public class TransactionsFragment extends Fragment {
 
     private void getExpenseList(){
         String URL_EXPENSES = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/expense/user/1";
-        final String  TAG = "EXPENSE ACCOUNTS: ";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+
+        JsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(
                 Request.Method.GET,
                 URL_EXPENSES,
                 null,
@@ -86,40 +89,39 @@ public class TransactionsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         List<Transaction> expenseListArray = new ArrayList<>();
-                        try {
-                            for(int i=0;i<response.length();i++){
-                                JSONObject expenseObj = response.getJSONObject(i);
-                                Transaction obj =  new Transaction(); //farmName
+                        if (response != null ) {
+                            try {
+                                for(int i=0;i<response.length();i++){
+                                    JSONObject expenseObj = response.getJSONObject(i);
+                                    Transaction obj =  new Transaction(); //farmName
+                                    String dateStr = expenseObj.getString("expenseDate"); // "expenseDate": "30-07-2018",
 
-                                String dateStr = expenseObj.getString("expenseDate"); // "expenseDate": "30-07-2018",
+                                    try {
+                                        Date transDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
+                                        obj.setTransactionDate(transDate);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
 
-                                try {
-                                    Date transDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
-                                    obj.setTransactionDate(transDate);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
+                                    obj.setTransactionAmount(new BigDecimal(expenseObj.getString("amount")));
+                                    obj.setTransactionDescription(expenseObj.getString("projectName") + " " + expenseObj.getString("account") + " " + expenseObj.getString("supplier"));
+                                    obj.setTransactionType("EXPENSE");
+
+                                    expenseListArray.add(obj);
                                 }
-
-                                obj.setTransactionAmount(new BigDecimal(expenseObj.getString("amount")));
-                                obj.setTransactionDescription(expenseObj.getString("account") + " " + expenseObj.getString("supplier"));
-                                obj.setTransactionType("EXPENSE");
-
-                                expenseListArray.add(obj);
+                                Log.d(_TAG, "getExpenseList expenseListArray SIZE: " + expenseListArray.size());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.d(_TAG, e.getMessage());
                             }
-
-                            Log.d(_TAG, "getExpenseList expenseListArray SIZE: " + expenseListArray.size());
-
-                            //expenseList = expenseListArray;
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d(_TAG, e.getMessage());
+                            buildTransList(expenseListArray);
+                        }else{
+                            //Toast.makeText(getApplicationContext(), "El usuario no existe en el Sistema", Toast.LENGTH_LONG).show();
+                            Log.d(_TAG, "getIncomeList incomeListArray SIZE: " + expenseListArray.size() + " EXPENSE LIST IS NULL");
+                            //return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
                         }
-
-                        buildTransList(expenseListArray);
-
+                        //buildTransList(expenseListArray);
                         getIncomeList();
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -135,8 +137,9 @@ public class TransactionsFragment extends Fragment {
 
     private void getIncomeList(){
         String URL_EXPENSES = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/income/user/1";
-        final String  TAG = "INCOME ACCOUNTS: ";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+        //JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+        JsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(
+
                 Request.Method.GET,
                 URL_EXPENSES,
                 null,
@@ -144,38 +147,39 @@ public class TransactionsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         List<Transaction> incomeListArray = new ArrayList<>();
-                        try {
-                            for(int i=0;i<response.length();i++){
-                                JSONObject expenseObj = response.getJSONObject(i);
-                                Transaction obj =  new Transaction(); //farmName
+                        if (response != null ) {
+                            try {
+                                for (int i = 0; i < response.length(); i++) {
+                                    JSONObject expenseObj = response.getJSONObject(i);
+                                    Transaction obj = new Transaction(); //farmName
 
-                                String dateStr = expenseObj.getString("incomeDate"); // "expenseDate": "30-07-2018",
+                                    String dateStr = expenseObj.getString("incomeDate"); // "expenseDate": "30-07-2018",
 
-                                try {
-                                    Date transDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
-                                    obj.setTransactionDate(transDate);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
+                                    try {
+                                        Date transDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
+                                        obj.setTransactionDate(transDate);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    obj.setTransactionAmount(new BigDecimal(expenseObj.getString("amount")));
+                                    obj.setTransactionDescription(expenseObj.getString("projectName") + " " + expenseObj.getString("account") + " " + expenseObj.getString("customer"));
+                                    obj.setTransactionType("INCOME");
+
+                                    incomeListArray.add(obj);
+                                    // return Response.success(obj);
                                 }
-
-                                obj.setTransactionAmount(new BigDecimal(expenseObj.getString("amount")));
-                                obj.setTransactionDescription(expenseObj.getString("account") + " " + expenseObj.getString("customer"));
-                                obj.setTransactionType("INCOME");
-
-                                incomeListArray.add(obj);
+                                Log.d(_TAG, "getIncomeList incomeListArray SIZE: " + incomeListArray.size());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.d(_TAG, e.getMessage());
                             }
-
-                            Log.d(_TAG, "getIncomeList incomeListArray SIZE: " + incomeListArray.size());
-
-                            //incomeList = incomeListArray;
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d(_TAG, e.getMessage());
+                            buildTransList(incomeListArray);
+                        }else{
+                            //Toast.makeText(getApplicationContext(), "El usuario no existe en el Sistema", Toast.LENGTH_LONG).show();
+                            Log.d(_TAG, "getIncomeList incomeListArray SIZE: " + incomeListArray.size() + " INCOME LIST IS NULL");
+                            //return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
                         }
-
-                        buildTransList(incomeListArray);
-
                         displayTransactionList();
                     }
                 }, new Response.ErrorListener() {
@@ -183,6 +187,7 @@ public class TransactionsFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(_TAG, "Error: " + error.getMessage());
                 Log.d(_TAG, "Error: " + error.getMessage());
+                return;
             }
         });
         // Adding JsonObject request to request queue
@@ -190,42 +195,43 @@ public class TransactionsFragment extends Fragment {
     }
 
     public void buildTransList(List<Transaction> trxListArray){
-        transactionList.addAll(trxListArray);
-
+        if(trxListArray.size() > 0 ){
+            transactionList.addAll(trxListArray);
+        }
         Log.d(_TAG, "buildTransList: trxListArray " + trxListArray.size());
         Log.d(_TAG, "buildTransList: transactionList " + transactionList.size());
     }
 
     public void displayTransactionList(){
         //transactionList = expenseListArray;
+        if(transactionList.size()>0) {
+            Collections.sort(transactionList);
 
-        Collections.sort(transactionList);
+            transactionAdapter = new TransactionAdapter(transactionList);
+            transactionAdapter.notifyDataSetChanged();
 
-        transactionAdapter = new TransactionAdapter(transactionList);
-        transactionAdapter.notifyDataSetChanged();
+            Log.d(_TAG, "incomeList: 4 " + expenseList.size());
+            Log.d(_TAG, "incomeList: 4 " + incomeList.size());
+            Log.d(_TAG, "transactionList: 4 " + transactionList.size());
 
-        Log.d(_TAG, "incomeList: 4 " + expenseList.size());
-        Log.d(_TAG, "incomeList: 4 " + incomeList.size());
-        Log.d(_TAG, "transactionList: 4 " + transactionList.size());
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL));
+            recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
+            recyclerView.setAdapter(transactionAdapter); // asdhf sdf kasdhf hsdjkfh
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL));
-        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
-        recyclerView.setAdapter(transactionAdapter); // asdhf sdf kasdhf hsdjkfh
+            recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    Transaction transaction = transactionList.get(position);
+                    Toast.makeText(getActivity().getApplicationContext(), transaction.getTransactionAmount().toString() + " is selected!", Toast.LENGTH_SHORT).show();
+                }
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Transaction transaction = transactionList.get(position);
-                Toast.makeText(getActivity().getApplicationContext(), transaction.getTransactionAmount().toString() + " is selected!", Toast.LENGTH_SHORT).show();
-            }
+                @Override
+                public void onLongClick(View view, int position) {
 
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
-
+                }
+            }));
+        }
         Log.d("dispExpenseList", "displayTransactionList() METHOD:  LIST SIZE" + transactionList.size());
     }
 
