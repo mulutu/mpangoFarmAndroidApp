@@ -8,7 +8,7 @@
 
     <TableLayout
         android:id="@+id/tableLayoutIncome"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_margin="5dp"
         android:padding="10dp"
@@ -25,6 +25,7 @@
             android:padding="5dp">
 
             <LinearLayout>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

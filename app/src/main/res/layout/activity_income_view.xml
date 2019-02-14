@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ExpenseActivity">
+    tools:context=".activity.IncomeViewActivity">
 
     <TableLayout
-        android:id="@+id/tableLayoutIncome"
+        android:id="@+id/tableLayoutTrxView"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_margin="5dp"
@@ -25,12 +25,11 @@
             android:padding="5dp">
 
             <LinearLayout>
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="18sp"
-                    android:text="New Expense"
+                    android:text="Edit Expense"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -43,22 +42,20 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/txtExpenseAmount"
+                android:id="@+id/txtEditAmount"
                 android:layout_width="85dp"
                 android:layout_height="32dp"
-                android:contentDescription="incomeAmount"
+                android:contentDescription="Amount"
                 android:padding="5dp"
                 android:text="Amount"
-                android:textAlignment="center"
-                tools:text="Amount" />
+                android:textAlignment="center" />
 
             <EditText
-                android:id="@+id/expenseAmount"
+                android:id="@+id/amount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
-                android:hint="Amount"
                 android:inputType="numberDecimal"
                 android:paddingLeft="5dp"
                 android:textAlignment="center" />
@@ -81,12 +78,11 @@
                 tools:text="Date" />
 
             <EditText
-                android:id="@+id/expenseDate"
+                android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
-                android:hint="Date"
                 android:inputType="text"
                 android:paddingLeft="5dp"
                 android:textAlignment="center" />
@@ -108,35 +104,15 @@
                 android:textAlignment="center"
                 tools:text="Supplier" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="3dp"
-                android:layout_weight=".28"
+            <EditText
+                android:id="@+id/customer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/Supplier"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:paddingLeft="5dp"
-                    android:spinnerMode="dropdown" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:src="@drawable/drop" />
-
-            </RelativeLayout>
+                android:ems="10"
+                android:inputType="text"
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
         </TableRow>
 
         <TableRow
@@ -152,34 +128,16 @@
                 android:text="Project"
                 android:textAlignment="center" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="3dp"
-                android:layout_weight=".28"
+            <EditText
+                android:id="@+id/project"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
-                android:orientation="horizontal">
+                android:ems="10"
+                android:inputType="text"
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
 
-                <Spinner
-                    android:id="@+id/txtProjectID"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:spinnerMode="dropdown" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:src="@drawable/drop" />
-
-            </RelativeLayout>
         </TableRow>
 
         <TableRow
@@ -195,34 +153,16 @@
                 android:text="Account"
                 android:textAlignment="center" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="3dp"
-                android:layout_weight=".28"
+            <EditText
+                android:id="@+id/account"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
-                android:orientation="horizontal">
+                android:ems="10"
+                android:inputType="text"
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
 
-                <Spinner
-                    android:id="@+id/txtAccountID"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:spinnerMode="dropdown" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:src="@drawable/drop" />
-
-            </RelativeLayout>
         </TableRow>
 
         <TableRow
@@ -241,13 +181,12 @@
                 tools:text="Description" />
 
             <EditText
-                android:id="@+id/expenseNotes"
+                android:id="@+id/notes"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
                 android:gravity="top"
-                android:hint="Description..."
                 android:inputType="text|textMultiLine"
                 android:paddingLeft="5dp"
                 android:textAlignment="center" />
@@ -255,34 +194,5 @@
 
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/btnSubmit"
-                android:layout_width="85dp"
-                android:layout_height="32dp"
-                android:contentDescription="incomeAmount"
-                android:padding="5dp"
-                android:text=""
-                android:textAlignment="center"
-                tools:text="" />
-
-            <Button
-                android:id="@+id/btnSubmitExpense"
-                android:layout_width="168dp"
-                android:layout_height="48dp"
-                android:text="Submit"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="Submit" />
-
-
-        </TableRow>
     </TableLayout>
-
-
-
 </android.support.constraint.ConstraintLayout>

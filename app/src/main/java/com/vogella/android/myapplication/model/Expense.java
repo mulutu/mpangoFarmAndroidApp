@@ -1,9 +1,10 @@
 package com.vogella.android.myapplication.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Expense{
+public class Expense implements Serializable {
     private int id;
     private int UserId;
     private Date ExpenseDate;

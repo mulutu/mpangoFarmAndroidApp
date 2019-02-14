@@ -4,17 +4,29 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.CalendarView;
+import android.widget.EditText;
 
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.model.Income;
 
 public class CalendarActivity extends AppCompatActivity  {
     CalendarView calendar;
+
+    private Income _income;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            _income = (Income) getIntent().getSerializableExtra("income");
+        }
+
 
         //initializes the calendarview
         initializeCalendar();
@@ -48,9 +60,11 @@ public class CalendarActivity extends AppCompatActivity  {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
                 String dateStr = day + "-" + (month+1) + "-" + year;
-                Intent i = new Intent(getApplicationContext(), ExpenseActivity.class);
-                i.putExtra("dateStr",dateStr);
-                startActivity(i);
+                Intent intent = new Intent(getApplicationContext(), IncomeViewActivity.class);
+                intent.putExtra("dateStr",dateStr);
+                intent.putExtra("income", _income);
+
+                startActivity(intent);
             }
         });
     }
