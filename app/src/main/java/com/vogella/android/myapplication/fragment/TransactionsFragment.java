@@ -276,8 +276,11 @@ public class TransactionsFragment extends Fragment {
 
                     String trxType = transaction.getTransactionType();
                     if(trxType.equalsIgnoreCase("INCOME")){
+                        Bundle extras = new Bundle();
+                        extras.putInt("transactionID",transaction.getTransactionID());
+
                         Intent intent = new Intent(getActivity().getApplicationContext(), IncomeViewActivity.class);
-                        intent.putExtra("transactionID",transaction.getTransactionID());
+                        intent.putExtras(extras);
 
                         Log.d(_TAG, "transactionID: " + transaction.getTransactionID());
 
@@ -286,6 +289,7 @@ public class TransactionsFragment extends Fragment {
                         startActivityForResult(intent, REQUEST_CALENDAR);
                         //getActivity().finish();
                         getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
                     }else if(trxType.equalsIgnoreCase("EXPENSE")){
                         Toast.makeText(getActivity().getApplicationContext(), transaction.getTransactionAmount().toString() + " is selected!", Toast.LENGTH_SHORT).show();
                     }

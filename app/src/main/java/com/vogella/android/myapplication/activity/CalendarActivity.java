@@ -21,14 +21,13 @@ public class CalendarActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-        Bundle extras = getIntent().getExtras();
-
-        if (extras != null) {
-            _income = (Income) getIntent().getSerializableExtra("income");
+        if(getIntent()!=null && getIntent().getExtras()!=null){
+            Bundle bundle = getIntent().getExtras();
+            if(!bundle.getSerializable("income").equals(null)){
+                _income = (Income)bundle.getSerializable("income");
+            }
         }
 
-
-        //initializes the calendarview
         initializeCalendar();
 
     }
@@ -61,8 +60,12 @@ public class CalendarActivity extends AppCompatActivity  {
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
                 String dateStr = day + "-" + (month+1) + "-" + year;
                 Intent intent = new Intent(getApplicationContext(), IncomeViewActivity.class);
-                intent.putExtra("dateStr",dateStr);
-                intent.putExtra("income", _income);
+
+                Bundle extras = new Bundle();
+                extras.putString("dateStr",dateStr);
+                extras.putSerializable("income", _income);
+
+                intent.putExtras(extras);
 
                 startActivity(intent);
             }

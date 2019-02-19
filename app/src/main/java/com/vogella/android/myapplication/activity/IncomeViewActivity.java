@@ -59,11 +59,6 @@ public class IncomeViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_income_view);
-        //ButterKnife.bind(this);
-
-
-        transactionID = this.getIntent().getExtras().getInt("transactionID");
-
 
         _amount = (EditText) findViewById(R.id.amount);
         _date = (EditText) findViewById(R.id.date);
@@ -72,23 +67,46 @@ public class IncomeViewActivity extends AppCompatActivity {
         _account = (EditText) findViewById(R.id.account);
         _notes = (EditText) findViewById(R.id.notes);
 
+        Intent intent = getIntent();
+        if(getIntent()!=null && getIntent().getExtras()!=null){
+            Bundle extras = intent.getExtras();
+            if(extras.getInt("transactionID") != 0){
+                transactionID= extras.getInt("transactionID");
+                getTransactionDetails(transactionID);
+            }
 
+            if ( getIntent().getSerializableExtra("income") != null ) {
+                income = (Income) getIntent().getSerializableExtra("income");
 
-        Bundle extras = getIntent().getExtras();
+                if(extras.getString("dateStr") != null){
+                    String datePickedStr =  extras.getString("dateStr");
+                    _date.setText(datePickedStr);
+                }
 
-        if ( getIntent().getSerializableExtra("income") != null ) {
-            String datePickedStr = extras.getString("dateStr");
-            _date.setText(datePickedStr);
+                _amount.setText( income.getAmount().toString());
 
-            income = (Income) getIntent().getSerializableExtra("income");
+                // Expense date DatePicker
+                _date.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        displayDatePicker();
+                    }
+                });
 
-            //transactionID = income.getId();
+                _customer.setText(income.getCustomer());
+                _project.setText(income.getProjectName());
+                _account.setText(income.getAccount());
+                _notes.setText(income.getNotes());
 
-        }else{
-            getTransactionDetails(transactionID);
+                Log.d(_TAG, "REPOPULATE DATA: " + income.getProjectName());
+            }
         }
 
-        populateData(income);
+
+
+
+
+
     }
 
     private void populateData(Income income){
@@ -132,8 +150,11 @@ public class IncomeViewActivity extends AppCompatActivity {
        // datePickerDialog.show();
         // create a view with calendar
         // Start the Signup activity
+        Bundle extras = new Bundle();
+        extras.putSerializable("income", income);
+
         Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
-        intent.putExtra("income", income);
+        intent.putExtras(extras);
         startActivityForResult(intent, 0);
         finish();
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
@@ -190,6 +211,8 @@ public class IncomeViewActivity extends AppCompatActivity {
                                 e.printStackTrace();
                                 Log.d(_TAG, e.getMessage());
                             }
+
+                            populateData(income);
 
                         }else{}
                     }
