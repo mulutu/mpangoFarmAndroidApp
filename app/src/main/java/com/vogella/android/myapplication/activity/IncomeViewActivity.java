@@ -18,6 +18,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.model.Income;
+import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
@@ -52,6 +53,7 @@ public class IncomeViewActivity extends AppCompatActivity {
     private EditText _date;
     private EditText _customer;
     private EditText _project;
+    private EditText _projectID;
     private EditText _account;
     private EditText _notes;
 
@@ -63,11 +65,15 @@ public class IncomeViewActivity extends AppCompatActivity {
         _amount = (EditText) findViewById(R.id.amount);
         _date = (EditText) findViewById(R.id.date);
         _customer = (EditText) findViewById(R.id.customer);
+
         _project = (EditText) findViewById(R.id.project);
+        _projectID = (EditText) findViewById(R.id.income_view_projectID);
+        
         _account = (EditText) findViewById(R.id.account);
         _notes = (EditText) findViewById(R.id.notes);
 
         Intent intent = getIntent();
+
         if(getIntent()!=null && getIntent().getExtras()!=null){
             Bundle extras = intent.getExtras();
             if(extras.getInt("transactionID") != 0){
@@ -77,36 +83,67 @@ public class IncomeViewActivity extends AppCompatActivity {
 
             if ( getIntent().getSerializableExtra("income") != null ) {
                 income = (Income) getIntent().getSerializableExtra("income");
-
-                if(extras.getString("dateStr") != null){
-                    String datePickedStr =  extras.getString("dateStr");
-                    _date.setText(datePickedStr);
-                }
-
-                _amount.setText( income.getAmount().toString());
-
-                // Expense date DatePicker
-                _date.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        displayDatePicker();
-                    }
-                });
-
-                _customer.setText(income.getCustomer());
-                _project.setText(income.getProjectName());
-                _account.setText(income.getAccount());
-                _notes.setText(income.getNotes());
-
-                Log.d(_TAG, "REPOPULATE DATA: " + income.getProjectName());
+                populateData(income);
             }
         }
+    }
 
+    private Date stringToDate(String dateStr){
+        Date date = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            date = formatter.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 
+    public Income getIncome(){
+        Income tempIncome = new Income();
 
+        tempIncome.setId(income.getId());
+        tempIncome.setUserId(income.getUserId());
 
+        Date incomeDate = stringToDate(_date.getText().toString());
+        tempIncome.setIncomeDate(incomeDate);
 
+        tempIncome.setCustomerId(income.getCustomerId());
+        tempIncome.setCustomer(income.getCustomer());
 
+        BigDecimal amt_ = new BigDecimal(_amount.getText().toString());
+        tempIncome.setAmount(amt_);
+
+        tempIncome.setPaymentMethodId(income.getPaymentMethodId());
+        tempIncome.setPaymentMethod(income.getPaymentMethod());
+
+        tempIncome.setAccountId(income.getAccountId());
+        tempIncome.setAccount(_account.getText().toString());
+
+        int projid = Integer.parseInt(_projectID.getText().toString());
+        tempIncome.setAccountId(projid);
+        tempIncome.setProjectName(_project.getText().toString());
+
+        tempIncome.setNotes(_notes.getText().toString());
+
+        tempIncome.setFarmName(income.getFarmName());
+        /*
+            private int id;
+            private int UserId;
+            private Date IncomeDate;
+            private int CustomerId;
+            private BigDecimal Amount;
+            private int PaymentMethodId;
+            private int AccountId;
+            private int ProjectId;
+            private String Notes;
+            private String Customer;
+            private String Account;
+            private String ProjectName;
+            private String PaymentMethod;
+            private String FarmName;
+        */
+        return tempIncome;
     }
 
     private void populateData(Income income){
@@ -114,9 +151,7 @@ public class IncomeViewActivity extends AppCompatActivity {
 
         SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
         String dateStr = format2.format(income.getIncomeDate());
-        _date.setText( dateStr);
-
-        // Expense date DatePicker
+        _date.setText(dateStr);
         _date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,34 +159,39 @@ public class IncomeViewActivity extends AppCompatActivity {
             }
         });
 
-        _customer.setText(income.getCustomer());
+        _projectID.setText(String.valueOf(income.getProjectId()));
         _project.setText(income.getProjectName());
+        _project.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectProject();
+            }
+        });
+
+        _customer.setText(income.getCustomer());
+
         _account.setText(income.getAccount());
         _notes.setText(income.getNotes());
 
         Log.d(_TAG, "income.getProjectName(): " + income.getProjectName());
     }
 
-    public void displayDatePicker(){
-        // calender class's instance and get current date , month and year from calender
-        //final Calendar c = Calendar.getInstance();
-        //int mYear = c.get(Calendar.YEAR); // current year
-        //int mMonth = c.get(Calendar.MONTH); // current month
-        //int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-        //// date picker dialog
-        //datePickerDialog = new DatePickerDialog(IncomeViewActivity.this,
-               // new DatePickerDialog.OnDateSetListener() {
-                   // @Override
-                   // public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                       // // set day of month , month and year value in the edit text
-                       // _date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                  //  }
-               // }, mYear, mMonth, mDay);
-       // datePickerDialog.show();
-        // create a view with calendar
-        // Start the Signup activity
+    public void selectProject(){
         Bundle extras = new Bundle();
-        extras.putSerializable("income", income);
+        extras.putSerializable("income", getIncome());
+
+        Intent intent = new Intent(getApplicationContext(), ProjectsViewActivity.class);
+        intent.putExtras(extras);
+        startActivityForResult(intent, 0);
+        finish();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+
+
+    public void displayDatePicker(){
+        Bundle extras = new Bundle();
+        extras.putSerializable("income", getIncome());
 
         Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
         intent.putExtras(extras);

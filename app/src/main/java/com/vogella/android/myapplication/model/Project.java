@@ -34,6 +34,16 @@ public class Project implements Serializable {
         DateCreated = new Date();
     }
 
+    public Project(int projectId, int userId, int farmId, String projectName, String description) {
+        id = projectId;
+        UserId = userId;
+        FarmId = farmId;
+        ProjectName = projectName;
+        Description = description;
+
+        DateCreated = new Date();
+    }
+
     public BigDecimal getTotalExpenses() {
         return totalExpenses;
     }

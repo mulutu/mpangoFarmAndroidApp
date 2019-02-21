@@ -4,9 +4,11 @@
     android:versionCode="1"
     android:versionName="1.0">
 
-    <!-- <uses-sdk
+    <!--
+         <uses-sdk
         android:minSdkVersion="13"
-        android:targetSdkVersion="15" /> -->
+        android:targetSdkVersion="15" />
+    -->
 
     <supports-screens
         android:largeScreens="true"
@@ -42,7 +44,8 @@
         <activity android:name=".activity.ExpenseActivity" />
         <activity android:name=".activity.IncomeActivity" />
         <activity android:name=".activity.CalendarActivity" />
-        <activity android:name=".activity.IncomeViewActivity"></activity>
+        <activity android:name=".activity.IncomeViewActivity" />
+        <activity android:name=".activity.ProjectsViewActivity"></activity>
     </application>
 
 </manifest>

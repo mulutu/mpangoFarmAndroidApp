@@ -21,5 +21,6 @@
     <string name="delete">DELETE</string>
 
     <string name="hint">Editor #%d</string>
+    <string name="title_activity_projects_view">ProjectsViewActivity</string>
 
 </resources>

@@ -155,4 +155,26 @@ public class Income implements Serializable {
     public void setFarmName(String farmName) {
         FarmName = farmName;
     }
+
+    @Override
+    public String toString() {
+        return "Income [" +
+                "id=" + id + ", " +
+                "UserId=" + UserId + ", " +
+                "IncomeDate=" + IncomeDate + ", " +
+                "CustomerId=" + CustomerId + ", " +
+                "Amount=" + Amount +
+                "PaymentMethodId=" + PaymentMethodId +
+                "AccountId=" + AccountId +
+                "ProjectId=" + ProjectId +
+                "Notes=" + Notes +
+                "Customer=" + Customer +
+                "Account=" + Account +
+                "ProjectName=" + ProjectName +
+                "PaymentMethod=" + PaymentMethod +
+                "FarmName=" + FarmName +
+                "]";
+
+
+    }
 }

@@ -287,7 +287,7 @@ public class TransactionsFragment extends Fragment {
                         //Toast.makeText(getActivity().getApplicationContext(), transaction.getTransactionID() + " price is selected!", Toast.LENGTH_SHORT).show();
 
                         startActivityForResult(intent, REQUEST_CALENDAR);
-                        //getActivity().finish();
+                        getActivity().finish();
                         getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
                     }else if(trxType.equalsIgnoreCase("EXPENSE")){

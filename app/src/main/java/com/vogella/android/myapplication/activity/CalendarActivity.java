@@ -9,6 +9,10 @@ import android.widget.EditText;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.model.Income;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CalendarActivity extends AppCompatActivity  {
     CalendarView calendar;
 
@@ -30,6 +34,17 @@ public class CalendarActivity extends AppCompatActivity  {
 
         initializeCalendar();
 
+    }
+
+    private Date stringToDate(String dateStr){
+        Date date = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            date = formatter.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
 
@@ -62,7 +77,9 @@ public class CalendarActivity extends AppCompatActivity  {
                 Intent intent = new Intent(getApplicationContext(), IncomeViewActivity.class);
 
                 Bundle extras = new Bundle();
-                extras.putString("dateStr",dateStr);
+
+                Date incomeDate = stringToDate(dateStr);
+                _income.setIncomeDate(incomeDate);
                 extras.putSerializable("income", _income);
 
                 intent.putExtras(extras);
