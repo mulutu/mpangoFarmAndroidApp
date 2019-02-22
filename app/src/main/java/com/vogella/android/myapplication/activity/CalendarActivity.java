@@ -7,6 +7,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.model.Expense;
 import com.vogella.android.myapplication.model.Income;
 
 import java.text.ParseException;
@@ -18,7 +19,9 @@ public class CalendarActivity extends AppCompatActivity  {
 
     private Income _income;
 
+    private Expense _expense;
 
+    private String trxType =  "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +30,19 @@ public class CalendarActivity extends AppCompatActivity  {
 
         if(getIntent()!=null && getIntent().getExtras()!=null){
             Bundle bundle = getIntent().getExtras();
-            if(!bundle.getSerializable("income").equals(null)){
-                _income = (Income)bundle.getSerializable("income");
+            if(bundle.get("transactionType").equals("EXPENSE")){
+                if(!bundle.getSerializable("expense").equals(null)){
+                    _expense = (Expense)bundle.getSerializable("expense");
+                    trxType = "EXPENSE";
+                }
+            }else if(bundle.get("transactionType").equals("INCOME")){
+                if(!bundle.getSerializable("income").equals(null)){
+                    _income = (Income)bundle.getSerializable("income");
+                    trxType = "INCOME";
+                }
             }
         }
-
         initializeCalendar();
-
     }
 
     private Date stringToDate(String dateStr){
@@ -74,17 +83,29 @@ public class CalendarActivity extends AppCompatActivity  {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
                 String dateStr = day + "-" + (month+1) + "-" + year;
-                Intent intent = new Intent(getApplicationContext(), IncomeViewActivity.class);
-
                 Bundle extras = new Bundle();
+                Date strTrxDate = stringToDate(dateStr);
 
-                Date incomeDate = stringToDate(dateStr);
-                _income.setIncomeDate(incomeDate);
-                extras.putSerializable("income", _income);
+                if( trxType.equalsIgnoreCase("INCOME") ){
+                    _income.setIncomeDate(strTrxDate);
 
-                intent.putExtras(extras);
+                    extras.putSerializable("income", _income);
 
-                startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), IncomeViewActivity.class);
+                    intent.putExtras(extras);
+                    finish();
+                    startActivity(intent);
+                }else if( trxType.equalsIgnoreCase("EXPENSE") ){
+                    _expense.setExpenseDate(strTrxDate);
+
+                    extras.putSerializable("expense", _expense);
+
+                    Intent intent = new Intent(getApplicationContext(), ExpenseViewActivity.class);
+                    intent.putExtras(extras);
+                    finish();
+                    startActivity(intent);
+                }
+                //overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
     }

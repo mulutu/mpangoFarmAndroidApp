@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.vogella.android.myapplication.activity.ExpenseViewActivity;
 import com.vogella.android.myapplication.activity.IncomeViewActivity;
 import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
@@ -284,14 +285,22 @@ public class TransactionsFragment extends Fragment {
 
                         Log.d(_TAG, "transactionID: " + transaction.getTransactionID());
 
-                        //Toast.makeText(getActivity().getApplicationContext(), transaction.getTransactionID() + " price is selected!", Toast.LENGTH_SHORT).show();
-
                         startActivityForResult(intent, REQUEST_CALENDAR);
                         getActivity().finish();
                         getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
                     }else if(trxType.equalsIgnoreCase("EXPENSE")){
-                        Toast.makeText(getActivity().getApplicationContext(), transaction.getTransactionAmount().toString() + " is selected!", Toast.LENGTH_SHORT).show();
+                        Bundle extras = new Bundle();
+                        extras.putInt("transactionID",transaction.getTransactionID());
+
+                        Intent intent = new Intent(getActivity().getApplicationContext(), ExpenseViewActivity.class);
+                        intent.putExtras(extras);
+
+                        Log.d(_TAG, "transactionID: " + transaction.getTransactionID());
+
+                        startActivityForResult(intent, REQUEST_CALENDAR);
+                        getActivity().finish();
+                        getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                     }
 
                 }

@@ -8,69 +8,57 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.model.Expense;
 import com.vogella.android.myapplication.model.Income;
-import com.vogella.android.myapplication.model.Project;
-import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AppSingleton;
-import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class IncomeViewActivity extends AppCompatActivity {
+public class ExpenseViewActivity extends AppCompatActivity {
 
     final String  _TAG = "INCOMEVEVIEW: ";
     final String  TAG = "REQUEST_QUEUE";
 
     int transactionID = 0;
 
-    Income income  = new Income();
+    Expense expense  = new Expense();
 
     DatePickerDialog datePickerDialog;
 
     private EditText _amount;
     private EditText _date;
-    private EditText _customer;
+    private EditText _supplier;
     private EditText _project;
     private EditText _account;
     private EditText _notes;
-    private Button _btnSubmitIncome;
+    private Button _btnSubmitExpense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_income_view);
+        setContentView(R.layout.activity_expense_view);
 
-        _amount = (EditText) findViewById(R.id.amount);
-        _date = (EditText) findViewById(R.id.date);
-        _customer = (EditText) findViewById(R.id.customer);
-        _project = (EditText) findViewById(R.id.project);        
-        _account = (EditText) findViewById(R.id.account);
-        _notes = (EditText) findViewById(R.id.notes);
-        _btnSubmitIncome = (Button) findViewById(R.id.btnSubmitIncome_edit);
+        _amount = (EditText) findViewById(R.id.amount_expense);
+        _date = (EditText) findViewById(R.id.date_expense);
+        _supplier = (EditText) findViewById(R.id.supplier_expense);
+        _project = (EditText) findViewById(R.id.project_expense);
+        _account = (EditText) findViewById(R.id.account_expense);
+        _notes = (EditText) findViewById(R.id.notes_expense);
+        _btnSubmitExpense = (Button) findViewById(R.id.btnSubmitExpense_edit);
 
         Intent intent = getIntent();
 
@@ -81,16 +69,16 @@ public class IncomeViewActivity extends AppCompatActivity {
                 getTransactionDetails(transactionID);
             }
 
-            if ( getIntent().getSerializableExtra("income") != null ) {
-                income = (Income) getIntent().getSerializableExtra("income");
-                populateData(income);
+            if ( getIntent().getSerializableExtra("expense") != null ) {
+                expense = (Expense) getIntent().getSerializableExtra("expense");
+                populateData(expense);
             }
         }
 
-        _btnSubmitIncome.setOnClickListener(new View.OnClickListener() {
+        _btnSubmitExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitIncome();
+                submitExpense();
             }
         });
     }
@@ -113,12 +101,12 @@ public class IncomeViewActivity extends AppCompatActivity {
 
 
 
-    public Income getIncome(){
+    public Expense getExpense(){
 
         BigDecimal amt_ = new BigDecimal(_amount.getText().toString());
-        income.setAmount(amt_);
+        expense.setAmount(amt_);
 
-        income.setNotes(_notes.getText().toString());
+        expense.setNotes(_notes.getText().toString());
 
         /*
         Income tempIncome = new Income();
@@ -137,15 +125,15 @@ public class IncomeViewActivity extends AppCompatActivity {
         tempIncome.setFarmName(income.getFarmName());
         */
 
-        return income;
+        return expense;
     }
 
-    private void populateData(Income income){
+    private void populateData(Expense expense){
 
-        _amount.setText( income.getAmount().toString());
+        _amount.setText( expense.getAmount().toString());
 
         SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
-        String dateStr = format2.format(income.getIncomeDate());
+        String dateStr = format2.format(expense.getExpenseDate());
         _date.setText(dateStr);
         _date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,7 +142,7 @@ public class IncomeViewActivity extends AppCompatActivity {
             }
         });
 
-        _project.setText(income.getProjectName());
+        _project.setText(expense.getProjectName());
         _project.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,19 +150,19 @@ public class IncomeViewActivity extends AppCompatActivity {
             }
         });
 
-        _customer.setText(income.getCustomer());
+        _supplier.setText(expense.getSupplier());
 
-        _account.setText(income.getAccount());
+        _account.setText(expense.getAccount());
 
-        _notes.setText(income.getNotes());
+        _notes.setText(expense.getNotes());
 
-        Log.d(_TAG, "income.getProjectName(): " + income.getProjectName());
+        Log.d(_TAG, "income.getProjectName(): " + expense.getProjectName());
     }
 
     public void selectProject(){
         Bundle extras = new Bundle();
-        extras.putSerializable("income", getIncome());
-        extras.putString("transactionType", "INCOME");
+        extras.putSerializable("expense", getExpense());
+        extras.putString("transactionType", "EXPENSE");
 
         Intent intent = new Intent(getApplicationContext(), ProjectsViewActivity.class);
         intent.putExtras(extras);
@@ -187,8 +175,8 @@ public class IncomeViewActivity extends AppCompatActivity {
 
     public void displayDatePicker(){
         Bundle extras = new Bundle();
-        extras.putSerializable("income", getIncome());
-        extras.putString("transactionType", "INCOME");
+        extras.putSerializable("expense", getExpense());
+        extras.putString("transactionType", "EXPENSE");
 
         Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
         intent.putExtras(extras);
@@ -198,7 +186,7 @@ public class IncomeViewActivity extends AppCompatActivity {
     }
 
     private void getTransactionDetails( int trxID){
-        String URL_ = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/income/" + trxID;
+        String URL_ = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/expense/" + trxID;
 
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -209,39 +197,39 @@ public class IncomeViewActivity extends AppCompatActivity {
                     public void onResponse(JSONObject  response) {
                         if (response != null ) {
                             try {
-                                String dateStr = response.getString("incomeDate"); // "expenseDate": "30-07-2018",
+                                String dateStr = response.getString("expenseDate"); // "expenseDate": "30-07-2018",
                                 try {
                                     Date transDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
-                                    income.setIncomeDate(transDate);
+                                    expense.setExpenseDate(transDate);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
 
-                                income.setId(response.getInt("id"));
+                                expense.setId(response.getInt("id"));
 
                                 BigDecimal amount_ = new BigDecimal(response.getString("amount"));
-                                income.setAmount(amount_);
+                                expense.setAmount(amount_);
 
-                                income.setCustomerId(response.getInt("customerId"));
-                                income.setCustomer(response.getString("customer"));
+                                expense.setSupplierId(response.getInt("supplierId"));
+                                expense.setSupplier(response.getString("supplier"));
 
-                                income.setFarmName(response.getString("farmName"));
+                                expense.setFarmName(response.getString("farmName"));
 
-                                income.setPaymentMethodId(response.getInt("paymentMethodId"));
-                                income.setPaymentMethod(response.getString("paymentMethod"));
+                                expense.setPaymentMethodId(response.getInt("paymentMethodId"));
+                                expense.setPaymentMethod(response.getString("paymentMethod"));
 
-                                income.setProjectId(response.getInt("projectId"));
-                                income.setProjectName(response.getString("projectName"));
+                                expense.setProjectId(response.getInt("projectId"));
+                                expense.setProjectName(response.getString("projectName"));
 
-                                income.setNotes(response.getString("notes"));
+                                expense.setNotes(response.getString("notes"));
 
-                                income.setAccountId(response.getInt("accountId"));
-                                income.setAccount(response.getString("account"));
+                                expense.setAccountId(response.getInt("accountId"));
+                                expense.setAccount(response.getString("account"));
 
-                                //income.setCustomerId(response.getInt("customerId"));
-                                //income.setCustomer(response.getString("customer"));
+                                //expense.setSupplierId(response.getInt("supplierId"));
+                                //expense.setSupplier(response.getString("supplier"));
 
-                                income.setUserId(response.getInt("userId"));
+                                expense.setUserId(response.getInt("userId"));
 
 
                             } catch (JSONException e) {
@@ -249,7 +237,7 @@ public class IncomeViewActivity extends AppCompatActivity {
                                 Log.d(_TAG, e.getMessage());
                             }
 
-                            populateData(income);
+                            populateData(expense);
 
                         }else{}
                     }
@@ -265,30 +253,30 @@ public class IncomeViewActivity extends AppCompatActivity {
     }
 
 
-    public void submitIncome() {
-        String URL_ADD_EXPENSE = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/income/";
+    public void submitExpense() {
+        String URL_ADD_EXPENSE = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/expense/";
         //_btnSubmitExpense.setEnabled(false);
 
-        Income incomeObjPosting =  getIncome();
+        Expense expenseObjPosting =  getExpense();
 
         JSONObject postparams = new JSONObject();
         try {
-            postparams.put("incomeDate", dateToString(incomeObjPosting.getIncomeDate())); //sdjf hsdjksdfhjhsdfj
-            postparams.put("amount", incomeObjPosting.getAmount());
-            postparams.put("customerId", incomeObjPosting.getCustomerId());
-            postparams.put("paymentMethodId", incomeObjPosting.getPaymentMethodId());
-            postparams.put("accountId", incomeObjPosting.getAccountId());
-            postparams.put("projectId", incomeObjPosting.getProjectId());
-            postparams.put("notes", incomeObjPosting.getNotes());
-            postparams.put("userId", incomeObjPosting.getUserId());
-            postparams.put("id", incomeObjPosting.getId());
+            postparams.put("expenseDate", dateToString(expenseObjPosting.getExpenseDate())); //sdjf hsdjksdfhjhsdfj
+            postparams.put("amount", expenseObjPosting.getAmount());
+            postparams.put("supplierId", expenseObjPosting.getSupplierId());
+            postparams.put("paymentMethodId", expenseObjPosting.getPaymentMethodId());
+            postparams.put("accountId", expenseObjPosting.getAccountId());
+            postparams.put("projectId", expenseObjPosting.getProjectId());
+            postparams.put("notes", expenseObjPosting.getNotes());
+            postparams.put("userId", expenseObjPosting.getUserId());
+            postparams.put("id", expenseObjPosting.getId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         String  REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
 
-        final ProgressDialog progressDialog = new ProgressDialog(IncomeViewActivity.this, R.style.AppTheme_Dark_Dialog);
+        final ProgressDialog progressDialog = new ProgressDialog(ExpenseViewActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Posting...");
         progressDialog.show();
@@ -325,5 +313,4 @@ public class IncomeViewActivity extends AppCompatActivity {
         // Adding JsonObject request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,REQUEST_TAG);
     }
-
 }
