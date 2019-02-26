@@ -221,6 +221,8 @@ public class ExpenseViewActivity extends AppCompatActivity {
                                 expense.setProjectId(response.getInt("projectId"));
                                 expense.setProjectName(response.getString("projectName"));
 
+                                Log.d(_TAG, "PROJECT-NAME: " + response.getInt("projectId") + " -> " + response.getString("projectName"));
+
                                 expense.setNotes(response.getString("notes"));
 
                                 expense.setAccountId(response.getInt("accountId"));
@@ -230,7 +232,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
                                 //expense.setSupplier(response.getString("supplier"));
 
                                 expense.setUserId(response.getInt("userId"));
-
 
                             } catch (JSONException e) {
                                 e.printStackTrace();

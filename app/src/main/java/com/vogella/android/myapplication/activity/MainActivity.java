@@ -1,5 +1,6 @@
 package com.vogella.android.myapplication.activity;
 
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -24,6 +25,7 @@ import com.vogella.android.myapplication.fragment.EditorFragment;
 import com.vogella.android.myapplication.fragment.HomeFragment;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.fragment.PagerFragment;
+import com.vogella.android.myapplication.fragment.ProjectsSettingsFragment;
 import com.vogella.android.myapplication.fragment.TransactionsFragment;
 
 import java.util.List;
@@ -31,7 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProjectsSettingsFragment.OnFragmentInteractionListener {
 
     //private Button btn1, btn2;
 
@@ -120,9 +122,18 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
 
-            case R.id.navigation_notifications:
-                // Action to perform when Account Menu item is selected.
-                //pushFragment(new AccountFragment());
+            case R.id.navigation_projects:
+
+                List<Fragment> allFragmentsProj = getSupportFragmentManager().getFragments();
+                for (Fragment fragment : allFragmentsProj) {
+                    if(fragment!=null){
+                        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+                        trx.hide(fragment);
+                        trx.commit();
+                    }
+                }
+
+                pushFragment(new ProjectsSettingsFragment(), "txnsProjectsSettings");
                 break;
         }
     }
@@ -182,5 +193,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
