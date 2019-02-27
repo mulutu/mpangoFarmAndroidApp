@@ -48,7 +48,8 @@
         <activity android:name=".activity.ProjectsViewActivity" />
         <activity android:name=".activity.ExpenseViewActivity" />
         <activity android:name=".activity.AddProjectActivity" />
-        <activity android:name=".activity.AddFarmActivity"></activity>
+        <activity android:name=".activity.AddFarmActivity" />
+        <activity android:name=".activity.FarmsViewActivity"></activity>
     </application>
 
 </manifest>

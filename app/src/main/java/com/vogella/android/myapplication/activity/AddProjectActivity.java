@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 public class AddProjectActivity extends AppCompatActivity {
 
-    private EditText _projectName, _projectDesc;
+    private EditText _projectName, _farmName, _projectDesc;
     private Button _btnSubmitProject;
     Project project = new Project();
 
@@ -32,7 +32,16 @@ public class AddProjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_project);
 
         _projectName = (EditText) findViewById(R.id.projectName_add_project);
+        _farmName = (EditText) findViewById(R.id.txtFarm_add_project);
+
+        _farmName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectFarm();
+            }
+        });
         _projectDesc = (EditText) findViewById(R.id.projectDesc_add_project);
+
         _btnSubmitProject = (Button) findViewById(R.id.btnSubmitProject);
         _btnSubmitProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +49,18 @@ public class AddProjectActivity extends AppCompatActivity {
                 submitProject();
             }
         });
+    }
+
+    public void selectFarm(){
+        Bundle extras = new Bundle();
+        extras.putSerializable("project", getProject());
+        extras.putString("transactionType", "ADD_PROJECT");
+
+        Intent intent = new Intent(getApplicationContext(), FarmsViewActivity.class);
+        intent.putExtras(extras);
+        startActivityForResult(intent, 0);
+        finish();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     private Project getProject(){
@@ -54,9 +75,10 @@ public class AddProjectActivity extends AppCompatActivity {
         String projDesc =  _projectDesc.getText().toString();
 
         prj.setUserId(userID);
-        prj.setFarmId(farmID);
+        //prj.setFarmId(farmID);
         prj.setProjectName(projName);
         prj.setDescription(projDesc);
+        prj.setFarmId(project.getFarmId());
         prj.setUnitId(unitID);
 
         return prj;
@@ -64,7 +86,7 @@ public class AddProjectActivity extends AppCompatActivity {
 
     private void submitProject(){
 
-        String URL = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/project/";
+        String URL = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/project/create/";
 
         project = getProject();
 

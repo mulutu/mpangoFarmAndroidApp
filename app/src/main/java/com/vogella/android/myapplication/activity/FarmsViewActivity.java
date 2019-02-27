@@ -1,7 +1,6 @@
 package com.vogella.android.myapplication.activity;
 
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -17,11 +15,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.adapter.farmsAdapter;
 import com.vogella.android.myapplication.adapter.projectsAdapter;
 import com.vogella.android.myapplication.model.Expense;
+import com.vogella.android.myapplication.model.Farm;
 import com.vogella.android.myapplication.model.Income;
 import com.vogella.android.myapplication.model.Project;
-import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
 import com.vogella.android.myapplication.util.RecyclerTouchListener;
@@ -31,28 +30,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ProjectsViewActivity extends AppCompatActivity {
+public class FarmsViewActivity extends AppCompatActivity {
 
-    private List<Project> projectList = new ArrayList<>();
+    Project _project;
+
+    private List<Farm> farmsList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private projectsAdapter mAdapter;
-
-    private Income _income;
-
-    private Expense _expense;
-
-    private String trxType =  "";
+    private farmsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_projects_view);
+        setContentView(R.layout.activity_farms_view);
 
-        recyclerView = (RecyclerView) findViewById(R.id.projects_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.add_farm_recycler_view);
 
-        mAdapter = new projectsAdapter(projectList);
+        mAdapter = new farmsAdapter(farmsList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setLayoutManager(mLayoutManager);
@@ -61,32 +57,15 @@ public class ProjectsViewActivity extends AppCompatActivity {
 
         if(getIntent()!=null && getIntent().getExtras()!=null){
             Bundle bundle = getIntent().getExtras();
-            if(bundle.get("transactionType").equals("EXPENSE")){
-                if(!bundle.getSerializable("expense").equals(null)){
-                    _expense = (Expense)bundle.getSerializable("expense");
-                    trxType = "EXPENSE";
-                }
-            }else if(bundle.get("transactionType").equals("INCOME")){
-                if(!bundle.getSerializable("income").equals(null)){
-                    _income = (Income)bundle.getSerializable("income");
-                    trxType = "INCOME";
+            if(bundle.get("transactionType").equals("ADD_PROJECT")){
+                if(!bundle.getSerializable("project").equals(null)){
+                    _project = (Project)bundle.getSerializable("project");
                 }
             }
         }
 
         int userId = 1;
-        getListOfProjects(userId);
-    }
-
-    public void showSnackbar(View view, String message, int duration){
-        final Snackbar snackbar = Snackbar.make(view, message, duration);
-        snackbar.setAction("DISMISS", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                snackbar.dismiss();
-            }
-        });
-        snackbar.show();
+        getListOfFarms(userId);
     }
 
     private void prepareProjectsData() {
@@ -99,29 +78,18 @@ public class ProjectsViewActivity extends AppCompatActivity {
 
                 Bundle extras = new Bundle();
 
-                Project project = projectList.get(position);
+                Farm farm = farmsList.get(position);
 
-                if( trxType.equalsIgnoreCase("INCOME") ){
-                    _income.setProjectId(project.getId());
-                    _income.setProjectName(project.getProjectName());
+                _project.setFarmId(farm.getId());
 
-                    Intent intent = new Intent(getApplicationContext(), IncomeViewActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AddProjectActivity.class);
 
-                    extras.putSerializable("income", _income);
-                    intent.putExtras(extras);
-                    finish();
-                    startActivity(intent);
-                }else if( trxType.equalsIgnoreCase("EXPENSE") ){
-                    _expense.setProjectId(project.getId());
-                    _expense.setProjectName(project.getProjectName());
+                extras.putSerializable("project", _project);
+                extras.putString("transactionType", "ADD_PROJECT");
+                intent.putExtras(extras);
+                finish();
+                startActivity(intent);
 
-                    Intent intent = new Intent(getApplicationContext(), ExpenseViewActivity.class);
-
-                    extras.putSerializable("expense", _expense);
-                    intent.putExtras(extras);
-                    finish();
-                    startActivity(intent);
-                }
                 //overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
 
@@ -132,9 +100,9 @@ public class ProjectsViewActivity extends AppCompatActivity {
         }));
     }
 
-    public void getListOfProjects(int userID){
-        String URL_PROJECTS = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/projects/user/" + userID;
-        final String  _TAG = "LIST OF PROJECTS: ";
+    public void getListOfFarms(int userID){
+        String URL_PROJECTS = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/farms/user/" + userID;
+        final String  _TAG = "LIST OF FARMS: ";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL_PROJECTS,
@@ -144,17 +112,39 @@ public class ProjectsViewActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         try {
                             for(int i=0;i<response.length();i++){
-                                JSONObject projObj = response.getJSONObject(i);
+                                JSONObject farmObj = response.getJSONObject(i);
 
-                                int projectId = projObj.getInt("id");
-                                int userid = projObj.getInt("userId");
-                                int farmId = projObj.getInt("farmId");
-                                String projectName = projObj.getString("projectName");
-                                String description = projObj.getString("description");
+                                int farmId = farmObj.getInt("id");
 
-                                Project project = new Project(projectId,userid,farmId, projectName, description);
+                                String description = farmObj.getString("description");
+                                String farmName = farmObj.getString("farmName");
+                                String location = farmObj.getString("location");
+                                int userId = farmObj.getInt("userId");
+                                Date dateCreated = (Date)farmObj.get("dateCreated");
+                                int size = farmObj.getInt("size");
 
-                                projectList.add(project);
+                                Farm farm = new Farm();
+
+                                farm.setLocation(location);
+                                farm.setSize(size);
+                                farm.setFarmName(farmName);
+                                farm.setDateCreated(dateCreated);
+                                farm.setDescription(description);
+                                farm.setUserId(userId);
+
+                                farmsList.add(farm);
+
+                                /*
+                                    * {
+                                        "id": 1,
+                                        "description": "Gachuriri Farm",
+                                        "farmName": "Gachuriri",
+                                        "location": "Embu South, Gachuriri",
+                                        "userId": 1,
+                                        "dateCreated": "2018-07-16T00:00:00.000+0000",
+                                        "size": 10
+                                    }
+                                * */
 
                             }
                         } catch (JSONException e) {
@@ -175,4 +165,6 @@ public class ProjectsViewActivity extends AppCompatActivity {
         // Adding JsonObject request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
     }
+
+
 }
