@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -19,7 +20,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.activity.AddFarmActivity;
+import com.vogella.android.myapplication.activity.AddProjectActivity;
+import com.vogella.android.myapplication.activity.ExpenseActivity;
 import com.vogella.android.myapplication.activity.ExpenseViewActivity;
+import com.vogella.android.myapplication.activity.IncomeActivity;
 import com.vogella.android.myapplication.activity.IncomeViewActivity;
 import com.vogella.android.myapplication.adapter.projectsAdapter;
 import com.vogella.android.myapplication.model.Project;
@@ -56,6 +61,8 @@ public class ProjectsSettingsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     //--------------------------------------------------------------------
+
+    private Button btnAddProject, btnAddFarm;
 
     private List<Project> projectList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -94,9 +101,28 @@ public class ProjectsSettingsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View rootView =   inflater.inflate(R.layout.fragment_projects_settings, container, false);
 
-        //recyclerView = (RecyclerView) findViewById(R.id.projects_recycler_view);
+        btnAddProject = (Button)rootView.findViewById(R.id.addproject);
+        btnAddFarm = (Button)rootView.findViewById(R.id.addfarm);
+
+        btnAddProject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), AddProjectActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnAddFarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), AddFarmActivity.class);
+                startActivity(i);
+            }
+        });
+
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_projects_setting_view);
 
         mAdapter = new projectsAdapter(projectList);
@@ -105,9 +131,10 @@ public class ProjectsSettingsFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        //getExpenseList();
+
         int userID =  1;
         getListOfProjects(userID);
+
         return rootView;
         //return inflater.inflate(R.layout.fragment_projects_settings, container, false);
     }

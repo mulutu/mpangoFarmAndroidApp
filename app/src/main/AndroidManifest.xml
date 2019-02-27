@@ -46,7 +46,9 @@
         <activity android:name=".activity.CalendarActivity" />
         <activity android:name=".activity.IncomeViewActivity" />
         <activity android:name=".activity.ProjectsViewActivity" />
-        <activity android:name=".activity.ExpenseViewActivity"></activity>
+        <activity android:name=".activity.ExpenseViewActivity" />
+        <activity android:name=".activity.AddProjectActivity" />
+        <activity android:name=".activity.AddFarmActivity"></activity>
     </application>
 
 </manifest>

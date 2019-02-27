@@ -1,14 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragment.ProjectsSettingsFragment">
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp">
+
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:padding="10dp">
+
+
+            <TableRow
+                android:layout_width="368dp"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/addproject"
+                    android:layout_width="173dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:lineSpacingExtra="10sp"
+                    android:text="+  P R O J E C T" />
+
+                <Button
+                    android:id="@+id/addfarm"
+                    android:layout_width="178dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:lineSpacingExtra="10sp"
+                    android:text="+  F A R M"
+                    android:textAlignment="center" />
+
+            </TableRow>
+
+        </TableLayout>
+
+    </LinearLayout>
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:id="@+id/your_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttons"
+        android:text="Ｓｅｎｄ ｕｓ" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_projects_setting_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/your_id"
+        android:numColumns="2"
         android:scrollbars="vertical" />
 
-</FrameLayout>
+
+
+</RelativeLayout>

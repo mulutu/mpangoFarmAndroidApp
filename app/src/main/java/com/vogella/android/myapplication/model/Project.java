@@ -23,8 +23,6 @@ public class Project implements Serializable {
         //id = 0;
     }
 
-
-
     public Project(int userId, int farmId, String projectName, String description) {
         UserId = userId;
         FarmId = farmId;
@@ -59,7 +57,6 @@ public class Project implements Serializable {
     public void setTotalIncomes(BigDecimal totalIncomes) {
         this.totalIncomes = totalIncomes;
     }
-
 
     public String getUnitDescription() {
         return unitDescription;
@@ -143,7 +140,13 @@ public class Project implements Serializable {
 
     @Override
     public String toString() {
-        return "Expense [id=" + id + ", UserId=" + UserId + ", ProjectName=" + ProjectName + ", DateCreated="
-                + DateCreated + ", Description=" + Description + "]";
+        return "Project " +
+                "[" +
+                    "id=" + id + ", " +
+                    "UserId=" + UserId + ", " +
+                    "ProjectName=" + ProjectName + ", " +
+                    "DateCreated=" + DateCreated + ", " +
+                    "Description=" + Description +
+                "]";
     }
 }

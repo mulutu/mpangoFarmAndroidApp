@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddFarmActivity">
+
+    <TableLayout
+        android:id="@+id/tableLayoutIncome"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="18sp"
+                    android:text="New Farm"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/farmName"
+                android:layout_width="85dp"
+                android:layout_height="32dp"
+                android:padding="5dp"
+                android:text="Name"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/txtFarmName"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:background="@drawable/spinner_border"
+                android:ems="10"
+                android:hint="Farm Name"
+                android:inputType="text"
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/txtExpNotes"
+                android:layout_width="85dp"
+                android:layout_height="32dp"
+                android:contentDescription="expenseDesc"
+                android:padding="5dp"
+                android:text="Description"
+                android:textAlignment="center"
+                tools:text="Description" />
+
+            <EditText
+                android:id="@+id/farmNotes"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:background="@drawable/spinner_border"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="Description..."
+                android:inputType="text|textMultiLine"
+                android:paddingLeft="5dp"
+                android:textAlignment="center" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/btnSubmit"
+                android:layout_width="85dp"
+                android:layout_height="32dp"
+                android:contentDescription="incomeAmount"
+                android:padding="5dp"
+                android:text=""
+                android:textAlignment="center"
+                tools:text="" />
+
+            <Button
+                android:id="@+id/btnSubmitExpense"
+                android:layout_width="168dp"
+                android:layout_height="48dp"
+                android:text="Submit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Submit" />
+
+
+        </TableRow>
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>
