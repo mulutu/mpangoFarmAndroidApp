@@ -14,11 +14,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.model.Income;
 import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.util.AppSingleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 
 public class AddProjectActivity extends AppCompatActivity {
 
@@ -49,6 +52,33 @@ public class AddProjectActivity extends AppCompatActivity {
                 submitProject();
             }
         });
+
+        Intent intent = getIntent();
+
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            Bundle extras = intent.getExtras();
+            if (extras.get("transactionType").equals("ADD_PROJECT")) {
+                if (getIntent().getSerializableExtra("project") != null) {
+                    project = (Project) getIntent().getSerializableExtra("project");
+                    populateData(project);
+                }
+            }
+        }
+
+    }
+
+    private void populateData(Project project){
+        _projectName.setText( project.getProjectName());
+        _farmName.setText( project.getFarmName());
+        _farmName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectFarm();
+            }
+        });
+        _projectDesc.setText(project.getDescription());
+
+        //Log.d(_TAG, "income.getProjectName(): " + income.getProjectName());
     }
 
     public void selectFarm(){

@@ -8,6 +8,7 @@ public class Project implements Serializable {
     private int id;
     private int UserId;
     private int FarmId;
+    private String farmName;
     private String ProjectName;
     private Date DateCreated;
     private int expectedOutput;
@@ -40,6 +41,14 @@ public class Project implements Serializable {
         Description = description;
 
         DateCreated = new Date();
+    }
+
+    public String getFarmName() {
+        return farmName;
+    }
+
+    public void setFarmName(String farmName) {
+        this.farmName = farmName;
     }
 
     public BigDecimal getTotalExpenses() {

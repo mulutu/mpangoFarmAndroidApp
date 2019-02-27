@@ -109,7 +109,7 @@
                 tools:text="" />
 
             <Button
-                android:id="@+id/btnSubmitExpense"
+                android:id="@+id/btnSubmitFarm"
                 android:layout_width="168dp"
                 android:layout_height="48dp"
                 android:text="Submit"

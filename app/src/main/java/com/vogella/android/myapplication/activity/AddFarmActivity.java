@@ -32,9 +32,9 @@ public class AddFarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_farm);
 
-        _farmName = (EditText) findViewById(R.id.projectName_add_project);
-        _farmDesc = (EditText) findViewById(R.id.projectDesc_add_project);
-        _btnSubmitFarm = (Button) findViewById(R.id.btnSubmitProject);
+        _farmName = (EditText) findViewById(R.id.txtFarmName);
+        _farmDesc = (EditText) findViewById(R.id.farmNotes);
+        _btnSubmitFarm = (Button) findViewById(R.id.btnSubmitFarm);
         _btnSubmitFarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

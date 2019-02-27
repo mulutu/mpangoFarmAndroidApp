@@ -29,6 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -81,6 +83,7 @@ public class FarmsViewActivity extends AppCompatActivity {
                 Farm farm = farmsList.get(position);
 
                 _project.setFarmId(farm.getId());
+                _project.setFarmName(farm.getFarmName());
 
                 Intent intent = new Intent(getApplicationContext(), AddProjectActivity.class);
 
@@ -120,7 +123,8 @@ public class FarmsViewActivity extends AppCompatActivity {
                                 String farmName = farmObj.getString("farmName");
                                 String location = farmObj.getString("location");
                                 int userId = farmObj.getInt("userId");
-                                Date dateCreated = (Date)farmObj.get("dateCreated");
+                                String dateCreatedStr = farmObj.getString("dateCreated");
+
                                 int size = farmObj.getInt("size");
 
                                 Farm farm = new Farm();
@@ -128,9 +132,15 @@ public class FarmsViewActivity extends AppCompatActivity {
                                 farm.setLocation(location);
                                 farm.setSize(size);
                                 farm.setFarmName(farmName);
-                                farm.setDateCreated(dateCreated);
                                 farm.setDescription(description);
                                 farm.setUserId(userId);
+
+                                try {
+                                    Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreatedStr);
+                                    farm.setDateCreated(date1);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
 
                                 farmsList.add(farm);
 
