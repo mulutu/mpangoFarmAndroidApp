@@ -1,32 +1,55 @@
 package com.vogella.android.myapplication.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Transaction implements Comparable<Transaction> {
+public class Transaction implements Comparable<Transaction> , Serializable {
 
-    private int transactionID;
-    private BigDecimal transactionAmount;
+    private int id;
+    private int accountId;
+    private BigDecimal amount;
+    private int customerSupplierId;
     private Date transactionDate;
-    private String transactionDescription;
+    private int transactionTypeId;
     private String transactionType;
+    private String description;
+    private int projectId;
+    private String projectName;
+    private int userId;
+    private String farmName;
+    private String accountName;
 
-    public Transaction() {}
-
-    public int getTransactionID() {
-        return transactionID;
+    public int getId() {
+        return id;
     }
 
-    public void setTransactionID(int transactionID) {
-        this.transactionID = transactionID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public BigDecimal getTransactionAmount() {
-        return transactionAmount;
+    public int getAccountId() {
+        return accountId;
     }
 
-    public void setTransactionAmount(BigDecimal transactionAmount) {
-        this.transactionAmount = transactionAmount;
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public int getCustomerSupplierId() {
+        return customerSupplierId;
+    }
+
+    public void setCustomerSupplierId(int customerSupplierId) {
+        this.customerSupplierId = customerSupplierId;
     }
 
     public Date getTransactionDate() {
@@ -37,12 +60,12 @@ public class Transaction implements Comparable<Transaction> {
         this.transactionDate = transactionDate;
     }
 
-    public String getTransactionDescription() {
-        return transactionDescription;
+    public int getTransactionTypeId() {
+        return transactionTypeId;
     }
 
-    public void setTransactionDescription(String transactionDescription) {
-        this.transactionDescription = transactionDescription;
+    public void setTransactionTypeId(int transactionTypeId) {
+        this.transactionTypeId = transactionTypeId;
     }
 
     public String getTransactionType() {
@@ -51,6 +74,54 @@ public class Transaction implements Comparable<Transaction> {
 
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getFarmName() {
+        return farmName;
+    }
+
+    public void setFarmName(String farmName) {
+        this.farmName = farmName;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     @Override

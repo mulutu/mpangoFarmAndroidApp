@@ -18,6 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.model.Expense;
 import com.vogella.android.myapplication.model.Income;
+import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AppSingleton;
 
 import org.json.JSONException;
@@ -35,13 +36,12 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
     int transactionID = 0;
 
-    Expense expense  = new Expense();
+    Transaction transaction  = new Transaction();
 
     DatePickerDialog datePickerDialog;
 
     private EditText _amount;
     private EditText _date;
-    private EditText _supplier;
     private EditText _project;
     private EditText _account;
     private EditText _notes;
@@ -54,7 +54,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
         _amount = (EditText) findViewById(R.id.amount_expense);
         _date = (EditText) findViewById(R.id.date_expense);
-        _supplier = (EditText) findViewById(R.id.supplier_expense);
         _project = (EditText) findViewById(R.id.project_expense);
         _account = (EditText) findViewById(R.id.account_expense);
         _notes = (EditText) findViewById(R.id.notes_expense);
@@ -69,9 +68,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
                 getTransactionDetails(transactionID);
             }
 
-            if ( getIntent().getSerializableExtra("expense") != null ) {
-                expense = (Expense) getIntent().getSerializableExtra("expense");
-                populateData(expense);
+            if ( getIntent().getSerializableExtra("transaction") != null ) {
+                transaction = (Transaction) getIntent().getSerializableExtra("transaction");
+                populateData(transaction);
             }
         }
 
@@ -101,39 +100,17 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
 
 
-    public Expense getExpense(){
-
+    public Transaction getTransaction(){
         BigDecimal amt_ = new BigDecimal(_amount.getText().toString());
-        expense.setAmount(amt_);
-
-        expense.setNotes(_notes.getText().toString());
-
-        /*
-        Income tempIncome = new Income();
-        tempIncome.setId(income.getId());
-        tempIncome.setUserId(income.getUserId());
-        //Date incomeDate = stringToDate(_date.getText().toString());
-        tempIncome.setIncomeDate(income.getIncomeDate());
-        tempIncome.setCustomerId(income.getCustomerId());
-        tempIncome.setCustomer(income.getCustomer());
-        tempIncome.setPaymentMethodId(income.getPaymentMethodId());
-        tempIncome.setPaymentMethod(income.getPaymentMethod());
-        tempIncome.setAccountId(income.getAccountId());
-        tempIncome.setAccount(_account.getText().toString());
-        tempIncome.setProjectId(income.getProjectId());
-        tempIncome.setProjectName(income.getProjectName());
-        tempIncome.setFarmName(income.getFarmName());
-        */
-
-        return expense;
+        transaction.setAmount(amt_);
+        transaction.setDescription(_notes.getText().toString());
+        return transaction;
     }
 
-    private void populateData(Expense expense){
-
-        _amount.setText( expense.getAmount().toString());
-
+    private void populateData(Transaction transaction){
+        _amount.setText( transaction.getAmount().toString());
         SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
-        String dateStr = format2.format(expense.getExpenseDate());
+        String dateStr = format2.format(transaction.getTransactionDate());
         _date.setText(dateStr);
         _date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,27 +118,21 @@ public class ExpenseViewActivity extends AppCompatActivity {
                 displayDatePicker();
             }
         });
-
-        _project.setText(expense.getProjectName());
+        _project.setText(transaction.getProjectName());
         _project.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectProject();
             }
         });
-
-        _supplier.setText(expense.getSupplier());
-
-        _account.setText(expense.getAccount());
-
-        _notes.setText(expense.getNotes());
-
-        Log.d(_TAG, "income.getProjectName(): " + expense.getProjectName());
+        _account.setText(transaction.getAccountName());
+        _notes.setText(transaction.getDescription());
+        Log.d(_TAG, "income.getProjectName(): " + transaction.getProjectName());
     }
 
     public void selectProject(){
         Bundle extras = new Bundle();
-        extras.putSerializable("expense", getExpense());
+        extras.putSerializable("transaction", getTransaction());
         extras.putString("transactionType", "EXPENSE");
 
         Intent intent = new Intent(getApplicationContext(), ProjectsViewActivity.class);
@@ -175,7 +146,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
     public void displayDatePicker(){
         Bundle extras = new Bundle();
-        extras.putSerializable("expense", getExpense());
+        extras.putSerializable("transaction", getTransaction());
         extras.putString("transactionType", "EXPENSE");
 
         Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
@@ -186,7 +157,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
     }
 
     private void getTransactionDetails( int trxID){
-        String URL_ = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/expense/" + trxID;
+        String URL_ = "http://45.56.73.81:8084/Mpango/api/v1/transactions/" + trxID;
 
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -197,48 +168,35 @@ public class ExpenseViewActivity extends AppCompatActivity {
                     public void onResponse(JSONObject  response) {
                         if (response != null ) {
                             try {
-                                String dateStr = response.getString("expenseDate"); // "expenseDate": "30-07-2018",
+                                transaction.setId(response.getInt("id"));
+                                transaction.setAccountId(response.getInt("accountId"));
+
+                                BigDecimal amount_ = new BigDecimal(response.getString("amount"));
+                                transaction.setAmount(amount_);
+
+                                String dateStr = response.getString("transactionDate"); // "expenseDate": "30-07-2018",
                                 try {
                                     Date transDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
-                                    expense.setExpenseDate(transDate);
+                                    transaction.setTransactionDate(transDate);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
 
-                                expense.setId(response.getInt("id"));
-
-                                BigDecimal amount_ = new BigDecimal(response.getString("amount"));
-                                expense.setAmount(amount_);
-
-                                expense.setSupplierId(response.getInt("supplierId"));
-                                expense.setSupplier(response.getString("supplier"));
-
-                                expense.setFarmName(response.getString("farmName"));
-
-                                expense.setPaymentMethodId(response.getInt("paymentMethodId"));
-                                expense.setPaymentMethod(response.getString("paymentMethod"));
-
-                                expense.setProjectId(response.getInt("projectId"));
-                                expense.setProjectName(response.getString("projectName"));
-
-                                Log.d(_TAG, "PROJECT-NAME: " + response.getInt("projectId") + " -> " + response.getString("projectName"));
-
-                                expense.setNotes(response.getString("notes"));
-
-                                expense.setAccountId(response.getInt("accountId"));
-                                expense.setAccount(response.getString("account"));
-
-                                //expense.setSupplierId(response.getInt("supplierId"));
-                                //expense.setSupplier(response.getString("supplier"));
-
-                                expense.setUserId(response.getInt("userId"));
+                                transaction.setTransactionTypeId(response.getInt("transactionTypeId"));
+                                transaction.setTransactionType(response.getString("transactionType"));
+                                transaction.setDescription(response.getString("description"));
+                                transaction.setProjectId(response.getInt("projectId"));
+                                transaction.setProjectName(response.getString("projectName"));
+                                transaction.setUserId(response.getInt("userId"));
+                                transaction.setFarmName(response.getString("farmName"));
+                                transaction.setAccountName(response.getString("accountName"));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 Log.d(_TAG, e.getMessage());
                             }
 
-                            populateData(expense);
+                            populateData(transaction);
 
                         }else{}
                     }
@@ -255,20 +213,18 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
 
     public void submitExpense() {
-        String URL_ADD_EXPENSE = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/expense/";
+        String URL_ADD_EXPENSE = "http://45.56.73.81:8084/Mpango/api/v1/transaction";
         //_btnSubmitExpense.setEnabled(false);
 
-        Expense expenseObjPosting =  getExpense();
+        Transaction expenseObjPosting =  getTransaction();
 
         JSONObject postparams = new JSONObject();
         try {
-            postparams.put("expenseDate", dateToString(expenseObjPosting.getExpenseDate())); //sdjf hsdjksdfhjhsdfj
+            postparams.put("expenseDate", dateToString(expenseObjPosting.getTransactionDate())); //sdjf hsdjksdfhjhsdfj
             postparams.put("amount", expenseObjPosting.getAmount());
-            postparams.put("supplierId", expenseObjPosting.getSupplierId());
-            postparams.put("paymentMethodId", expenseObjPosting.getPaymentMethodId());
             postparams.put("accountId", expenseObjPosting.getAccountId());
             postparams.put("projectId", expenseObjPosting.getProjectId());
-            postparams.put("notes", expenseObjPosting.getNotes());
+            postparams.put("notes", expenseObjPosting.getDescription());
             postparams.put("userId", expenseObjPosting.getUserId());
             postparams.put("id", expenseObjPosting.getId());
         } catch (JSONException e) {

@@ -65,7 +65,7 @@ public class AddFarmActivity extends AppCompatActivity {
 
     private void submitFarm(){
 
-        String URL = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/farm/create/";
+        String URL = "http://45.56.73.81:8084/Mpango/api/v1/farms";
 
         farm = getFarm();
 
@@ -81,7 +81,7 @@ public class AddFarmActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String  REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
+        String  REQUEST_TAG = "com.mpango.android.volleyJsonObjectRequest";
 
         final ProgressDialog progressDialog = new ProgressDialog(AddFarmActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);

@@ -116,7 +116,7 @@ public class AddProjectActivity extends AppCompatActivity {
 
     private void submitProject(){
 
-        String URL = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/project/create/";
+        String URL = "http://45.56.73.81:8084/Mpango/api/v1/projects";
 
         project = getProject();
 
