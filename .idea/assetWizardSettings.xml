@@ -19,8 +19,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\jamulutu\Desktop\drop.png" />
-                                      <entry key="outputName" value="drop" />
+                                      <entry key="imageAsset" value="F:\JAVA_PROJECTS\mpangoFarmApp\app\src\main\res\drawable\ic_arrow_forward_black_48dp.png" />
+                                      <entry key="outputName" value="ic_arrow_forward_black_48dp" />
                                     </map>
                                   </option>
                                 </PersistentState>

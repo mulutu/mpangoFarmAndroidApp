@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -35,14 +36,44 @@ public class PagerFragment extends Fragment {
 
     ViewPager pager;
 
+    private ImageButton leftNav, rightNav;
+
     ArrayList<Project> projects = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View result=inflater.inflate(R.layout.pager, container, false);
+        View result = inflater.inflate(R.layout.pager, container, false);
         pager=(ViewPager)result.findViewById(R.id.pager);
 
         getListOfProjects(1);
+
+
+        //viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        leftNav = (ImageButton) result.findViewById(R.id.left_nav);
+        rightNav = (ImageButton) result.findViewById(R.id.right_nav);
+        // Images left navigation
+        leftNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int tab = pager.getCurrentItem();
+                if (tab > 0) {
+                    tab--;
+                    pager.setCurrentItem(tab);
+                } else if (tab == 0) {
+                    pager.setCurrentItem(tab);
+                }
+            }
+        });
+        // Images right navigatin
+        rightNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int tab = pager.getCurrentItem();
+                tab++;
+                pager.setCurrentItem(tab);
+            }
+        });
+
 
         //Button button = (Button) result.findViewById(R.id.first);
 

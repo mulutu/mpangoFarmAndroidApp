@@ -4,8 +4,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/iron"
-    android:gravity="center"
-    android:orientation="vertical">
+
+    android:orientation="vertical"
+    tools:context=".fragment.ProjectsSettingsFragment">
+
+    <LinearLayout
+        android:id="@+id/trxTopButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp">
+
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:padding="10dp">
+
+
+            <TableRow
+                android:layout_width="368dp"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/addIncomeTransactions"
+                    android:layout_width="173dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:lineSpacingExtra="10sp"
+                    android:text="+  I N C O M E" />
+
+                <Button
+                    android:id="@+id/addExpenseTransactions"
+                    android:layout_width="178dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:lineSpacingExtra="10sp"
+                    android:text="+  E X P E N S E"
+                    android:textAlignment="center" />
+
+            </TableRow>
+
+        </TableLayout>
+
+    </LinearLayout>
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:id="@+id/your_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trxTopButtons"
+        android:text="Ｓｅｎｄ ｕｓ" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"

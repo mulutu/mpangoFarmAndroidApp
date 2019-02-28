@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -17,7 +18,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.vogella.android.myapplication.activity.AddFarmActivity;
+import com.vogella.android.myapplication.activity.AddProjectActivity;
+import com.vogella.android.myapplication.activity.ExpenseActivity;
 import com.vogella.android.myapplication.activity.ExpenseViewActivity;
+import com.vogella.android.myapplication.activity.IncomeActivity;
 import com.vogella.android.myapplication.activity.IncomeViewActivity;
 import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
@@ -53,20 +58,39 @@ public class TransactionsFragment extends Fragment {
     final String  TAG = "REQUEST_QUEUE";
     private static final int REQUEST_CALENDAR = 0;
 
+    private Button btnAddIncome, btnAddExpense;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getExpenseList();
-        //getIncomeList();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView =   inflater.inflate(R.layout.fragment_transactions, container, false);
+
+        btnAddIncome = (Button)rootView.findViewById(R.id.addIncomeTransactions);
+        btnAddExpense = (Button)rootView.findViewById(R.id.addExpenseTransactions);
+
+        btnAddIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), IncomeActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnAddExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), ExpenseActivity.class);
+                startActivity(i);
+            }
+        });
+
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
-        //getExpenseList();
         getTransactionList();
         return rootView;
     }

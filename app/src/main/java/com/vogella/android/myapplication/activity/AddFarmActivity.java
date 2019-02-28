@@ -102,7 +102,7 @@ public class AddFarmActivity extends AppCompatActivity {
                             if(status == 0 && message.equalsIgnoreCase("CREATED")){
                                 //progressDialog.hide();
                                 progressDialog.dismiss();
-                                Intent intent = new Intent(getApplicationContext(),AddProjectActivity.class);
+                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             }
