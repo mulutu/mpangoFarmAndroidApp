@@ -20,6 +20,8 @@ public class Transaction implements Comparable<Transaction> , Serializable {
     private String farmName;
     private String accountName;
 
+    public Transaction() {}
+
     public int getId() {
         return id;
     }

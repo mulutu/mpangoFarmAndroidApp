@@ -11,16 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.vogella.android.myapplication.activity.AddFarmActivity;
-import com.vogella.android.myapplication.activity.AddProjectActivity;
-import com.vogella.android.myapplication.activity.ExpenseActivity;
+import com.vogella.android.myapplication.activity.TransactionActivity;
 import com.vogella.android.myapplication.activity.ExpenseViewActivity;
 import com.vogella.android.myapplication.activity.IncomeActivity;
 import com.vogella.android.myapplication.activity.IncomeViewActivity;
@@ -83,7 +80,7 @@ public class TransactionsFragment extends Fragment {
         btnAddExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), ExpenseActivity.class);
+                Intent i = new Intent(getActivity(), TransactionActivity.class);
                 startActivity(i);
             }
         });

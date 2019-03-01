@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ExpenseActivity">
+    tools:context=".activity.TransactionActivity">
 
     <TableLayout
         android:id="@+id/tableLayoutIncome"
@@ -53,7 +53,7 @@
                 tools:text="Amount" />
 
             <EditText
-                android:id="@+id/expenseAmount"
+                android:id="@+id/trxAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
@@ -71,7 +71,7 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/txtExpenseDate"
+                android:id="@+id/trxDate"
                 android:layout_width="85dp"
                 android:layout_height="32dp"
                 android:contentDescription="expenseDate"
@@ -94,50 +94,7 @@
 
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp">
 
-            <TextView
-                android:id="@+id/txtSupplier"
-                android:layout_width="113dp"
-                android:layout_height="32dp"
-                android:padding="5dp"
-                android:text="Supplier"
-                android:textAlignment="center"
-                tools:text="Supplier" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="3dp"
-                android:layout_weight=".28"
-                android:background="@drawable/spinner_border"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/Supplier"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:paddingLeft="5dp"
-                    android:spinnerMode="dropdown" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:src="@drawable/drop" />
-
-            </RelativeLayout>
-        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
@@ -161,7 +118,7 @@
                 android:orientation="horizontal">
 
                 <Spinner
-                    android:id="@+id/txtProjectID"
+                    android:id="@+id/trxProjectID"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:layout_centerVertical="true"
@@ -204,7 +161,7 @@
                 android:orientation="horizontal">
 
                 <Spinner
-                    android:id="@+id/txtAccountID"
+                    android:id="@+id/trxAccountID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -241,7 +198,7 @@
                 tools:text="Description" />
 
             <EditText
-                android:id="@+id/expenseNotes"
+                android:id="@+id/trxDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:background="@drawable/spinner_border"
@@ -271,7 +228,7 @@
                 tools:text="" />
 
             <Button
-                android:id="@+id/btnSubmitExpense"
+                android:id="@+id/btnSubmitTransaction"
                 android:layout_width="168dp"
                 android:layout_height="48dp"
                 android:text="Submit"

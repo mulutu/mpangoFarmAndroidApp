@@ -41,7 +41,7 @@
         <activity
             android:name=".activity.SignupActivity"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".activity.ExpenseActivity" />
+        <activity android:name=".activity.TransactionActivity" />
         <activity android:name=".activity.IncomeActivity" />
         <activity android:name=".activity.CalendarActivity" />
         <activity android:name=".activity.IncomeViewActivity" />

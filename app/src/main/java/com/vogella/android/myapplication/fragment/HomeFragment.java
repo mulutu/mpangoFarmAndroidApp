@@ -5,15 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.vogella.android.myapplication.R;
-import com.vogella.android.myapplication.activity.ExpenseActivity;
+import com.vogella.android.myapplication.activity.TransactionActivity;
 import com.vogella.android.myapplication.activity.IncomeActivity;
 
 import java.util.ArrayList;
@@ -63,7 +61,7 @@ public class HomeFragment extends Fragment  {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), ExpenseActivity.class);
+                Intent i = new Intent(getActivity(), TransactionActivity.class);
                 startActivity(i);
 
                 //FragmentManager fm = myContext.getSupportFragmentManager();

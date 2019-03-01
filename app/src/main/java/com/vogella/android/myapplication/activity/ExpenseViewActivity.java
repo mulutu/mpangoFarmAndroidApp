@@ -174,7 +174,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
                                 BigDecimal amount_ = new BigDecimal(response.getString("amount"));
                                 transaction.setAmount(amount_);
 
-                                String dateStr = response.getString("transactionDate"); // "expenseDate": "30-07-2018",
+                                String dateStr = response.getString("transactionDate");
                                 try {
                                     Date transDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
                                     transaction.setTransactionDate(transDate);
@@ -220,11 +220,11 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
         JSONObject postparams = new JSONObject();
         try {
-            postparams.put("expenseDate", dateToString(expenseObjPosting.getTransactionDate())); //sdjf hsdjksdfhjhsdfj
+            postparams.put("transactionDate", dateToString(expenseObjPosting.getTransactionDate())); //sdjf hsdjksdfhjhsdfj
             postparams.put("amount", expenseObjPosting.getAmount());
             postparams.put("accountId", expenseObjPosting.getAccountId());
             postparams.put("projectId", expenseObjPosting.getProjectId());
-            postparams.put("notes", expenseObjPosting.getDescription());
+            postparams.put("description", expenseObjPosting.getDescription());
             postparams.put("userId", expenseObjPosting.getUserId());
             postparams.put("id", expenseObjPosting.getId());
         } catch (JSONException e) {
