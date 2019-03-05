@@ -104,7 +104,7 @@ public class FarmsViewActivity extends AppCompatActivity {
     }
 
     public void getListOfFarms(int userID){
-        String URL_PROJECTS = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/farms/user/" + userID;
+        String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/" + userID + "/farms";
         final String  _TAG = "LIST OF FARMS: ";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
