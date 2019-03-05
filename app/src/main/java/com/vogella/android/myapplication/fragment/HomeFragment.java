@@ -12,7 +12,7 @@ import android.widget.Button;
 
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.TransactionActivity;
-import com.vogella.android.myapplication.activity.IncomeActivity;
+import com.vogella.android.myapplication.model.Transaction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,32 +58,33 @@ public class HomeFragment extends Fragment  {
         btn1= (Button)rootView.findViewById(R.id.expense);
         btn2= (Button)rootView.findViewById(R.id.income);
 
+        final Transaction transaction =  new Transaction();
+
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), TransactionActivity.class);
-                startActivity(i);
+                Bundle extras = new Bundle();
+                extras.putString("Process", "NEW_TRANSACTION" );
 
-                //FragmentManager fm = myContext.getSupportFragmentManager();
-                //for(int k = 0; k < fm.getBackStackEntryCount(); ++k) {
-                    //fm.popBackStack();
-                //}
-
-
+                transaction.setTransactionTypeId(1);
+                extras.putSerializable("Transaction", transaction );
+                Intent intent = new Intent(getActivity(), TransactionActivity.class);
+                intent.putExtras(extras);
+                startActivity(intent);
             }
         });
 
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), IncomeActivity.class);
-                startActivity(i);
+                Bundle extras = new Bundle();
+                extras.putString("Process", "NEW_TRANSACTION" );
 
-                //FragmentTransaction transaction = myContext.getSupportFragmentManager().beginTransaction();
-                //transaction.remove(new PagerFragment());
-                //transaction.commit();
-
-
+                transaction.setTransactionTypeId(0);
+                extras.putSerializable("Transaction", transaction );
+                Intent intent = new Intent(getActivity(), TransactionActivity.class);
+                intent.putExtras(extras);
+                startActivity(intent);
             }
         });
 

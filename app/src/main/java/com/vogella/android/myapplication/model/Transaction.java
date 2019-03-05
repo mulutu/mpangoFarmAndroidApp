@@ -9,7 +9,6 @@ public class Transaction implements Comparable<Transaction> , Serializable {
     private int id;
     private int accountId;
     private BigDecimal amount;
-    private int customerSupplierId;
     private Date transactionDate;
     private int transactionTypeId;
     private String transactionType;
@@ -17,10 +16,19 @@ public class Transaction implements Comparable<Transaction> , Serializable {
     private int projectId;
     private String projectName;
     private int userId;
+    private int farmId;
     private String farmName;
     private String accountName;
 
     public Transaction() {}
+
+    public int getFarmId() {
+        return farmId;
+    }
+
+    public void setFarmId(int farmId) {
+        this.farmId = farmId;
+    }
 
     public int getId() {
         return id;
@@ -44,14 +52,6 @@ public class Transaction implements Comparable<Transaction> , Serializable {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public int getCustomerSupplierId() {
-        return customerSupplierId;
-    }
-
-    public void setCustomerSupplierId(int customerSupplierId) {
-        this.customerSupplierId = customerSupplierId;
     }
 
     public Date getTransactionDate() {

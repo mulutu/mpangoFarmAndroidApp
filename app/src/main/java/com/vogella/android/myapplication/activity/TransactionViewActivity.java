@@ -7,50 +7,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
-import android.widget.AdapterView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.vogella.android.myapplication.model.Income;
+import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AppSingleton;
-import com.vogella.android.myapplication.R;
 
-import android.widget.AdapterView.OnItemSelectedListener;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+public class TransactionViewActivity extends AppCompatActivity {
 
-
-public class TransactionActivity extends AppCompatActivity{
-
-    private static final String TAG = "TransactionActivity";
-
-    private int userID = 1;
-    private static final int REQUEST_CALENDAR = 0;
+    final String  _TAG = "INCOMEVEVIEW: ";
+    final String  TAG = "REQUEST_QUEUE";
 
     private Transaction transaction;
 
@@ -61,13 +41,10 @@ public class TransactionActivity extends AppCompatActivity{
     private EditText _description;
     private Button _btnSubmitTransaction;
 
-    private String process =  "";
-    private String transactionType =  "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction);
+        setContentView(R.layout.activity_transaction_view);
 
         _transactionAmount = (EditText) findViewById(R.id.trxAmount);
         _transactionDate = (EditText) findViewById(R.id.trxDate);
@@ -84,25 +61,38 @@ public class TransactionActivity extends AppCompatActivity{
                     transaction = (Transaction) getIntent().getSerializableExtra("Transaction");
                     populateData(transaction);
                 }
-                if(extras.get("Process").equals("NEW_TRANSACTION")){
-                    process = "NEW_TRANSACTION";
-                }else if(extras.get("Process").equals("EDIT_TRANSACTION")){
-                    process = "EDIT_TRANSACTION";
-                }
             }
         }
-        _transactionDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayDatePicker();
-            }
-        });
+
         _btnSubmitTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitTransaction();
             }
         });
+    }
+
+    private Date stringToDate(String dateStr){
+        Date date = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            date = formatter.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    private String dateToString(Date date){
+        SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
+        return format2.format(date);
+    }
+
+    public Transaction getTransaction(){
+        BigDecimal amt_ = new BigDecimal(_transactionAmount.getText().toString());
+        transaction.setAmount(amt_);
+        transaction.setDescription(_description.getText().toString());
+        return transaction;
     }
 
     private void populateData(Transaction transaction){
@@ -125,18 +115,14 @@ public class TransactionActivity extends AppCompatActivity{
         });
         _accountName.setText(transaction.getAccountName());
         _description.setText(transaction.getDescription());
-    }
-
-    public Transaction getTransaction(){
-        BigDecimal amt_ = new BigDecimal(_transactionAmount.getText().toString());
-        transaction.setAmount(amt_);
-        transaction.setDescription(_description.getText().toString());
-        return transaction;
+        Log.d(_TAG, "income.getProjectName(): " + transaction.getProjectName());
     }
 
     public void selectProject(){
         Bundle extras = new Bundle();
-        extras.putSerializable("Transaction", getTransaction());
+        extras.putSerializable("transaction", getTransaction());
+        extras.putString("Process", "EDIT_TRANSACTION");
+
         Intent intent = new Intent(getApplicationContext(), ProjectsViewActivity.class);
         intent.putExtras(extras);
         startActivityForResult(intent, 0);
@@ -146,19 +132,14 @@ public class TransactionActivity extends AppCompatActivity{
 
     public void displayDatePicker(){
         Bundle extras = new Bundle();
-        extras.putSerializable("Transaction", getTransaction());
-        extras.putString("Process", "NEW_TRANSACTION");
+        extras.putSerializable("transaction", getTransaction());
+        extras.putString("Process", "EDIT_TRANSACTION");
 
         Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
         intent.putExtras(extras);
         startActivityForResult(intent, 0);
         finish();
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-    }
-
-    private String dateToString(Date date){
-        SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
-        return format2.format(date);
     }
 
     public void submitTransaction() {
@@ -184,7 +165,7 @@ public class TransactionActivity extends AppCompatActivity{
             e.printStackTrace();
         }
 
-        final ProgressDialog progressDialog = new ProgressDialog(TransactionActivity.this, R.style.AppTheme_Dark_Dialog);
+        final ProgressDialog progressDialog = new ProgressDialog(TransactionViewActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Posting...");
         progressDialog.show();
@@ -221,6 +202,4 @@ public class TransactionActivity extends AppCompatActivity{
         // Adding JsonObject request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,REQUEST_TAG);
     }
-
-
 }

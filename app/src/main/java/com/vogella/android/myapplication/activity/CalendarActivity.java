@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.CalendarView;
-import android.widget.EditText;
 
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.model.Expense;
 import com.vogella.android.myapplication.model.Income;
+import com.vogella.android.myapplication.model.Transaction;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,11 +17,8 @@ import java.util.Date;
 public class CalendarActivity extends AppCompatActivity  {
     CalendarView calendar;
 
-    private Income _income;
-
-    private Expense _expense;
-
-    private String trxType =  "";
+    private String process =  "";
+    private Transaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +27,13 @@ public class CalendarActivity extends AppCompatActivity  {
 
         if(getIntent()!=null && getIntent().getExtras()!=null){
             Bundle bundle = getIntent().getExtras();
-            if(bundle.get("transactionType").equals("EXPENSE")){
-                if(!bundle.getSerializable("expense").equals(null)){
-                    _expense = (Expense)bundle.getSerializable("expense");
-                    trxType = "EXPENSE";
-                }
-            }else if(bundle.get("transactionType").equals("INCOME")){
-                if(!bundle.getSerializable("income").equals(null)){
-                    _income = (Income)bundle.getSerializable("income");
-                    trxType = "INCOME";
-                }
+            if(!bundle.getSerializable("Transaction").equals(null)){
+                transaction = (Transaction)bundle.getSerializable("Transaction");
+            }
+            if(bundle.get("Process").equals("NEW_TRANSACTION")){
+                process = "NEW_TRANSACTION";
+            }else if(bundle.get("Process").equals("EDIT_TRANSACTION")){
+                process = "EDIT_TRANSACTION";
             }
         }
         initializeCalendar();
@@ -85,22 +79,16 @@ public class CalendarActivity extends AppCompatActivity  {
                 String dateStr = day + "-" + (month+1) + "-" + year;
                 Bundle extras = new Bundle();
                 Date strTrxDate = stringToDate(dateStr);
+                transaction.setTransactionDate(strTrxDate);
+                extras.putSerializable("Transaction", transaction);
 
-                if( trxType.equalsIgnoreCase("INCOME") ){
-                    _income.setIncomeDate(strTrxDate);
-
-                    extras.putSerializable("income", _income);
-
-                    Intent intent = new Intent(getApplicationContext(), IncomeViewActivity.class);
+                if( process.equalsIgnoreCase("NEW_TRANSACTION") ){
+                    Intent intent = new Intent(getApplicationContext(), TransactionActivity.class);
                     intent.putExtras(extras);
                     finish();
                     startActivity(intent);
-                }else if( trxType.equalsIgnoreCase("EXPENSE") ){
-                    _expense.setExpenseDate(strTrxDate);
-
-                    extras.putSerializable("expense", _expense);
-
-                    Intent intent = new Intent(getApplicationContext(), ExpenseViewActivity.class);
+                }else if( process.equalsIgnoreCase("EDIT_TRANSACTION") ){
+                    Intent intent = new Intent(getApplicationContext(), TransactionViewActivity.class);
                     intent.putExtras(extras);
                     finish();
                     startActivity(intent);

@@ -29,7 +29,10 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PagerFragment extends Fragment {
@@ -122,8 +125,8 @@ public class PagerFragment extends Fragment {
 
 
     public void getListOfProjects(int userID){
-        String URL_ACCOUNTS = "http://45.56.73.81:8084/MpangoFarmEngineApplication/api/financials/projects/user/" + userID;
-        final String  _TAG = "PROJECTS: ";
+        String URL_ACCOUNTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userID + "/projects";
+        final String  _TAG = "PROJECTS-LIST: ";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL_ACCOUNTS,
@@ -131,63 +134,71 @@ public class PagerFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-
-                        int projectId;
-                        String projectName = "";
-                        int farmId;
-                        String projectDesc = "";
-
-                        int expectedOutput = 0;
-                        int actualOutput = 0;
-
-                        //BigDecimal totalExpenses = new BigDecimal("0");
-                        //BigDecimal totalIncomes = new BigDecimal("0");
-
                         try {
                             for(int i=0;i<response.length();i++){
-                                JSONObject supplier = response.getJSONObject(i);
+                                JSONObject projObj = response.getJSONObject(i);
 
-                                projectId = supplier.getInt("id");
-                                projectName = supplier.getString("projectName");
-                                farmId = supplier.getInt("farmId");
-                                projectDesc = supplier.getString("description");
+                                int id = projObj.getInt("id");
+                                int expectedOutput = projObj.getInt("expectedOutput");
+                                int actualOutput = projObj.getInt("actualOutput");
+                                int unitId = projObj.getInt("unitId");
+                                String unitDescription = projObj.getString("unitDescription");
+                                String description = projObj.getString("description");
+                                int userId = projObj.getInt("userId");
+                                String projectName = projObj.getString("projectName");
+                                int farmId = projObj.getInt("farmId");
 
-                                expectedOutput = supplier.getInt("expectedOutput");
-                                actualOutput = supplier.getInt("actualOutput");
+                                String dateStr = projObj.getString("dateCreated"); // "expenseDate": "30-07-2018",
+                                Date dateCreated = null;
+                                try {
+                                    dateCreated = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
 
-                                String totalExpenses =  supplier.getString("totalExpeses");
-                                String totalIncomes = supplier.getString("totalIncomes");
+                                MathContext mc = MathContext.DECIMAL32;
+                                BigDecimal totalExpenses = new BigDecimal( projObj.getString("totalExpeses"), mc);
+                                BigDecimal totalIncomes = new BigDecimal( projObj.getString("totalIncomes"), mc);
 
                                 Project project = new Project();
-                                project.setId(projectId);
+                                project.setId(id);
+                                project.setExpectedOutput(expectedOutput);
+                                project.setActualOutput(actualOutput);
+                                project.setUnitId(unitId);
+
+                                project.setTotalExpenses(totalExpenses);
+                                project.setTotalIncomes(totalIncomes);
+
+                                project.setUnitDescription(unitDescription);
+                                project.setDescription(description);
+                                project.setUserId(userId);
                                 project.setProjectName(projectName);
                                 project.setFarmId(farmId);
-                                project.setDescription(projectDesc);
-                                project.setExpectedOutput(expectedOutput);
-                                project.setExpectedOutput(actualOutput);
+                                project.setDateCreated(dateCreated);
 
-                                MathContext mc = new MathContext(2); // 2 precision
-
-                                project.setTotalExpenses(new BigDecimal(totalExpenses, MathContext.DECIMAL64));
-                                project.setTotalIncomes(new BigDecimal(totalIncomes, MathContext.DECIMAL64));
-
-                                // Toast
-                                //Toast.makeText(getContext(),"PageFragment:-> totalExpenses" + totalExpenses.toString(), Toast.LENGTH_LONG).show();
-                                //Toast.makeText(getContext(),"PageFragment:-> totalIncomes" + totalIncomes.toString(), Toast.LENGTH_LONG).show();
+                                /*
+                                "id": 97,
+                                "expectedOutput": 1,
+                                "actualOutput": 1,
+                                "unitId": 1,
+                                "unitDescription": null,
+                                "transactions": null,
+                                "totalExpeses": null,
+                                "totalIncomes": null,
+                                "description": "fg hdfg hdfg hdf hdfg ",
+                                "userId": 1,
+                                "projectName": "fghfghf hdfgh dfg hdfgh",
+                                "farmId": 1,
+                                "dateCreated": "29-08-2018"
+                                */
 
                                 projects.add(project);
-
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(_TAG, e.getMessage());
                         }
-
                         pager.setAdapter(buildAdapter());
-
-
-
                     }
                 }, new Response.ErrorListener() {
             @Override

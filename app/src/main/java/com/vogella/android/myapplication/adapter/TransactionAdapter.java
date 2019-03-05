@@ -51,8 +51,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         Transaction transaction = transactionsList.get(position);
 
-        holder.transactionDesc.setText(transaction.getTransactionDescription());
-        holder.transactionAmount.setText("KES " + currencyFormat(transaction.getTransactionAmount().toString()));
+        holder.transactionDesc.setText(transaction.getDescription());
+        holder.transactionAmount.setText("KES " + currencyFormat(transaction.getAmount().toString()));
 
         String DATE_FORMAT = "dd-MM-yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
