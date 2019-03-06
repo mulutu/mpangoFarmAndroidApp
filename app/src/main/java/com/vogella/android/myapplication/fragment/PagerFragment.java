@@ -156,10 +156,10 @@ public class PagerFragment extends Fragment {
                                     e.printStackTrace();
                                 }
 
+
                                 MathContext mc = MathContext.DECIMAL32;
                                 BigDecimal totalExpenses = new BigDecimal( projObj.getString("totalExpeses"), mc);
                                 BigDecimal totalIncomes = new BigDecimal( projObj.getString("totalIncomes"), mc);
-
                                 Project project = new Project();
                                 project.setId(id);
                                 project.setExpectedOutput(expectedOutput);

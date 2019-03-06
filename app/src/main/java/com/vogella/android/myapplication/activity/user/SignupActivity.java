@@ -1,4 +1,4 @@
-package com.vogella.android.myapplication.activity;
+package com.vogella.android.myapplication.activity.user;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

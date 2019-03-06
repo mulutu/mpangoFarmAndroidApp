@@ -84,11 +84,13 @@ public class CalendarActivity extends AppCompatActivity  {
 
                 if( process.equalsIgnoreCase("NEW_TRANSACTION") ){
                     Intent intent = new Intent(getApplicationContext(), TransactionActivity.class);
+                    extras.putString("Process", "NEW_TRANSACTION");
                     intent.putExtras(extras);
                     finish();
                     startActivity(intent);
                 }else if( process.equalsIgnoreCase("EDIT_TRANSACTION") ){
                     Intent intent = new Intent(getApplicationContext(), TransactionViewActivity.class);
+                    extras.putString("Process", "EDIT_TRANSACTION");
                     intent.putExtras(extras);
                     finish();
                     startActivity(intent);

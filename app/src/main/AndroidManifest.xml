@@ -36,10 +36,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.user.LoginActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".activity.SignupActivity"
+            android:name=".activity.user.SignupActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity android:name=".activity.TransactionActivity" />
         <activity android:name=".activity.CalendarActivity" />
@@ -47,7 +47,8 @@
         <activity android:name=".activity.TransactionViewActivity" />
         <activity android:name=".activity.AddProjectActivity" />
         <activity android:name=".activity.AddFarmActivity" />
-        <activity android:name=".activity.FarmsViewActivity"></activity>
+        <activity android:name=".activity.FarmsViewActivity" />
+        <activity android:name=".activity.AccountsViewActivity"></activity>
     </application>
 
 </manifest>

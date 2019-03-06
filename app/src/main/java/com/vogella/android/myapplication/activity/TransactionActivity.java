@@ -33,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -106,37 +107,83 @@ public class TransactionActivity extends AppCompatActivity{
     }
 
     private void populateData(Transaction transaction){
-        _transactionAmount.setText( transaction.getAmount().toString());
-        SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
-        String dateStr = format2.format(transaction.getTransactionDate());
-        _transactionDate.setText(dateStr);
+        if(transaction.getAmount()!=null) {
+            _transactionAmount.setText(transaction.getAmount().toString());
+        }
+        if(transaction.getTransactionDate()!=null) {
+            SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
+            String dateStr = format2.format(transaction.getTransactionDate());
+            _transactionDate.setText(dateStr);
+        }
         _transactionDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 displayDatePicker();
             }
         });
-        _projectName.setText(transaction.getProjectName());
+
+        if(transaction.getProjectName()!=""){
+            _projectName.setText(transaction.getProjectName());
+        }
         _projectName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectProject();
             }
         });
-        _accountName.setText(transaction.getAccountName());
-        _description.setText(transaction.getDescription());
+
+        if(transaction.getAccountName()!=""){
+            _accountName.setText(transaction.getProjectName());
+        }
+        _accountName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectAccount();
+            }
+        });
+
+        if(transaction.getAccountName()!="") {
+            _accountName.setText(transaction.getAccountName());
+        }
+        if(transaction.getDescription()!="") {
+            _description.setText(transaction.getDescription());
+        }
     }
 
-    public Transaction getTransaction(){
-        BigDecimal amt_ = new BigDecimal(_transactionAmount.getText().toString());
-        transaction.setAmount(amt_);
-        transaction.setDescription(_description.getText().toString());
+    public Transaction getTransaction() {
+        if (_transactionAmount.getText() != null){
+            BigDecimal amt_;
+            MathContext mc = MathContext.DECIMAL32;
+            try {
+                amt_ = new BigDecimal(_transactionAmount.getText().toString(), mc);
+                transaction.setAmount(amt_);
+            } catch (NumberFormatException e) {
+                //amt_ = null;
+            }
+        }
+        if( _description.getText() != null) {
+            transaction.setDescription(_description.getText().toString());
+        }
         return transaction;
+    }
+
+    public void selectAccount(){
+        Bundle extras = new Bundle();
+        extras.putSerializable("Transaction", getTransaction());
+        extras.putString("Process","NEW_TRANSACTION");
+
+        Intent intent = new Intent(getApplicationContext(), AccountsViewActivity.class);
+        intent.putExtras(extras);
+        startActivityForResult(intent, 0);
+        finish();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public void selectProject(){
         Bundle extras = new Bundle();
         extras.putSerializable("Transaction", getTransaction());
+        extras.putString("Process","NEW_TRANSACTION");
+
         Intent intent = new Intent(getApplicationContext(), ProjectsViewActivity.class);
         intent.putExtras(extras);
         startActivityForResult(intent, 0);

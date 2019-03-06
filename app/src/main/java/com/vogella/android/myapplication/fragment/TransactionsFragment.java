@@ -31,6 +31,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,7 +94,7 @@ public class TransactionsFragment extends Fragment {
     }
 
     private void getTransactionList( int userId ){
-        String URL_EXPENSES = "http://45.56.73.81:8084/Mpango/api/v1/user/" + userId + "/transactions";
+        String URL_EXPENSES = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userId + "/transactions";
 
         JsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(
                 Request.Method.GET,
@@ -111,6 +113,9 @@ public class TransactionsFragment extends Fragment {
 
                                     int id = transactionObj.getInt("id");
                                     int accountId = transactionObj.getInt("accountId");
+
+                                    MathContext mc = MathContext.DECIMAL32;
+                                    BigDecimal amount = new BigDecimal( transactionObj.getString("amount"), mc);
 
                                     String dateStr = transactionObj.getString("transactionDate"); // "expenseDate": "30-07-2018",
                                     Date transDate = null;
@@ -133,6 +138,7 @@ public class TransactionsFragment extends Fragment {
 
                                     obj.setId(id);
                                     obj.setAccountId(accountId);
+                                    obj.setAmount(amount);
                                     obj.setTransactionDate(transDate);
                                     obj.setTransactionTypeId(transactionTypeId);
                                     obj.setTransactionType(transactionType);

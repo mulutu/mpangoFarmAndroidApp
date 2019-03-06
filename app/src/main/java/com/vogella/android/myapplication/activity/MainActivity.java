@@ -2,8 +2,6 @@ package com.vogella.android.myapplication.activity;
 
 import android.net.Uri;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -14,17 +12,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.vogella.android.myapplication.fragment.EditorFragment;
+import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.fragment.HomeFragment;
 import com.vogella.android.myapplication.R;
-import com.vogella.android.myapplication.fragment.PagerFragment;
 import com.vogella.android.myapplication.fragment.ProjectsSettingsFragment;
 import com.vogella.android.myapplication.fragment.TransactionsFragment;
 

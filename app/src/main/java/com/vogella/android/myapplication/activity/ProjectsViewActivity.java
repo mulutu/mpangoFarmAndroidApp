@@ -44,8 +44,8 @@ public class ProjectsViewActivity extends AppCompatActivity {
     private projectsAdapter mAdapter;
 
     private Transaction transaction;
-
     private String process =  "";
+
     private String transactionType =  "";
 
     @Override
@@ -103,13 +103,17 @@ public class ProjectsViewActivity extends AppCompatActivity {
                 transaction.setProjectName(project.getProjectName());
 
                 Bundle extras = new Bundle();
+                extras.putSerializable("Transaction", transaction);
+
                 if( process.equalsIgnoreCase("NEW_TRANSACTION") ){
                     Intent intent = new Intent(getApplicationContext(), TransactionActivity.class);
+                    extras.putString("Process", "NEW_TRANSACTION");
                     intent.putExtras(extras);
                     finish();
                     startActivity(intent);
                 }else if( process.equalsIgnoreCase("EDIT_TRANSACTION") ){
                     Intent intent = new Intent(getApplicationContext(), TransactionViewActivity.class);
+                    extras.putString("Process", "EDIT_TRANSACTION");
                     intent.putExtras(extras);
                     finish();
                     startActivity(intent);
