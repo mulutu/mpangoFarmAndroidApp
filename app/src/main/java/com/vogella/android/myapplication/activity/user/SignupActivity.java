@@ -11,7 +11,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.activity.MainActivity;
+import com.vogella.android.myapplication.activity.TransactionActivity;
+import com.vogella.android.myapplication.model.Transaction;
+import com.vogella.android.myapplication.util.AppSingleton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,12 +30,12 @@ import butterknife.ButterKnife;
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    @BindView(R.id.input_name) EditText _nameText;
-    @BindView(R.id.input_address) EditText _addressText;
+    //@BindView(R.id.input_name) EditText _nameText;
+    //@BindView(R.id.input_address) EditText _addressText;
     @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_mobile) EditText _mobileText;
+    //@BindView(R.id.input_mobile) EditText _mobileText;
     @BindView(R.id.input_password) EditText _passwordText;
-    @BindView(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
+    //@BindView(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
     @BindView(R.id.btn_signup) Button _signupButton;
     @BindView(R.id.link_login) TextView _loginLink;
     
@@ -60,34 +71,61 @@ public class SignupActivity extends AppCompatActivity {
             onSignupFailed();
             return;
         }
-
         _signupButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                R.style.AppTheme_Dark_Dialog);
+        String email = _emailText.getText().toString();
+        String password = _passwordText.getText().toString();
+
+        Log.d(TAG, "submitTransaction");
+
+        String URL_ADD_TRANSACTION= "http://45.56.73.81:8084/Mpango/api/v1/users";
+
+        String  REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
+
+        JSONObject postparams = new JSONObject();
+        try {
+            postparams.put("email", email);
+            postparams.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
+        progressDialog.setMessage("Creating account...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
-        String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String reEnterPassword = _reEnterPasswordText.getText().toString();
-
-        // TODO: Implement your own signup logic here.
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
+        JsonObjectRequest jsonObjectReq = new JsonObjectRequest(
+                Request.Method.POST,
+                URL_ADD_TRANSACTION,
+                postparams,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            int status = response.getInt("status");
+                            String message = response.getString("message");
+                            if(status == 0 && message.equalsIgnoreCase("CREATED")){
+                                //progressDialog.hide();
+                                progressDialog.dismiss();
+                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } catch (JSONException e) {
+                            progressDialog.dismiss();
+                            e.printStackTrace();
+                        }
                     }
-                }, 3000);
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TRX_PUT_RESPONSE", "Error: " + error.getMessage());
+                progressDialog.dismiss();
+            }
+        });
+        // Adding JsonObject request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,REQUEST_TAG);
     }
 
 
@@ -106,14 +144,14 @@ public class SignupActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
+        //String name = _nameText.getText().toString();
+        //String address = _addressText.getText().toString();
         String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
+        //String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
-        String reEnterPassword = _reEnterPasswordText.getText().toString();
+        //String reEnterPassword = _reEnterPasswordText.getText().toString();
 
-        if (name.isEmpty() || name.length() < 3) {
+        /*if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
             valid = false;
         } else {
@@ -125,7 +163,7 @@ public class SignupActivity extends AppCompatActivity {
             valid = false;
         } else {
             _addressText.setError(null);
-        }
+        }*/
 
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -135,12 +173,12 @@ public class SignupActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (mobile.isEmpty() || mobile.length()!=10) {
+        /*if (mobile.isEmpty() || mobile.length()!=10) {
             _mobileText.setError("Enter Valid Mobile Number");
             valid = false;
         } else {
             _mobileText.setError(null);
-        }
+        }*/
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");
@@ -149,12 +187,12 @@ public class SignupActivity extends AppCompatActivity {
             _passwordText.setError(null);
         }
 
-        if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
+        /*if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
             _reEnterPasswordText.setError("Password Do not match");
             valid = false;
         } else {
             _reEnterPasswordText.setError(null);
-        }
+        }*/
 
         return valid;
     }

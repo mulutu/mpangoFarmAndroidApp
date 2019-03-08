@@ -211,6 +211,7 @@ public class TransactionViewActivity extends AppCompatActivity {
             postparams.put("accountId", expenseObjPosting.getAccountId());
             postparams.put("projectId", expenseObjPosting.getProjectId());
             postparams.put("description", expenseObjPosting.getDescription());
+            postparams.put("transactionTypeId", expenseObjPosting.getTransactionTypeId());
         } catch (JSONException e) {
             e.printStackTrace();
         }

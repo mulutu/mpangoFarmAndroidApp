@@ -22,7 +22,11 @@ import com.vogella.android.myapplication.fragment.HomeFragment;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.fragment.ProjectsSettingsFragment;
 import com.vogella.android.myapplication.fragment.TransactionsFragment;
+import com.vogella.android.myapplication.model.MyUser;
+import com.vogella.android.myapplication.util.AlertDialogManager;
+import com.vogella.android.myapplication.util.SessionManager;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,22 +34,34 @@ import butterknife.BindView;
 
 public class MainActivity extends AppCompatActivity implements ProjectsSettingsFragment.OnFragmentInteractionListener {
 
-    //private Button btn1, btn2;
+    AlertDialogManager alert = new AlertDialogManager();
+    SessionManager session;
 
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_password) EditText _passwordText;
+    private MyUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+        user = session.getUser();
 
         setupNavigationView();
     }
+  /*
+        btnLogout.setOnClickListener(new View.OnClickListener() {
 
+        @Override
+        public void onClick(View arg0) {
+            // Clear the session data
+            // This will clear all session data and
+            // redirect user to LoginActivity
+            session.logoutUser();
+        }
+    });
+*/
     private void setupNavigationView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         if (bottomNavigationView != null) {
@@ -171,19 +187,12 @@ public class MainActivity extends AppCompatActivity implements ProjectsSettingsF
         if (id == R.id.action_settings) {
             return true;
         }else if(id == R.id.action_logout){
-            Context context = getApplicationContext();
-            //SharedPreferences sharedPreferences = context.getSharedPreferences("vidslogin", Context.MODE_PRIVATE);
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            sharedPreferences.edit().remove("rememberAccount").commit();
-            sharedPreferences.edit().remove("userid").commit();
-            sharedPreferences.edit().remove("username").commit();
-            sharedPreferences.edit().remove("password").commit();
-            sharedPreferences.edit().remove("vidslogin").commit();
-            sharedPreferences.edit().clear().commit(); // jksd fsdh ghksdf gkhsdf ghdfsjk ghsdfjkhg jksdfhjk ghdjk
+
+            session.logoutUser();
 
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
-            finish(); // jkdfhgjkdfhjkd sfjkd gjksdfh gjkhdf jghsdfjk gdfkhgjksdf
+            finish();
             return true;
         }
 

@@ -20,7 +20,7 @@
             android:layout_gravity="center_horizontal" />
 
         <!-- Name Label -->
-        <android.support.design.widget.TextInputLayout
+        <!-- android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -30,10 +30,10 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:hint="Name" />
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout -->
 
         <!-- Address Label -->
-        <android.support.design.widget.TextInputLayout
+        <!-- android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPostalAddress"
                 android:hint="Address" />
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout -->
 
 
 
@@ -62,7 +62,7 @@
 
 
         <!-- mobile number -->
-        <android.support.design.widget.TextInputLayout
+        <!-- android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:hint="Mobile Number" />
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout -->
 
         <!-- Password Label -->
         <android.support.design.widget.TextInputLayout
@@ -88,7 +88,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Re-enter Label -->
-        <android.support.design.widget.TextInputLayout
+        <!-- android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="Re-enter Password"/>
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout -->
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
