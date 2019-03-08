@@ -216,20 +216,22 @@ public class TransactionActivity extends AppCompatActivity{
 
         String  REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
 
-        Transaction expenseObjPosting =  getTransaction();
+        Transaction trx =  getTransaction();
 
         JSONObject postparams = new JSONObject();
         try {
-            postparams.put("transactionDate", dateToString(expenseObjPosting.getTransactionDate()));
-            postparams.put("amount", expenseObjPosting.getAmount());
-            postparams.put("accountId", expenseObjPosting.getAccountId());
-            postparams.put("projectId", expenseObjPosting.getProjectId());
-            postparams.put("description", expenseObjPosting.getDescription());
-            postparams.put("userId", expenseObjPosting.getUserId());
-            postparams.put("transactionTypeId", expenseObjPosting.getTransactionTypeId());
+            postparams.put("transactionDate", dateToString(trx.getTransactionDate()));
+            postparams.put("amount", trx.getAmount());
+            postparams.put("accountId", trx.getAccountId());
+            postparams.put("projectId", trx.getProjectId());
+            postparams.put("description", trx.getDescription());
+            postparams.put("userId", trx.getUserId());
+            postparams.put("transactionTypeId", trx.getTransactionTypeId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Log.d("submitTransaction::: ", "userId: " + trx.getUserId());
 
         final ProgressDialog progressDialog = new ProgressDialog(TransactionActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);

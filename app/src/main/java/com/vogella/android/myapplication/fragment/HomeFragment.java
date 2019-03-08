@@ -24,14 +24,15 @@ public class HomeFragment extends Fragment  {
 
     private FragmentActivity myContext;
 
+    private int userId = 1;
+    private Transaction transaction = new Transaction();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (myContext.getSupportFragmentManager().findFragmentById(android.R.id.content) == null) {
             myContext.getSupportFragmentManager().beginTransaction().add(android.R.id.content, new PagerFragment(), "pagerfragment").commit();
         }
-
         myContext.getSupportFragmentManager().getFragments();
     }
 
@@ -40,7 +41,6 @@ public class HomeFragment extends Fragment  {
         if (allFragments == null || allFragments.isEmpty()) {
             return Collections.emptyList();
         }
-
         List<Fragment> visibleFragments = new ArrayList<Fragment>();
         /*for (Fragment fragment : allFragments) {
             if (fragment.isVisible()) {
@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment  {
         btn1= (Button)rootView.findViewById(R.id.expense);
         btn2= (Button)rootView.findViewById(R.id.income);
 
-        final Transaction transaction =  new Transaction();
+        transaction.setUserId(userId);
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,6 @@ public class HomeFragment extends Fragment  {
                 startActivity(intent);
             }
         });
-
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +86,6 @@ public class HomeFragment extends Fragment  {
                 startActivity(intent);
             }
         });
-
         return rootView;
     }
 

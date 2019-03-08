@@ -1,11 +1,13 @@
 package com.vogella.android.myapplication.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -14,29 +16,25 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.adapter.accountsAdapter;
-import com.vogella.android.myapplication.adapter.projectsAdapter;
 import com.vogella.android.myapplication.model.Account;
 import com.vogella.android.myapplication.model.ChartOfAccounts;
-import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
+import com.vogella.android.myapplication.util.RecyclerTouchListener;
+import com.vogella.android.myapplication.util.SectionOrRow;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class AccountsViewActivity extends AppCompatActivity {
 
     private List<Account> accountList = new ArrayList<>();
+    private List<SectionOrRow> mData = new ArrayList<>();
     private RecyclerView recyclerView;
     private accountsAdapter mAdapter;
 
@@ -48,16 +46,7 @@ public class AccountsViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accounts_view);
 
-        recyclerView = (RecyclerView) findViewById(R.id.accounts_recycler_view);
-
-        mAdapter = new accountsAdapter(accountList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-
-        /*if(getIntent()!=null && getIntent().getExtras()!=null){
+        if(getIntent()!=null && getIntent().getExtras()!=null){
             Bundle bundle = getIntent().getExtras();
             if(!bundle.getSerializable("Transaction").equals(null)){
                 transaction = (Transaction)bundle.getSerializable("Transaction");
@@ -67,16 +56,16 @@ public class AccountsViewActivity extends AppCompatActivity {
             }else if(bundle.get("Process").equals("EDIT_TRANSACTION")){
                 process = "EDIT_TRANSACTION";
             }
-        }*/
+        }
 
         int userId = 1;
         getListOfAccounts(userId);
     }
 
-
     public void getListOfAccounts(int userID){
         String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userID + "/coa";
         final String  _TAG = "LIST OF ACCOUNTS: ";
+
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL_PROJECTS,
@@ -96,17 +85,23 @@ public class AccountsViewActivity extends AppCompatActivity {
 
                                 List<Account> listofaccts = new ArrayList<>();
 
+                                mData.add(SectionOrRow.createSection(accountGroupTypeName));
+
                                 for(int k=0;k<listOfAccounts.length();k++){
                                     Account acc = new Account();
 
                                     JSONObject acctObj = listOfAccounts.getJSONObject(k);
+
                                     int id = acctObj.getInt("id");
+                                    String accountName = acctObj.getString("accountName");
                                     String description = acctObj.getString("description");
 
                                     acc.setId(id);
                                     acc.setDescription(description);
 
                                     listofaccts.add(acc);
+
+                                    mData.add(SectionOrRow.createRow(id,accountName,description));
                                 }
 
                                 ChartOfAccounts coa = new ChartOfAccounts();
@@ -131,7 +126,6 @@ public class AccountsViewActivity extends AppCompatActivity {
                                 "farmId": 1,
                                 "dateCreated": "29-08-2018"
                                 */
-
                                 //projectList.add(project);
 
                                 Log.d(_TAG, "COA :>>>> " + coa.toString());
@@ -142,7 +136,7 @@ public class AccountsViewActivity extends AppCompatActivity {
                             Log.d(_TAG, e.getMessage());
                         }
 
-                       // prepareProjectsData();
+                       prepareAccountsData();
 
                     }
                 }, new Response.ErrorListener() {
@@ -154,5 +148,56 @@ public class AccountsViewActivity extends AppCompatActivity {
         });
         // Adding JsonObject request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
+    }
+
+    public void prepareAccountsData(){
+        recyclerView = (RecyclerView) findViewById(R.id.accounts_recycler_view);
+
+        mAdapter = new accountsAdapter(mData);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+
+        mAdapter.notifyDataSetChanged();
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                SectionOrRow row = mData.get(position);
+
+                if(row.isRow()) {
+                    int accountId = row.getId();
+                    String accountName = row.getRow();
+
+                    transaction.setAccountId(accountId);
+                    transaction.setAccountName(accountName);
+
+                    Bundle extras = new Bundle();
+                    extras.putSerializable("Transaction", transaction);
+
+                    if (process.equalsIgnoreCase("NEW_TRANSACTION")) {
+                        Intent intent = new Intent(getApplicationContext(), TransactionActivity.class);
+                        extras.putString("Process", "NEW_TRANSACTION");
+                        intent.putExtras(extras);
+                        finish();
+                        startActivity(intent);
+                    } else if (process.equalsIgnoreCase("EDIT_TRANSACTION")) {
+                        Intent intent = new Intent(getApplicationContext(), TransactionViewActivity.class);
+                        extras.putString("Process", "EDIT_TRANSACTION");
+                        intent.putExtras(extras);
+                        finish();
+                        startActivity(intent);
+                    }
+                    //overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }
+            }
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 }

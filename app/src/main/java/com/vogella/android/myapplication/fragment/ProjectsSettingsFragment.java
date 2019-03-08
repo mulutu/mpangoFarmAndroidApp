@@ -24,6 +24,7 @@ import com.vogella.android.myapplication.activity.AddFarmActivity;
 import com.vogella.android.myapplication.activity.AddProjectActivity;
 import com.vogella.android.myapplication.adapter.projectsAdapter;
 import com.vogella.android.myapplication.model.Project;
+import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
 import com.vogella.android.myapplication.util.RecyclerTouchListener;
@@ -210,9 +211,9 @@ public class ProjectsSettingsFragment extends Fragment {
                                     e.printStackTrace();
                                 }
 
-                                MathContext mc = MathContext.DECIMAL32;
-                                BigDecimal totalExpenses = new BigDecimal( projObj.getString("totalExpeses"), mc);
-                                BigDecimal totalIncomes = new BigDecimal( projObj.getString("totalIncomes"), mc);
+                                //MathContext mc = MathContext.DECIMAL32;
+                                //BigDecimal totalExpenses = new BigDecimal( projObj.getString("totalExpeses"), mc);
+                               // BigDecimal totalIncomes = new BigDecimal( projObj.getString("totalIncomes"), mc);
 
                                 Project project = new Project();
                                 project.setId(id);
@@ -220,8 +221,8 @@ public class ProjectsSettingsFragment extends Fragment {
                                 project.setActualOutput(actualOutput);
                                 project.setUnitId(unitId);
 
-                                project.setTotalExpenses(totalExpenses);
-                                project.setTotalIncomes(totalIncomes);
+                                //project.setTotalExpenses(totalExpenses);
+                                //project.setTotalIncomes(totalIncomes);
 
                                 project.setUnitDescription(unitDescription);
                                 project.setDescription(description);

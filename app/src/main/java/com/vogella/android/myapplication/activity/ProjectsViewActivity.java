@@ -160,9 +160,9 @@ public class ProjectsViewActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                MathContext mc = MathContext.DECIMAL32;
-                                BigDecimal totalExpenses = new BigDecimal( projObj.getString("totalExpeses"), mc);
-                                BigDecimal totalIncomes = new BigDecimal( projObj.getString("totalIncomes"), mc);
+                                //MathContext mc = MathContext.DECIMAL32;
+                                //BigDecimal totalExpenses = new BigDecimal( projObj.getString("totalExpeses"), mc);
+                                //BigDecimal totalIncomes = new BigDecimal( projObj.getString("totalIncomes"), mc);
 
                                 Project project = new Project();
                                 project.setId(id);
@@ -170,8 +170,8 @@ public class ProjectsViewActivity extends AppCompatActivity {
                                 project.setActualOutput(actualOutput);
                                 project.setUnitId(unitId);
 
-                                project.setTotalExpenses(totalExpenses);
-                                project.setTotalIncomes(totalIncomes);
+                                //project.setTotalExpenses(totalExpenses);
+                                //project.setTotalIncomes(totalIncomes);
 
                                 project.setUnitDescription(unitDescription);
                                 project.setDescription(description);

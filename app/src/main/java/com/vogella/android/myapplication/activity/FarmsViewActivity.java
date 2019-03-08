@@ -37,7 +37,7 @@ import java.util.List;
 
 public class FarmsViewActivity extends AppCompatActivity {
 
-    Project _project;
+    private Project _project;
 
     private List<Farm> farmsList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -48,20 +48,11 @@ public class FarmsViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_farms_view);
 
-        recyclerView = (RecyclerView) findViewById(R.id.add_farm_recycler_view);
-
-        mAdapter = new farmsAdapter(farmsList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-
         if(getIntent()!=null && getIntent().getExtras()!=null){
             Bundle bundle = getIntent().getExtras();
-            if(bundle.get("transactionType").equals("ADD_PROJECT")){
-                if(!bundle.getSerializable("project").equals(null)){
-                    _project = (Project)bundle.getSerializable("project");
+            if(bundle.get("Process").equals("NEW_PROJECT")){
+                if(!bundle.getSerializable("Project").equals(null)){
+                    _project = (Project)bundle.getSerializable("Project");
                 }
             }
         }
@@ -71,6 +62,15 @@ public class FarmsViewActivity extends AppCompatActivity {
     }
 
     private void prepareProjectsData() {
+
+        recyclerView = (RecyclerView) findViewById(R.id.add_farm_recycler_view);
+
+        mAdapter = new farmsAdapter(farmsList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
 
         mAdapter.notifyDataSetChanged();
 
@@ -87,8 +87,8 @@ public class FarmsViewActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), AddProjectActivity.class);
 
-                extras.putSerializable("project", _project);
-                extras.putString("transactionType", "ADD_PROJECT");
+                extras.putSerializable("Project", _project);
+                extras.putString("Process", "NEW_PROJECT");
                 intent.putExtras(extras);
                 finish();
                 startActivity(intent);
@@ -104,7 +104,7 @@ public class FarmsViewActivity extends AppCompatActivity {
     }
 
     public void getListOfFarms(int userID){
-        String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/" + userID + "/farms";
+        String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userID + "/farms";
         final String  _TAG = "LIST OF FARMS: ";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -117,18 +117,17 @@ public class FarmsViewActivity extends AppCompatActivity {
                             for(int i=0;i<response.length();i++){
                                 JSONObject farmObj = response.getJSONObject(i);
 
-                                int farmId = farmObj.getInt("id");
-
+                                int id = farmObj.getInt("id");
                                 String description = farmObj.getString("description");
-                                String farmName = farmObj.getString("farmName");
                                 String location = farmObj.getString("location");
+                                String dateCreated = farmObj.getString("dateCreated");
+                                String farmName = farmObj.getString("farmName");
                                 int userId = farmObj.getInt("userId");
-                                String dateCreatedStr = farmObj.getString("dateCreated");
-
                                 int size = farmObj.getInt("size");
 
                                 Farm farm = new Farm();
 
+                                farm.setId(id);
                                 farm.setLocation(location);
                                 farm.setSize(size);
                                 farm.setFarmName(farmName);
@@ -136,34 +135,30 @@ public class FarmsViewActivity extends AppCompatActivity {
                                 farm.setUserId(userId);
 
                                 try {
-                                    Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreatedStr);
+                                    Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreated);
                                     farm.setDateCreated(date1);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
 
                                 farmsList.add(farm);
-
-                                /*
-                                    * {
+                                /*[
+                                {
                                         "id": 1,
                                         "description": "Gachuriri Farm",
-                                        "farmName": "Gachuriri",
                                         "location": "Embu South, Gachuriri",
-                                        "userId": 1,
                                         "dateCreated": "2018-07-16T00:00:00.000+0000",
+                                        "farmName": "Gachuriri",
+                                        "userId": 1,
                                         "size": 10
-                                    }
-                                * */
-
+                                }
+                                ]*/
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(_TAG, e.getMessage());
                         }
-
                         prepareProjectsData();
-
                     }
                 }, new Response.ErrorListener() {
             @Override

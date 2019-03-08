@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,6 +41,8 @@ public class TransactionViewActivity extends AppCompatActivity {
     private EditText _accountName;
     private EditText _description;
     private Button _btnSubmitTransaction;
+
+    private String process =  "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,11 @@ public class TransactionViewActivity extends AppCompatActivity {
                 if ( getIntent().getSerializableExtra("Transaction") != null ) {
                     transaction = (Transaction) getIntent().getSerializableExtra("Transaction");
                     populateData(transaction);
+                }
+                if(extras.get("Process").equals("NEW_TRANSACTION")){
+                    process = "NEW_TRANSACTION";
+                }else if(extras.get("Process").equals("EDIT_TRANSACTION")){
+                    process = "EDIT_TRANSACTION";
                 }
             }
         }
@@ -88,34 +96,77 @@ public class TransactionViewActivity extends AppCompatActivity {
         return format2.format(date);
     }
 
-    public Transaction getTransaction(){
-        BigDecimal amt_ = new BigDecimal(_transactionAmount.getText().toString());
-        transaction.setAmount(amt_);
-        transaction.setDescription(_description.getText().toString());
+    public Transaction getTransaction() {
+        if (_transactionAmount.getText() != null){
+            BigDecimal amt_;
+            MathContext mc = MathContext.DECIMAL32;
+            try {
+                amt_ = new BigDecimal(_transactionAmount.getText().toString(), mc);
+                transaction.setAmount(amt_);
+            } catch (NumberFormatException e) {
+                //amt_ = null;
+            }
+        }
+        if( _description.getText() != null) {
+            transaction.setDescription(_description.getText().toString());
+        }
         return transaction;
     }
 
     private void populateData(Transaction transaction){
-        _transactionAmount.setText( transaction.getAmount().toString());
-        SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
-        String dateStr = format2.format(transaction.getTransactionDate());
-        _transactionDate.setText(dateStr);
+        if(transaction.getAmount()!=null) {
+            _transactionAmount.setText(transaction.getAmount().toString());
+        }
+        if(transaction.getTransactionDate()!=null) {
+            SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
+            String dateStr = format2.format(transaction.getTransactionDate());
+            _transactionDate.setText(dateStr);
+        }
         _transactionDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 displayDatePicker();
             }
         });
-        _projectName.setText(transaction.getProjectName());
+
+        if(transaction.getProjectName()!=""){
+            _projectName.setText(transaction.getProjectName());
+        }
         _projectName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectProject();
             }
         });
-        _accountName.setText(transaction.getAccountName());
-        _description.setText(transaction.getDescription());
-        Log.d(_TAG, "income.getProjectName(): " + transaction.getProjectName());
+
+        if(transaction.getAccountName()!=""){
+            _accountName.setText(transaction.getProjectName());
+        }
+        _accountName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectAccount();
+            }
+        });
+
+        if(transaction.getAccountName()!="") {
+            _accountName.setText(transaction.getAccountName());
+        }
+        if(transaction.getDescription()!="") {
+            _description.setText(transaction.getDescription());
+        }
+    }
+
+    public void selectAccount(){
+        Bundle extras = new Bundle();
+        extras.putSerializable("Transaction", getTransaction());
+        extras.putString("Process","EDIT_TRANSACTION");
+
+        Intent intent = new Intent(getApplicationContext(), AccountsViewActivity.class);
+        intent.putExtras(extras);
+        startActivityForResult(intent, 0);
+        finish();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public void selectProject(){
@@ -146,7 +197,7 @@ public class TransactionViewActivity extends AppCompatActivity {
         Log.d(TAG, "submitTransaction");
 
         String URL_ADD_TRANSACTION= "http://45.56.73.81:8084/Mpango/api/v1/transactions";
-        //_btnSubmitExpense.setEnabled(false);
+        _btnSubmitTransaction.setEnabled(false);
 
         String  REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
 
@@ -154,13 +205,12 @@ public class TransactionViewActivity extends AppCompatActivity {
 
         JSONObject postparams = new JSONObject();
         try {
+            postparams.put("id", expenseObjPosting.getId());
             postparams.put("transactionDate", dateToString(expenseObjPosting.getTransactionDate()));
             postparams.put("amount", expenseObjPosting.getAmount());
             postparams.put("accountId", expenseObjPosting.getAccountId());
             postparams.put("projectId", expenseObjPosting.getProjectId());
             postparams.put("description", expenseObjPosting.getDescription());
-            postparams.put("userId", expenseObjPosting.getUserId());
-            postparams.put("transactionTypeId", expenseObjPosting.getTransactionTypeId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -171,7 +221,7 @@ public class TransactionViewActivity extends AppCompatActivity {
         progressDialog.show();
 
         JsonObjectRequest jsonObjectReq = new JsonObjectRequest(
-                Request.Method.POST,
+                Request.Method.PUT,
                 URL_ADD_TRANSACTION,
                 postparams,
                 new Response.Listener<JSONObject>() {

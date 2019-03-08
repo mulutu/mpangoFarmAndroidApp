@@ -10,51 +10,74 @@ import android.widget.TextView;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.model.Account;
 import com.vogella.android.myapplication.model.Project;
+import com.vogella.android.myapplication.util.SectionOrRow;
 
 import java.util.List;
 
-public class accountsAdapter extends RecyclerView.Adapter<accountsAdapter.MyViewHolder> {
+public class accountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Account> accountsList;
+    private List<SectionOrRow> mData;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
+    public class RowViewHolder  extends RecyclerView.ViewHolder {
         public TextView listAccountDescription, listAccountName;
-
-        public MyViewHolder(View view) {
+        public RowViewHolder(View view) {
             super(view);
             listAccountName = (TextView) view.findViewById(R.id.listAccountName);
             listAccountDescription = (TextView) view.findViewById(R.id.listAccountDescription);
         }
     }
+    public class SectionViewHolder  extends RecyclerView.ViewHolder {
+        public TextView listSectionName;
+        public SectionViewHolder (View view) {
+            super(view);
+            listSectionName = (TextView) view.findViewById(R.id.listSectionName);
+            //listAccountDescription = (TextView) view.findViewById(R.id.listAccountDescription);
+        }
+    }
 
-    public accountsAdapter(List<Account> accountsList) {
-        this.accountsList = accountsList;
+    public accountsAdapter(List<SectionOrRow> data) {
+        mData = data;
     }
 
     @NonNull
     @Override
-    public accountsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType==0) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.accounts_list_row, parent, false);
-            return new accountsAdapter.MyViewHolder(itemView);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.accounts_list_section, parent, false);
+            return new accountsAdapter.SectionViewHolder(itemView);
         }else{
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.accounts_list_row, parent, false);
-            return new accountsAdapter.MyViewHolder(itemView);
+            return new accountsAdapter.RowViewHolder(itemView);
         }
-
     }
 
     @Override
-    public void onBindViewHolder(accountsAdapter.MyViewHolder holder, int position) {
-        Account account = accountsList.get(position);
-        holder.listAccountName.setText(account.getAccountName());
-        holder.listAccountDescription.setText(account.getDescription());
+    public int getItemViewType(int position) {
+        super.getItemViewType(position);
+        SectionOrRow item = mData.get(position);
+        if(!item.isRow()) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        SectionOrRow item = mData.get(position);
+        if(item.isRow()) {
+            RowViewHolder h = (RowViewHolder) holder;
+            h.listAccountName.setText(item.getRow());
+            h.listAccountDescription.setText(item.getRow2());
+        } else {
+            SectionViewHolder k = (SectionViewHolder) holder;
+            k.listSectionName.setText(item.getSection());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return accountsList.size();
+        return mData.size();
     }
 
 }

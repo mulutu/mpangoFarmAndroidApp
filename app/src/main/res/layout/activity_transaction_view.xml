@@ -30,7 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="18sp"
-                    android:text="Edit Expense"
+                    android:text="Transaction"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -43,20 +43,22 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/txtEditAmount"
+                android:id="@+id/txtExpenseAmount"
                 android:layout_width="85dp"
                 android:layout_height="32dp"
-                android:contentDescription="Amount"
+                android:contentDescription="incomeAmount"
                 android:padding="5dp"
                 android:text="Amount"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:text="Amount" />
 
             <EditText
-                android:id="@+id/amount_expense"
+                android:id="@+id/trxAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
+                android:hint="Amount"
                 android:inputType="numberDecimal"
                 android:paddingLeft="5dp"
                 android:textAlignment="center" />
@@ -69,7 +71,7 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/txtExpenseDate"
+                android:id="@+id/trxxDate"
                 android:layout_width="85dp"
                 android:layout_height="32dp"
                 android:contentDescription="expenseDate"
@@ -79,11 +81,12 @@
                 tools:text="Date" />
 
             <EditText
-                android:id="@+id/date_expense"
+                android:id="@+id/trxDate"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
+                android:hint="Date"
                 android:inputType="text"
                 android:paddingLeft="5dp"
                 android:textAlignment="center" />
@@ -91,30 +94,7 @@
 
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp">
 
-            <TextView
-                android:id="@+id/txtCustomer"
-                android:layout_width="113dp"
-                android:layout_height="32dp"
-                android:padding="5dp"
-                android:text="Supplier"
-                android:textAlignment="center"
-                tools:text="Customer" />
-
-            <EditText
-                android:id="@+id/supplier_expense"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/spinner_border"
-                android:ems="10"
-                android:inputType="text"
-                android:paddingLeft="5dp"
-                android:textAlignment="center" />
-        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
@@ -130,11 +110,12 @@
                 android:textAlignment="center" />
 
             <EditText
-                android:id="@+id/project_expense"
+                android:id="@+id/trxProjectName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
+                android:hint="Project Name"
                 android:inputType="text"
                 android:paddingLeft="5dp"
                 android:textAlignment="center" />
@@ -155,11 +136,12 @@
                 android:textAlignment="center" />
 
             <EditText
-                android:id="@+id/account_expense"
+                android:id="@+id/trxAccountName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
+                android:hint="Account Name"
                 android:inputType="text"
                 android:paddingLeft="5dp"
                 android:textAlignment="center" />
@@ -172,7 +154,7 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/txtExpNotes"
+                android:id="@+id/tvDescription"
                 android:layout_width="85dp"
                 android:layout_height="32dp"
                 android:contentDescription="expenseDesc"
@@ -182,12 +164,13 @@
                 tools:text="Description" />
 
             <EditText
-                android:id="@+id/notes_expense"
+                android:id="@+id/trxDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:background="@drawable/spinner_border"
                 android:ems="10"
                 android:gravity="top"
+                android:hint="Description..."
                 android:inputType="text|textMultiLine"
                 android:paddingLeft="5dp"
                 android:textAlignment="center" />
@@ -211,7 +194,7 @@
                 tools:text="" />
 
             <Button
-                android:id="@+id/btnSubmitExpense_edit"
+                android:id="@+id/btnSubmitTransaction"
                 android:layout_width="168dp"
                 android:layout_height="48dp"
                 android:text="Submit"
@@ -221,7 +204,6 @@
 
 
         </TableRow>
-
     </TableLayout>
 
 </android.support.constraint.ConstraintLayout>

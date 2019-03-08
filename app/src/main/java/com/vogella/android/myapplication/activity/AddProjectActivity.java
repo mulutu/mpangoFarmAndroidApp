@@ -14,14 +14,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.vogella.android.myapplication.R;
-import com.vogella.android.myapplication.model.Income;
 import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.util.AppSingleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
 
 public class AddProjectActivity extends AppCompatActivity {
 
@@ -57,9 +54,9 @@ public class AddProjectActivity extends AppCompatActivity {
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             Bundle extras = intent.getExtras();
-            if (extras.get("transactionType").equals("ADD_PROJECT")) {
-                if (getIntent().getSerializableExtra("project") != null) {
-                    project = (Project) getIntent().getSerializableExtra("project");
+            if (extras.get("Process").equals("NEW_PROJECT")) {
+                if (getIntent().getSerializableExtra("Project") != null) {
+                    project = (Project) getIntent().getSerializableExtra("Project");
                     populateData(project);
                 }
             }
@@ -68,23 +65,28 @@ public class AddProjectActivity extends AppCompatActivity {
     }
 
     private void populateData(Project project){
-        _projectName.setText( project.getProjectName());
-        _farmName.setText( project.getFarmName());
+        if(project.getProjectName() != "") {
+            _projectName.setText(project.getProjectName());
+        }
+        if(project.getFarmName() != "") {
+            _farmName.setText(project.getFarmName());
+        }
         _farmName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectFarm();
             }
         });
-        _projectDesc.setText(project.getDescription());
-
+        if(project.getDescription() != "") {
+            _projectDesc.setText(project.getDescription());
+        }
         //Log.d(_TAG, "income.getProjectName(): " + income.getProjectName());
     }
 
     public void selectFarm(){
         Bundle extras = new Bundle();
-        extras.putSerializable("project", getProject());
-        extras.putString("transactionType", "ADD_PROJECT");
+        extras.putSerializable("Project", getProject());
+        extras.putString("Process", "NEW_PROJECT");
 
         Intent intent = new Intent(getApplicationContext(), FarmsViewActivity.class);
         intent.putExtras(extras);
@@ -94,24 +96,19 @@ public class AddProjectActivity extends AppCompatActivity {
     }
 
     private Project getProject(){
-
-        Project prj = new Project();
-
         int userID = 1;
-        int farmID =  1;
         int unitID =  1;
-
-        String projName =  _projectName.getText().toString();
-        String projDesc =  _projectDesc.getText().toString();
-
-        prj.setUserId(userID);
-        //prj.setFarmId(farmID);
-        prj.setProjectName(projName);
-        prj.setDescription(projDesc);
-        prj.setFarmId(project.getFarmId());
-        prj.setUnitId(unitID);
-
-        return prj;
+        if( _projectName.getText() != null) {
+            String projName = _projectName.getText().toString();
+            project.setProjectName(projName);
+        }
+        if( _projectDesc.getText() != null) {
+            String projDesc = _projectDesc.getText().toString();
+            project.setDescription(projDesc);
+        }
+        project.setUserId(userID);
+        project.setUnitId(unitID);
+        return project;
     }
 
     private void submitProject(){

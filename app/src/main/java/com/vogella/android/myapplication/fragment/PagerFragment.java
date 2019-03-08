@@ -125,7 +125,7 @@ public class PagerFragment extends Fragment {
 
 
     public void getListOfProjects(int userID){
-        String URL_ACCOUNTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userID + "/projects";
+        String URL_ACCOUNTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userID + "/projects/summary";
         final String  _TAG = "PROJECTS-LIST: ";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,

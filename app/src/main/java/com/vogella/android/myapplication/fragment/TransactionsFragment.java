@@ -56,6 +56,9 @@ public class TransactionsFragment extends Fragment {
 
     private Button btnAddIncome, btnAddExpense;
 
+    private int userId = 1;
+    private Transaction transaction = new Transaction();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,19 +71,37 @@ public class TransactionsFragment extends Fragment {
         btnAddIncome = (Button)rootView.findViewById(R.id.addIncomeTransactions);
         btnAddExpense = (Button)rootView.findViewById(R.id.addExpenseTransactions);
 
+        transaction.setUserId(userId);
+
         btnAddIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), TransactionActivity.class);
-                startActivity(i);
+
+                Bundle extras = new Bundle();
+                extras.putString("Process", "NEW_TRANSACTION" );
+
+                transaction.setTransactionTypeId(0);
+                extras.putSerializable("Transaction", transaction );
+
+                Intent intent = new Intent(getActivity(), TransactionActivity.class);
+                intent.putExtras(extras);
+                startActivity(intent);
             }
         });
 
         btnAddExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), TransactionActivity.class);
-                startActivity(i);
+
+                Bundle extras = new Bundle();
+                extras.putString("Process", "NEW_TRANSACTION" );
+
+                transaction.setTransactionTypeId(1);
+                extras.putSerializable("Transaction", transaction );
+
+                Intent intent = new Intent(getActivity(), TransactionActivity.class);
+                intent.putExtras(extras);
+                startActivity(intent);
             }
         });
 
@@ -209,16 +230,17 @@ public class TransactionsFragment extends Fragment {
             recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    Transaction transaction = transactionList.get(position);
+                    Transaction trx = transactionList.get(position);
 
                     Bundle extras = new Bundle();
-                    extras.putSerializable("Transaction", transaction );
+                    extras.putSerializable("Transaction", trx );
+                    extras.putSerializable("Process", "EDIT_TRANSACTION" );
 
                     Intent intent = new Intent(getActivity().getApplicationContext(), TransactionViewActivity.class);
                     intent.putExtras(extras);
 
                     startActivityForResult(intent, REQUEST_TRANSACTION);
-                    getActivity().finish();
+                    //getActivity().finish();
                     getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
 
