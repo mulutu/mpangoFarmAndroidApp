@@ -14,8 +14,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
+import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
+import com.vogella.android.myapplication.util.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,10 +29,20 @@ public class AddProjectActivity extends AppCompatActivity {
     private Button _btnSubmitProject;
     Project project = new Project();
 
+    AlertDialogManager alert = new AlertDialogManager();
+    SessionManager session;
+    private MyUser user;
+    private int userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_project);
+
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+        user = session.getUser();
+        userId = user.getId();
 
         _projectName = (EditText) findViewById(R.id.projectName_add_project);
         _farmName = (EditText) findViewById(R.id.txtFarm_add_project);
@@ -96,7 +109,6 @@ public class AddProjectActivity extends AppCompatActivity {
     }
 
     private Project getProject(){
-        int userID = 1;
         int unitID =  1;
         if( _projectName.getText() != null) {
             String projName = _projectName.getText().toString();
@@ -106,7 +118,7 @@ public class AddProjectActivity extends AppCompatActivity {
             String projDesc = _projectDesc.getText().toString();
             project.setDescription(projDesc);
         }
-        project.setUserId(userID);
+        project.setUserId(userId);
         project.setUnitId(unitID);
         return project;
     }

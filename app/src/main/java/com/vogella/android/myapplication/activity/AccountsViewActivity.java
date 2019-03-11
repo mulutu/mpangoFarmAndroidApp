@@ -18,11 +18,14 @@ import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.adapter.accountsAdapter;
 import com.vogella.android.myapplication.model.Account;
 import com.vogella.android.myapplication.model.ChartOfAccounts;
+import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Transaction;
+import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
 import com.vogella.android.myapplication.util.RecyclerTouchListener;
 import com.vogella.android.myapplication.util.SectionOrRow;
+import com.vogella.android.myapplication.util.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +44,11 @@ public class AccountsViewActivity extends AppCompatActivity {
     private Transaction transaction;
     private String process =  "";
 
+    AlertDialogManager alert = new AlertDialogManager();
+    SessionManager session;
+    private MyUser user;
+    private int userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +66,11 @@ public class AccountsViewActivity extends AppCompatActivity {
             }
         }
 
-        int userId = 1;
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+        user = session.getUser();
+        userId = user.getId();
+
         getListOfAccounts(userId);
     }
 

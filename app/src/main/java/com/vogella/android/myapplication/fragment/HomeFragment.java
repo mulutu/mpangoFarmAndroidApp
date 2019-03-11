@@ -12,7 +12,10 @@ import android.widget.Button;
 
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.TransactionActivity;
+import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Transaction;
+import com.vogella.android.myapplication.util.AlertDialogManager;
+import com.vogella.android.myapplication.util.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,12 +27,21 @@ public class HomeFragment extends Fragment  {
 
     private FragmentActivity myContext;
 
-    private int userId = 1;
     private Transaction transaction = new Transaction();
+
+    AlertDialogManager alert = new AlertDialogManager();
+    SessionManager session;
+    private MyUser user;
+    private int userId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        session = new SessionManager(getActivity().getApplicationContext());
+        user = session.getUser();
+        userId = user.getId();
+
         if (myContext.getSupportFragmentManager().findFragmentById(android.R.id.content) == null) {
             myContext.getSupportFragmentManager().beginTransaction().add(android.R.id.content, new PagerFragment(), "pagerfragment").commit();
         }

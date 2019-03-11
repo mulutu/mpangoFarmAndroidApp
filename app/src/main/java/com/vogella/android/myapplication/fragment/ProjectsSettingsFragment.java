@@ -23,11 +23,14 @@ import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.AddFarmActivity;
 import com.vogella.android.myapplication.activity.AddProjectActivity;
 import com.vogella.android.myapplication.adapter.projectsAdapter;
+import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Transaction;
+import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
 import com.vogella.android.myapplication.util.RecyclerTouchListener;
+import com.vogella.android.myapplication.util.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +73,11 @@ public class ProjectsSettingsFragment extends Fragment {
     private RecyclerView recyclerView;
     private projectsAdapter mAdapter;
 
+    AlertDialogManager alert = new AlertDialogManager();
+    SessionManager session;
+    private MyUser user;
+    private int userId;
+
     public ProjectsSettingsFragment() {
         // Required empty public constructor
     }
@@ -104,6 +112,10 @@ public class ProjectsSettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        session = new SessionManager(getActivity().getApplicationContext());
+        user = session.getUser();
+        userId = user.getId();
+
         View rootView =   inflater.inflate(R.layout.fragment_projects_settings, container, false);
 
         btnAddProject = (Button)rootView.findViewById(R.id.addproject);
@@ -134,8 +146,7 @@ public class ProjectsSettingsFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        int userID =  1;
-        getListOfProjects(userID);
+        getListOfProjects(userId);
 
         return rootView;
         //return inflater.inflate(R.layout.fragment_projects_settings, container, false);

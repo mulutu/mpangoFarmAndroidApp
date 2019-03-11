@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements ProjectsSettingsF
 
     AlertDialogManager alert = new AlertDialogManager();
     SessionManager session;
-
     private MyUser user;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements ProjectsSettingsF
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
         user = session.getUser();
+        userId = user.getId();
 
         setupNavigationView();
     }

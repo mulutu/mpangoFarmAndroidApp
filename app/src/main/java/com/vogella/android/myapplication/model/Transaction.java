@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Transaction implements Comparable<Transaction> , Serializable {
+public class Transaction implements  Serializable {
 
     private int id;
     private int accountId;
@@ -126,15 +126,4 @@ public class Transaction implements Comparable<Transaction> , Serializable {
         this.accountName = accountName;
     }
 
-    @Override
-    public int compareTo(Transaction u) {
-        if (getTransactionDate() == null ) {
-            return 0;
-        }
-
-        if ( u.getTransactionDate() == null) {
-            return 0;
-        }
-        return getTransactionDate().compareTo(u.getTransactionDate());
-    }
 }

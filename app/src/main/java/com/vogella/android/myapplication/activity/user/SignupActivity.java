@@ -30,10 +30,11 @@ import butterknife.ButterKnife;
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    //@BindView(R.id.input_name) EditText _nameText;
-    //@BindView(R.id.input_address) EditText _addressText;
+
     @BindView(R.id.input_email) EditText _emailText;
     //@BindView(R.id.input_mobile) EditText _mobileText;
+    @BindView(R.id.input_first_name) EditText _firstNameText;
+    @BindView(R.id.input_last_name) EditText _lastNameText;
     @BindView(R.id.input_password) EditText _passwordText;
     //@BindView(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
     @BindView(R.id.btn_signup) Button _signupButton;
@@ -76,6 +77,9 @@ public class SignupActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
+        String firstName = _firstNameText.getText().toString();
+        String lastName = _lastNameText.getText().toString();
+
         Log.d(TAG, "submitTransaction");
 
         String URL_ADD_TRANSACTION= "http://45.56.73.81:8084/Mpango/api/v1/users";
@@ -86,6 +90,9 @@ public class SignupActivity extends AppCompatActivity {
         try {
             postparams.put("email", email);
             postparams.put("password", password);
+            postparams.put("username", email);
+            postparams.put("firstName", firstName);
+            postparams.put("lastName", lastName);
         } catch (JSONException e) {
             e.printStackTrace();
         }

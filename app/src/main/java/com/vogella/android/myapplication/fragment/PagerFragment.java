@@ -20,8 +20,11 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.adapter.SampleAdapter;
+import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
+import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
+import com.vogella.android.myapplication.util.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,12 +46,21 @@ public class PagerFragment extends Fragment {
 
     ArrayList<Project> projects = new ArrayList<>();
 
+    AlertDialogManager alert = new AlertDialogManager();
+    SessionManager session;
+    private MyUser user;
+    private int userId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.pager, container, false);
         pager=(ViewPager)result.findViewById(R.id.pager);
 
-        getListOfProjects(1);
+        session = new SessionManager(getActivity().getApplicationContext());
+        user = session.getUser();
+        userId = user.getId();
+
+        getListOfProjects(userId);
 
 
         //viewPager = (ViewPager) view.findViewById(R.id.viewpager);

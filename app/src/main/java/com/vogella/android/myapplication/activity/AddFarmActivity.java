@@ -15,8 +15,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.model.Farm;
+import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
+import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
+import com.vogella.android.myapplication.util.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,10 +30,20 @@ public class AddFarmActivity extends AppCompatActivity {
     private Button _btnSubmitFarm;
     Farm farm = new Farm();
 
+    AlertDialogManager alert = new AlertDialogManager();
+    SessionManager session;
+    private MyUser user;
+    private int userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_farm);
+
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+        user = session.getUser();
+        userId = user.getId();
 
         _farmName = (EditText) findViewById(R.id.txtFarmName);
         _farmDesc = (EditText) findViewById(R.id.farmNotes);
@@ -47,14 +60,13 @@ public class AddFarmActivity extends AppCompatActivity {
 
         Farm _farm = new Farm();
 
-        int userID = 1;
         int size = 1;
         String location = "TBA";
 
         String Name =  _farmName.getText().toString();
         String Desc =  _farmDesc.getText().toString();
 
-        _farm.setUserId(userID);
+        _farm.setUserId(userId);
         _farm.setFarmName(Name);
         _farm.setSize(size);
         _farm.setLocation(location);

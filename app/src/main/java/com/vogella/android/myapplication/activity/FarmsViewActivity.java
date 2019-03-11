@@ -20,10 +20,13 @@ import com.vogella.android.myapplication.adapter.projectsAdapter;
 import com.vogella.android.myapplication.model.Expense;
 import com.vogella.android.myapplication.model.Farm;
 import com.vogella.android.myapplication.model.Income;
+import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
+import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
 import com.vogella.android.myapplication.util.RecyclerTouchListener;
+import com.vogella.android.myapplication.util.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,10 +46,20 @@ public class FarmsViewActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private farmsAdapter mAdapter;
 
+    AlertDialogManager alert = new AlertDialogManager();
+    SessionManager session;
+    private MyUser user;
+    private int userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_farms_view);
+
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+        user = session.getUser();
+        userId = user.getId();
 
         if(getIntent()!=null && getIntent().getExtras()!=null){
             Bundle bundle = getIntent().getExtras();
@@ -57,7 +70,11 @@ public class FarmsViewActivity extends AppCompatActivity {
             }
         }
 
-        int userId = 1;
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+        user = session.getUser();
+        userId = user.getId();
+
         getListOfFarms(userId);
     }
 
