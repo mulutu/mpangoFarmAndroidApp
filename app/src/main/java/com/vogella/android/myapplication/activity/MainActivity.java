@@ -3,19 +3,19 @@ package com.vogella.android.myapplication.activity;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+//import android.widget.Toolbar;
 
 import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.fragment.HomeFragment;
@@ -26,13 +26,13 @@ import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.SessionManager;
 
-import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
 
+public class MainActivity extends AppCompatActivity  implements ProjectsSettingsFragment.OnFragmentInteractionListener {
 
-public class MainActivity extends AppCompatActivity implements ProjectsSettingsFragment.OnFragmentInteractionListener {
+    // Declaring the Toolbar Object
+    private Toolbar toolbar;
 
     AlertDialogManager alert = new AlertDialogManager();
     SessionManager session;
@@ -43,6 +43,16 @@ public class MainActivity extends AppCompatActivity implements ProjectsSettingsF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Attaching the layout to the toolbar object
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        // Setting toolbar as the ActionBar with setSupportActionBar() call
+        setSupportActionBar(toolbar);
+
+        // Remove default title text
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        // Get access to the custom title view
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
 
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
@@ -195,7 +205,11 @@ public class MainActivity extends AppCompatActivity implements ProjectsSettingsF
             startActivity(i);
             finish();
             return true;
+        }else if (id == R.id.action_favorite) {
+            Toast.makeText(MainActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
+            return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }

@@ -44,16 +44,16 @@ public class AddProjectActivity extends AppCompatActivity {
         user = session.getUser();
         userId = user.getId();
 
-        _projectName = (EditText) findViewById(R.id.projectName_add_project);
-        _farmName = (EditText) findViewById(R.id.txtFarm_add_project);
+        _projectName = (EditText) findViewById(R.id.projectName);
+        _farmName = (EditText) findViewById(R.id.projectFarm);
 
-        _farmName.setOnClickListener(new View.OnClickListener() {
+        _farmName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onFocusChange(View v, boolean hasFocus) {
                 selectFarm();
             }
         });
-        _projectDesc = (EditText) findViewById(R.id.projectDesc_add_project);
+        _projectDesc = (EditText) findViewById(R.id.projectDesc);
 
         _btnSubmitProject = (Button) findViewById(R.id.btnSubmitProject);
         _btnSubmitProject.setOnClickListener(new View.OnClickListener() {

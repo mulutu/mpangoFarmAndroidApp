@@ -3,11 +3,14 @@ package com.vogella.android.myapplication.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -26,26 +29,42 @@ import org.json.JSONObject;
 
 public class AddFarmActivity extends AppCompatActivity {
 
-    private EditText _farmName, _farmDesc;
+    private EditText _farmName, _farmDesc, _farmLocation, _farmSize;
     private Button _btnSubmitFarm;
-    Farm farm = new Farm();
+    Farm farm;
 
     AlertDialogManager alert = new AlertDialogManager();
     SessionManager session;
     private MyUser user;
     private int userId;
 
+    // Declaring the Toolbar Object
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_farm);
+
+        // Attaching the layout to the toolbar object
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        // Setting toolbar as the ActionBar with setSupportActionBar() call
+        setSupportActionBar(toolbar);
+
+        // Remove default title text
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        // Get access to the custom title view
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText("Add Farm");
 
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
         user = session.getUser();
         userId = user.getId();
 
-        _farmName = (EditText) findViewById(R.id.txtFarmName);
+        _farmName = (EditText) findViewById(R.id.farmName);
+        _farmLocation = (EditText) findViewById(R.id.farmLocation);
+        _farmSize = (EditText) findViewById(R.id.farmSize);
         _farmDesc = (EditText) findViewById(R.id.farmNotes);
         _btnSubmitFarm = (Button) findViewById(R.id.btnSubmitFarm);
         _btnSubmitFarm.setOnClickListener(new View.OnClickListener() {
@@ -57,13 +76,11 @@ public class AddFarmActivity extends AppCompatActivity {
     }
 
     private Farm getFarm(){
-
         Farm _farm = new Farm();
-
-        int size = 1;
-        String location = "TBA";
-
         String Name =  _farmName.getText().toString();
+        String location =  _farmLocation.getText().toString();
+        String sizeStr =  _farmSize.getText().toString();
+        int size = Integer.parseInt(sizeStr);
         String Desc =  _farmDesc.getText().toString();
 
         _farm.setUserId(userId);

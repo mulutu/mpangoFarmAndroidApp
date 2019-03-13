@@ -115,9 +115,9 @@ public class TransactionActivity extends AppCompatActivity{
             String dateStr = format2.format(transaction.getTransactionDate());
             _transactionDate.setText(dateStr);
         }
-        _transactionDate.setOnClickListener(new View.OnClickListener() {
+        _transactionDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onFocusChange(View v, boolean hasFocus) {
                 displayDatePicker();
             }
         });
@@ -125,9 +125,9 @@ public class TransactionActivity extends AppCompatActivity{
         if(transaction.getProjectName()!=""){
             _projectName.setText(transaction.getProjectName());
         }
-        _projectName.setOnClickListener(new View.OnClickListener() {
+        _projectName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onFocusChange(View v, boolean hasFocus) {
                 selectProject();
             }
         });
@@ -135,9 +135,9 @@ public class TransactionActivity extends AppCompatActivity{
         if(transaction.getAccountName()!=""){
             _accountName.setText(transaction.getProjectName());
         }
-        _accountName.setOnClickListener(new View.OnClickListener() {
+        _accountName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onFocusChange(View v, boolean hasFocus) {
                 selectAccount();
             }
         });

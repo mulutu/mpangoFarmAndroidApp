@@ -1,209 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.TransactionViewActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
 
-    <TableLayout
-        android:id="@+id/tableLayoutTrxView"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_margin="5dp"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-        <TableRow
+        <!-- Name Label -->
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="18sp"
-                    android:text="Transaction"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/txtExpenseAmount"
-                android:layout_width="85dp"
-                android:layout_height="32dp"
-                android:contentDescription="incomeAmount"
-                android:padding="5dp"
-                android:text="Amount"
-                android:textAlignment="center"
-                tools:text="Amount" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
             <EditText
                 android:id="@+id/trxAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/spinner_border"
-                android:ems="10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="Amount"
-                android:inputType="numberDecimal"
-                android:paddingLeft="5dp"
-                android:textAlignment="center" />
+                android:inputType="numberDecimal" />
+        </android.support.design.widget.TextInputLayout>
 
-        </TableRow>
-
-        <TableRow
+        <!-- Address Label -->
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/trxxDate"
-                android:layout_width="85dp"
-                android:layout_height="32dp"
-                android:contentDescription="expenseDate"
-                android:padding="5dp"
-                android:text="Date"
-                android:textAlignment="center"
-                tools:text="Date" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
             <EditText
                 android:id="@+id/trxDate"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/spinner_border"
-                android:ems="10"
-                android:hint="Date"
-                android:inputType="text"
-                android:paddingLeft="5dp"
-                android:textAlignment="center" />
-
-
-        </TableRow>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date of Transaction"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
 
 
 
-        <TableRow
+        <!--  Email Label -->
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
-            <TextView
-                android:id="@+id/tvProject"
-                android:layout_width="113dp"
-                android:layout_height="32dp"
-                android:padding="5dp"
-                android:text="Project"
-                android:textAlignment="center" />
+            <EditText android:id="@+id/trxProjectName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Select Project" />
+        </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/trxProjectName"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/spinner_border"
-                android:ems="10"
-                android:hint="Project Name"
-                android:inputType="text"
-                android:paddingLeft="5dp"
-                android:textAlignment="center" />
 
-        </TableRow>
-
-        <TableRow
+        <!-- mobile number -->
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="113dp"
-                android:layout_height="32dp"
-                android:padding="5dp"
-                android:text="Account"
-                android:textAlignment="center" />
+            <EditText android:id="@+id/trxAccountName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="Select Account" />
+        </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/trxAccountName"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/spinner_border"
-                android:ems="10"
-                android:hint="Account Name"
-                android:inputType="text"
-                android:paddingLeft="5dp"
-                android:textAlignment="center" />
-
-        </TableRow>
-
-        <TableRow
+        <!-- Password Label -->
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/tvDescription"
-                android:layout_width="85dp"
-                android:layout_height="32dp"
-                android:contentDescription="expenseDesc"
-                android:padding="5dp"
-                android:text="Description"
-                android:textAlignment="center"
-                tools:text="Description" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
             <EditText
                 android:id="@+id/trxDescription"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="@drawable/spinner_border"
-                android:ems="10"
                 android:gravity="top"
-                android:hint="Description..."
-                android:inputType="text|textMultiLine"
-                android:paddingLeft="5dp"
-                android:textAlignment="center" />
+                android:hint="Additional Details"
+                android:inputType="text|textMultiLine" />
+        </android.support.design.widget.TextInputLayout>
 
-
-        </TableRow>
-
-        <TableRow
+        <!-- Password Re-enter Label -->
+        <!-- android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:padding="5dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_reEnterPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Re-enter Password"/>
+        </android.support.design.widget.TextInputLayout -->
 
-            <TextView
-                android:id="@+id/btnSubmit"
-                android:layout_width="85dp"
-                android:layout_height="32dp"
-                android:contentDescription="incomeAmount"
-                android:padding="5dp"
-                android:text=""
-                android:textAlignment="center"
-                tools:text="" />
+        <!-- Signup Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnSubmitTransaction"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="Add Transaction"/>
 
-            <Button
-                android:id="@+id/btnSubmitTransaction"
-                android:layout_width="168dp"
-                android:layout_height="48dp"
-                android:text="Submit"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="Submit" />
+        <!-- TextView android:id="@+id/link_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="Already a member? Login"
+            android:gravity="center"
+            android:textSize="16dip"/ -->
 
-
-        </TableRow>
-    </TableLayout>
-
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>

@@ -122,9 +122,9 @@ public class TransactionViewActivity extends AppCompatActivity {
             String dateStr = format2.format(transaction.getTransactionDate());
             _transactionDate.setText(dateStr);
         }
-        _transactionDate.setOnClickListener(new View.OnClickListener() {
+        _transactionDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onFocusChange(View v, boolean hasFocus) {
                 displayDatePicker();
             }
         });
@@ -132,9 +132,9 @@ public class TransactionViewActivity extends AppCompatActivity {
         if(transaction.getProjectName()!=""){
             _projectName.setText(transaction.getProjectName());
         }
-        _projectName.setOnClickListener(new View.OnClickListener() {
+        _projectName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onFocusChange(View v, boolean hasFocus) {
                 selectProject();
             }
         });
@@ -142,9 +142,9 @@ public class TransactionViewActivity extends AppCompatActivity {
         if(transaction.getAccountName()!=""){
             _accountName.setText(transaction.getProjectName());
         }
-        _accountName.setOnClickListener(new View.OnClickListener() {
+        _accountName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onFocusChange(View v, boolean hasFocus) {
                 selectAccount();
             }
         });
@@ -171,7 +171,7 @@ public class TransactionViewActivity extends AppCompatActivity {
 
     public void selectProject(){
         Bundle extras = new Bundle();
-        extras.putSerializable("transaction", getTransaction());
+        extras.putSerializable("Transaction", getTransaction());
         extras.putString("Process", "EDIT_TRANSACTION");
 
         Intent intent = new Intent(getApplicationContext(), ProjectsViewActivity.class);
@@ -183,7 +183,7 @@ public class TransactionViewActivity extends AppCompatActivity {
 
     public void displayDatePicker(){
         Bundle extras = new Bundle();
-        extras.putSerializable("transaction", getTransaction());
+        extras.putSerializable("Transaction", getTransaction());
         extras.putString("Process", "EDIT_TRANSACTION");
 
         Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
