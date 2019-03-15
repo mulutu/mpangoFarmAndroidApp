@@ -19,8 +19,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\jamulutu\Downloads\baseline-add_circle-black-18\2x\baseline_add_circle_black_18dp.png" />
-                                      <entry key="outputName" value="ic_add_black" />
+                                      <entry key="imageAsset" value="F:\JAVA_PROJECTS\ANDROID-APPS\TeamMeetingSchedule\app\src\main\res\drawable\placeholder.png" />
+                                      <entry key="outputName" value="placeholder" />
                                     </map>
                                   </option>
                                 </PersistentState>

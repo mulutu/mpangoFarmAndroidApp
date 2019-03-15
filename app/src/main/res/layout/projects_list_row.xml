@@ -1,5 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cardview_bg"
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="5dp"
+        android:layout_height="100dp"
+        android:background="@color/colorPrimary"></View>
+
+    <!--View
+        android:layout_width="5dp"
+        android:layout_height="100dp"
+        android:background="@color/colorOrange"></View -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <com.wolfsoft.teammeetingschedule.TextView_Lato
+            android:id="@+id/listProjectName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Amount"
+            android:textColor="@color/colorGray"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical">
+
+            <View
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/gree_circle"></View>
+
+            <com.wolfsoft.teammeetingschedule.TextView_Lato
+                android:id="@+id/transactionDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="dATE"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listProjectName"
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
+
+            <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                android:id="@+id/listProjectDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="Today : 5:40 pm"
+                android:textColor="@color/colorLightGray"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linear"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <com.wolfsoft.teammeetingschedule.TextView_Lato
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/roun_rect_lightgray"
+                android:gravity="center"
+                android:text="into"
+                android:textColor="@color/colorGray"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <com.wolfsoft.teammeetingschedule.TextView_Lato
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/roun_rect_lightgray"
+                android:gravity="center"
+                android:text="job"
+                android:textColor="@color/colorGray"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <com.wolfsoft.teammeetingschedule.TextView_Lato
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/roun_rect_lightgray"
+                android:gravity="center"
+                android:text="family"
+                android:textColor="@color/colorGray"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <com.wolfsoft.teammeetingschedule.TextView_Lato
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/roun_rect_lightgray"
+                android:gravity="center"
+                android:text="update"
+                android:textColor="@color/colorGray"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
+<!-- RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -27,4 +157,4 @@
         android:layout_below="@id/listProjectName" />
 
 
-</RelativeLayout>
+</RelativeLayout -->

@@ -67,7 +67,7 @@ public class ProjectsSettingsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     //--------------------------------------------------------------------
 
-    private Button btnAddProject, btnAddFarm;
+    private com.wolfsoft.teammeetingschedule.TextView_Lato btnAddProject, btnAddFarm;
 
     private List<Project> projectList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -118,8 +118,8 @@ public class ProjectsSettingsFragment extends Fragment {
 
         View rootView =   inflater.inflate(R.layout.fragment_projects_settings, container, false);
 
-        btnAddProject = (Button)rootView.findViewById(R.id.addproject);
-        btnAddFarm = (Button)rootView.findViewById(R.id.addfarm);
+        btnAddProject = (com.wolfsoft.teammeetingschedule.TextView_Lato)rootView.findViewById(R.id.addproject);
+        btnAddFarm = (com.wolfsoft.teammeetingschedule.TextView_Lato)rootView.findViewById(R.id.addfarm);
 
         btnAddProject.setOnClickListener(new View.OnClickListener() {
             @Override
