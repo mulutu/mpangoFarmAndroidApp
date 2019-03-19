@@ -2,114 +2,290 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TableLayout
-        android:id="@+id/tableLayout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        android:orientation="vertical">
 
-        <TableRow
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tveditor"
-                android:layout_width="144dp"
-                android:layout_height="32dp"
-                android:padding="5dp"
-                android:text="Total Income:"
-                android:textAlignment="center"
-                tools:text="Total Income:" />
-
-            <TextView
-                android:id="@+id/txtOne"
-                android:layout_width="113dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/spinner_border"
-                android:ems="10"
-                android:paddingLeft="5dp"
-                android:textAlignment="center" />
-
-            <!--TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/editor"
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="left|top" / -->
+                android:layout_height="210dp"
+                android:layout_marginTop="10dp"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="4dp">
 
-        </TableRow>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/cardview_bg"
+                    android:orientation="horizontal">
 
-        <TableRow
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
 
-            <TextView
-                android:id="@+id/tvone"
-                android:layout_width="144dp"
-                android:layout_height="32dp"
-                android:padding="5dp"
-                android:text="Total Expenses:"
-                android:textAlignment="center"
-                tools:text="Total Expenses:" />
 
-            <TextView
-                android:id="@+id/txtTwo"
-                android:layout_width="113dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/spinner_border"
-                android:ems="10"
-                android:paddingLeft="5dp"
-                android:textAlignment="center" />
 
-        </TableRow>
 
-        <TableRow
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
 
-            <TextView
-                android:id="@+id/tvProfit"
-                android:layout_width="144dp"
-                android:layout_height="32dp"
-                android:padding="5dp"
-                android:text="Gross Profit:"
-                android:textAlignment="center"
-                tools:text="Gross Profit:" />
 
-            <TextView
-                android:id="@+id/txtProfit"
-                android:layout_width="113dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/spinner_border"
-                android:ems="10"
-                android:paddingLeft="5dp"
-                android:textAlignment="center" />
+                    <TableLayout
+                        android:id="@+id/tableLayout1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:shrinkColumns="*"
+                        android:stretchColumns="*" >
 
-        </TableRow>
+                        <TableRow
+                            android:id="@+id/tableRow1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal" >
 
-        <TableRow
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
+                            <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                android:id="@+id/projectName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginLeft="20dp"
+                                android:text="Project Name"
+                                android:layout_span="6"
+                                android:gravity="center"
+                                android:textColor="@color/colorGray"
+                                android:textSize="18dp"
+                                android:textStyle="bold" />
 
-            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/editor"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="left|top" />
+                        </TableRow>
 
-        </TableRow>
-    </TableLayout>
+                        <TableRow
+                            android:id="@+id/tableRow2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" >
+
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="260dp"
+                                android:layout_marginTop="10dp">
+
+                                <LinearLayout
+                                    android:id="@+id/linear1x"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:id="@+id/textExpense"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginLeft="20dp"
+                                        android:text="Total Expense:"
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="14dp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/linear1-2x"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear1x"
+                                    android:layout_marginTop="1dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                        android:id="@+id/totalExpense"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:text="4566778"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="16dp"
+                                        android:textStyle="normal" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/linear2x"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear1-2x"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:id="@+id/textIncome"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:text="Total Income:"
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="14dp"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/linear2-1x"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear2x"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                        android:id="@+id/totalIncome"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:text="4645645"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="16dp"
+                                        android:textStyle="normal" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/linear3x"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear2-1x"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:id="@+id/textGrossProfit"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:text="Total Gross:"
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="14dp"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/linear3-1x"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear3x"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                        android:id="@+id/grossProfit"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:text="456456"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="16dp"
+                                        android:textStyle="normal" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_gravity="top">
+
+                                <LinearLayout
+                                    android:id="@+id/graphx"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="150dp"
+                                    android:layout_alignParentBottom="false"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="-1dp"
+                                    android:orientation="horizontal">
+
+
+                                    <!-- Doughnut chart starts here -->
+                                    <android.support.constraint.ConstraintLayout
+                                        android:id="@+id/constraintLayout"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="150dp"
+                                        android:layout_below="@+id/graph"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintHorizontal_bias="0.5"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@+id/graph">
+
+                                        <!-- ProgressBar that represents a total of 100% -->
+                                        <ProgressBar
+                                            android:id="@+id/background_progressbar"
+                                            style="?android:attr/progressBarStyleHorizontal"
+                                            android:layout_width="150dp"
+                                            android:layout_height="150dp"
+                                            android:indeterminate="false"
+                                            android:max="100"
+                                            android:progress="100"
+                                            android:progressDrawable="@drawable/stats_full"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintHorizontal_bias="0.5"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent" />
+
+                                        <!-- ProgressBar that represents a chart slice, where "android:progress" is the % value of the slice -->
+                                        <ProgressBar
+                                            android:id="@+id/stats_progressbar"
+                                            style="?android:attr/progressBarStyleHorizontal"
+                                            android:layout_width="150dp"
+                                            android:layout_height="150dp"
+                                            android:indeterminate="false"
+                                            android:max="100"
+                                            android:progress="75"
+                                            android:progressDrawable="@drawable/stats_progress"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintHorizontal_bias="0.0"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            app:layout_constraintVertical_bias="0.502" />
+
+                                        <!-- The text that goes in a center of the chart -->
+                                        <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                            android:id="@+id/number_of_calories"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="1500/2000"
+                                            android:textColor="@color/colorGray"
+                                            android:textSize="16dp"
+                                            android:textStyle="normal"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintHorizontal_bias="0.5"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent" />
+
+                                    </android.support.constraint.ConstraintLayout>
+                                    <!-- Doughnut chart ends here -->
+
+
+                                </LinearLayout>
+
+
+                            </RelativeLayout>
+
+                        </TableRow>
+
+            </TableLayout>
+
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </LinearLayout>
 </ScrollView>

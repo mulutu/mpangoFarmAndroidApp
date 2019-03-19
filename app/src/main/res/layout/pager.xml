@@ -7,14 +7,14 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="4dip"
-    android:layout_marginTop="100dp">
+    android:layout_marginTop="50dp">
 
     <android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_below="@id/tool_bar"
-        android:layout_height="300dp"
+        android:layout_height="210dp"
         >
 
         <!--android.support.v4.view.PagerTabStrip
@@ -27,14 +27,14 @@
         android:id="@+id/left_nav"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_gravity="top|left"
+        android:layout_gravity="bottom|left"
         android:src="@drawable/ic_arrow_back_black_48dp" />
 
     <ImageButton
         android:id="@+id/right_nav"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_gravity="top|right"
+        android:layout_gravity="bottom|right"
         android:src="@drawable/ic_arrow_forward_black_48dp" />
 
 

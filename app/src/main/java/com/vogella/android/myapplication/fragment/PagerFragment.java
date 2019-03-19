@@ -62,6 +62,8 @@ public class PagerFragment extends Fragment {
 
         getListOfProjects(userId);
 
+        pager.setAdapter(buildAdapter());
+
 
         //viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         leftNav = (ImageButton) result.findViewById(R.id.left_nav);
@@ -210,7 +212,7 @@ public class PagerFragment extends Fragment {
                             e.printStackTrace();
                             Log.d(_TAG, e.getMessage());
                         }
-                        pager.setAdapter(buildAdapter());
+                        //pager.setAdapter(buildAdapter());
                     }
                 }, new Response.ErrorListener() {
             @Override

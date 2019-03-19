@@ -46,6 +46,8 @@ import java.util.List;
 
 public class HomeFragment extends Fragment  {
 
+    View rootView;
+
     private Button btn1, btn2;
 
     private FragmentActivity myContext;
@@ -71,36 +73,18 @@ public class HomeFragment extends Fragment  {
         user = session.getUser();
         userId = user.getId();
 
-        /*
         if (myContext.getSupportFragmentManager().findFragmentById(android.R.id.content) == null) {
             myContext.getSupportFragmentManager().beginTransaction().add(android.R.id.content, new PagerFragment(), "pagerfragment").commit();
-        }*/
-        /*if (myContext.getSupportFragmentManager().findFragmentById(R.id.fragmentSection) == null) {
-            myContext.getSupportFragmentManager().beginTransaction().add(R.id.fragmentSection, new PagerFragment(), "pagerfragment").commit();
-        }*/
-        // fragmentSection
-        //myContext.getSupportFragmentManager().getFragments();
+        }
     }
 
-    public List<Fragment> getVisibleFragments() {
-        List<Fragment> allFragments = myContext.getSupportFragmentManager().getFragments();
-        if (allFragments == null || allFragments.isEmpty()) {
-            return Collections.emptyList();
-        }
-        List<Fragment> visibleFragments = new ArrayList<Fragment>();
-        /*for (Fragment fragment : allFragments) {
-            if (fragment.isVisible()) {
-                visibleFragments.add(fragment);
-            }
-        }*/
-        return allFragments;
-    }
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.fragment_home, container, false);
 
+        rootView =  inflater.inflate(R.layout.fragment_home, container, false);
         btn1= (Button)rootView.findViewById(R.id.expense);
         btn2= (Button)rootView.findViewById(R.id.income);
 
@@ -144,45 +128,47 @@ public class HomeFragment extends Fragment  {
     }
 
     private void prepareProjectsData() {
+        if(farmsList.size()>0) {
 
+            mAdapter = new farmsAdapter(farmsList);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+            recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(mAdapter);
 
+            mAdapter.notifyDataSetChanged();
 
-        mAdapter = new farmsAdapter(farmsList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+            recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+                @Override
+                public void onClick(View view, int position) {
 
-        mAdapter.notifyDataSetChanged();
+                    Bundle extras = new Bundle();
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
+                    Farm farm = farmsList.get(position);
 
-                Bundle extras = new Bundle();
+                    _project.setFarmId(farm.getId());
+                    _project.setFarmName(farm.getFarmName());
 
-                Farm farm = farmsList.get(position);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), AddProjectActivity.class);
 
-                _project.setFarmId(farm.getId());
-                _project.setFarmName(farm.getFarmName());
+                    extras.putSerializable("Project", _project);
+                    extras.putString("Process", "NEW_PROJECT");
+                    intent.putExtras(extras);
+                    //finish();
+                    startActivity(intent);
 
-                Intent intent = new Intent(getActivity().getApplicationContext(), AddProjectActivity.class);
+                    //overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }
 
-                extras.putSerializable("Project", _project);
-                extras.putString("Process", "NEW_PROJECT");
-                intent.putExtras(extras);
-                //finish();
-                startActivity(intent);
+                @Override
+                public void onLongClick(View view, int position) {
 
-                //overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
+                }
+            }));
+        }else{ // no farms
 
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
+        }
     }
 
 
@@ -242,7 +228,7 @@ public class HomeFragment extends Fragment  {
                             e.printStackTrace();
                             Log.d(_TAG, e.getMessage());
                         }
-                        prepareProjectsData();
+                        //prepareProjectsData();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -253,6 +239,20 @@ public class HomeFragment extends Fragment  {
         });
         // Adding JsonObject request to request queue
         AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
+    }
+
+    public List<Fragment> getVisibleFragments() {
+        List<Fragment> allFragments = myContext.getSupportFragmentManager().getFragments();
+        if (allFragments == null || allFragments.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<Fragment> visibleFragments = new ArrayList<Fragment>();
+        /*for (Fragment fragment : allFragments) {
+            if (fragment.isVisible()) {
+                visibleFragments.add(fragment);
+            }
+        }*/
+        return allFragments;
     }
 
 }

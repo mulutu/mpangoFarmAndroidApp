@@ -101,7 +101,18 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
 
             case R.id.navigation_home:
 
-                Fragment fr = getSupportFragmentManager().findFragmentByTag("homefragment");
+                List<Fragment> allFragmentsHome = getSupportFragmentManager().getFragments();
+                for (Fragment fragment : allFragmentsHome) {
+                    if(fragment!=null){
+                        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+                        //trx.hide(fragment);
+                        trx.remove(fragment);
+                        trx.commit();
+                    }
+                }
+                pushFragment(new HomeFragment(), "homefragment");
+
+                /*Fragment fr = getSupportFragmentManager().findFragmentByTag("homefragment");
                 if(fr != null) {
                     getSupportFragmentManager().beginTransaction().show(fr).commit();
                 }else{
@@ -125,21 +136,21 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
                             //Log.d("HOME CHILD LIST SIZE: ", String.valueOf(childFr.size()));
                         }
                     }
-                }
+                }*/
 
                 break;
 
             case R.id.navigation_transactions:
 
-                List<Fragment> allFragments = getSupportFragmentManager().getFragments();
-                for (Fragment fragment : allFragments) {
+                List<Fragment> allFragmentsNav = getSupportFragmentManager().getFragments();
+                for (Fragment fragment : allFragmentsNav) {
                     if(fragment!=null){
                         FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-                        trx.hide(fragment);
+                        //trx.hide(fragment);
+                        trx.remove(fragment);
                         trx.commit();
                     }
                 }
-
                 pushFragment(new TransactionsFragment(), "txnsFragment");
 
                 break;
@@ -150,11 +161,11 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
                 for (Fragment fragment : allFragmentsProj) {
                     if(fragment!=null){
                         FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-                        trx.hide(fragment);
+                        //trx.hide(fragment);
+                        trx.remove(fragment);
                         trx.commit();
                     }
                 }
-
                 pushFragment(new ProjectsSettingsFragment(), "txnsProjectsSettings");
                 break;
         }

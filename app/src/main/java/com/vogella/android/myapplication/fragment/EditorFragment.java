@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,19 +56,26 @@ public class EditorFragment extends Fragment {
     }
 
     public static String getText(Context ctxt, int position) {
-        return(" jsfjkhs kjfhsdjk fhsdjh fsdjk fjsd hfsdhjkf ");
+        return(" vvvvvv vvvvv vvvvv");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View result=inflater.inflate(R.layout.editor, container, false);
+        View result = inflater.inflate(R.layout.editor, container, false);
 
-        TextView tv = (TextView)result.findViewById(R.id.editor);
+        createPage(result);
+
+        return(result);
+    }
+
+    private void createPage(View result){
+        //TextView tv = (TextView)result.findViewById(R.id.editor);
         int position = getArguments().getInt(KEY_POSITION, -1);
 
-        TextView tvOne = (TextView)result.findViewById(R.id.txtOne);
-        TextView tvTwo = (TextView)result.findViewById(R.id.txtTwo);
-        TextView tvProfit = (TextView)result.findViewById(R.id.txtProfit);
+        TextView projectName = (TextView)result.findViewById(R.id.projectName);
+        TextView textExpense = (TextView)result.findViewById(R.id.totalExpense);
+        TextView textIncome = (TextView)result.findViewById(R.id.totalIncome);
+        TextView textGrossProfit = (TextView)result.findViewById(R.id.grossProfit);
 
 
         Project project = (Project) getArguments().getSerializable("proj");
@@ -84,9 +92,22 @@ public class EditorFragment extends Fragment {
 
         //if (gp.compareTo(BigDecimal.ZERO) > 0){ }
 
-        tvOne.setText( currencyFormat(totalIncomes.toString()));
-        tvTwo.setText( currencyFormat(totalExpenses.toString()));
-        tvProfit.setText( currencyFormat(profit.toString()));
+        projectName.setText(project.getProjectName());
+        textIncome.setText( currencyFormat(totalIncomes.toString()));
+        textExpense.setText( currencyFormat(totalExpenses.toString()));
+        textGrossProfit.setText( currencyFormat(profit.toString()));
+
+        int income = totalIncomes.intValueExact();
+        int expense = totalExpenses.intValueExact();
+
+        TextView numberOfCals = result.findViewById(R.id.number_of_calories);
+        numberOfCals.setText("Profit: \n" + currencyFormat(profit.toString()));
+
+        ProgressBar pieChart = result.findViewById(R.id.stats_progressbar);
+        double d = (double) income / (double) expense;
+
+        int progress = (int) (d * 100);
+        pieChart.setProgress(progress);
 
         //tv.setText(projDesc);
 
@@ -94,8 +115,6 @@ public class EditorFragment extends Fragment {
         //EditText editor=(EditText)result.findViewById(R.id.editor);
         //int position=getArguments().getInt(KEY_POSITION, -1);
         //editor.setHint(getTitle(getActivity(), position));
-
-        return(result);
     }
 
     private String currencyFormat(String amount){
