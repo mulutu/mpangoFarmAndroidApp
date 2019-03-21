@@ -457,6 +457,8 @@
         app:layout_anchor="@id/view_pager"
         app:layout_anchorGravity="bottom|right|end" />
 
+
+
 </android.support.design.widget.CoordinatorLayout>
 <!-- LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"

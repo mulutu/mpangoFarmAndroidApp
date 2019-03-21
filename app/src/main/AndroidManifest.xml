@@ -31,6 +31,7 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -47,7 +48,8 @@
         <activity android:name=".activity.AddProjectActivity" />
         <activity android:name=".activity.AddFarmActivity" />
         <activity android:name=".activity.FarmsViewActivity" />
-        <activity android:name=".activity.AccountsViewActivity"></activity>
+        <activity android:name=".activity.AccountsViewActivity" />
+        <activity android:name=".activity.NoFarmActivity"></activity>
     </application>
 
 </manifest>

@@ -20,6 +20,7 @@ import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.model.Farm;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
+import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.SessionManager;
@@ -32,28 +33,22 @@ public class AddFarmActivity extends AppCompatActivity {
     private EditText _farmName, _farmDesc, _farmLocation, _farmSize;
     private Button _btnSubmitFarm;
     Farm farm;
-
     AlertDialogManager alert = new AlertDialogManager();
     SessionManager session;
     private MyUser user;
     private int userId;
-
-    // Declaring the Toolbar Object
     private Toolbar toolbar;
+
+    private String process = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_farm);
 
-        // Attaching the layout to the toolbar object
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        // Setting toolbar as the ActionBar with setSupportActionBar() call
         setSupportActionBar(toolbar);
-
-        // Remove default title text
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        // Get access to the custom title view
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         mTitle.setText("Add Farm");
 
@@ -61,6 +56,15 @@ public class AddFarmActivity extends AppCompatActivity {
         session.checkLogin();
         user = session.getUser();
         userId = user.getId();
+
+        if(getIntent()!=null && getIntent().getExtras()!=null){
+            Bundle bundle = getIntent().getExtras();
+            if(bundle.get("Process").equals("INITIAL_ADD_FARM")){
+                process = "INITIAL_ADD_FARM";
+            }else if(bundle.get("Process").equals("ADD_FARM")){
+                process = "ADD_FARM";
+            }
+        }
 
         _farmName = (EditText) findViewById(R.id.farmName);
         _farmLocation = (EditText) findViewById(R.id.farmLocation);
@@ -73,6 +77,24 @@ public class AddFarmActivity extends AppCompatActivity {
                 submitFarm();
             }
         });
+
+    }
+
+    private void processResponseData(){
+        if(process.equalsIgnoreCase("INITIAL_ADD_FARM")){
+            Bundle bundle = new Bundle();
+            bundle.putString("Process", "INITIAL_ADD_FARM");
+            bundle.putBoolean("HasFarms", true);
+
+            Intent i = new Intent(getApplicationContext(), AddProjectActivity.class);
+            i.putExtras(bundle);
+            startActivity(i);
+            finish();
+        }else{
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private Farm getFarm(){
@@ -129,16 +151,15 @@ public class AddFarmActivity extends AppCompatActivity {
                             int status = response.getInt("status");
                             String message = response.getString("message");
                             if(status == 0 && message.equalsIgnoreCase("CREATED")){
+                                processResponseData();
                                 //progressDialog.hide();
                                 progressDialog.dismiss();
-                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                                startActivity(intent);
-                                finish();
                             }
                         } catch (JSONException e) {
                             progressDialog.dismiss();
                             e.printStackTrace();
                         }
+
                     }
                 }, new Response.ErrorListener() {
             @Override

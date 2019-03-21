@@ -19,6 +19,10 @@ public class MyUser implements Serializable {
 
     private boolean enabled;
 
+    private boolean hasFarms = false;
+
+
+
     public MyUser() {
 
     }
@@ -37,6 +41,13 @@ public class MyUser implements Serializable {
         lastName = lastname;
     }
 
+    public boolean isHasFarms() {
+        return hasFarms;
+    }
+
+    public void setHasFarms(boolean hasFarms) {
+        this.hasFarms = hasFarms;
+    }
 
     public boolean isEnabled() {
         return enabled;

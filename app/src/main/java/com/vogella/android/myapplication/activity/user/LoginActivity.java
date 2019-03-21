@@ -22,13 +22,22 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.vogella.android.myapplication.activity.MainActivity;
+import com.vogella.android.myapplication.activity.NoFarmActivity;
+import com.vogella.android.myapplication.model.Farm;
 import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
 import com.vogella.android.myapplication.util.SessionManager;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +56,11 @@ public class LoginActivity extends AppCompatActivity  {
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
     @BindView(R.id.link_signup) TextView _signupLink;
+
+    private Boolean hasFarms =  false;
+    private Boolean hasProjects =  false;
+
+    private ArrayList<Farm> farmsList = new ArrayList<>();
 
     // Alert Dialog Manager
     AlertDialogManager alert = new AlertDialogManager();
@@ -204,9 +218,34 @@ public class LoginActivity extends AppCompatActivity  {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         session.createLoginSession(firstName, lastName, email, userId);
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(i);
-        finish();
+
+        getListOfFarms(userId);
+
+
+    }
+
+    private void verifyData(){
+        Log.d("MY FARMS :  ", "verifyData" );
+        if(hasFarms){
+            Log.d("MY FARMS : ", String.valueOf(farmsList.size()) );
+
+            Bundle bundle = new Bundle();
+            bundle.putString("Process", "LOGIN");
+            bundle.putBoolean("HasFarms", true);
+
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            i.putExtras(bundle);
+            startActivity(i);
+            finish();
+
+        }else{
+            Log.d("MY FARMS : ", " NO FARMSmobee" );
+            //pushFragment(new HomeFragmentNoFarm(), "homefragmentNoFarm");
+
+            Intent i = new Intent(getApplicationContext(), NoFarmActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
     public void onLoginFailed() {
@@ -229,5 +268,81 @@ public class LoginActivity extends AppCompatActivity  {
             _passwordText.setError(null);
         }
         return valid;
+    }
+
+
+    public void getListOfFarms(int userId){
+
+        String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userId + "/farms";
+        final String  _TAG = "LIST OF FARMS: ";
+        CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(
+                Request.Method.GET,
+                URL_PROJECTS,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if(response == null){
+
+                        }else{
+                            hasFarms = true;
+                            try {
+                                for(int i=0;i<response.length();i++){
+                                    JSONObject farmObj = response.getJSONObject(i);
+
+                                    int id = farmObj.getInt("id");
+                                    String description = farmObj.getString("description");
+                                    String location = farmObj.getString("location");
+                                    String dateCreated = farmObj.getString("dateCreated");
+                                    String farmName = farmObj.getString("farmName");
+                                    int userId = farmObj.getInt("userId");
+                                    int size = farmObj.getInt("size");
+
+                                    Farm farm = new Farm();
+
+                                    farm.setId(id);
+                                    farm.setLocation(location);
+                                    farm.setSize(size);
+                                    farm.setFarmName(farmName);
+                                    farm.setDescription(description);
+                                    farm.setUserId(userId);
+
+                                    try {
+                                        Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreated);
+                                        farm.setDateCreated(date1);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    farmsList.add(farm);
+                                    /*[
+                                    {
+                                            "id": 1,
+                                            "description": "Gachuriri Farm",
+                                            "location": "Embu South, Gachuriri",
+                                            "dateCreated": "2018-07-16T00:00:00.000+0000",
+                                            "farmName": "Gachuriri",
+                                            "userId": 1,
+                                            "size": 10
+                                    }
+                                    ]*/
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.d(_TAG, "TRY ERROR" + e.getMessage());
+                            }
+                        }
+
+                        verifyData();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(_TAG, "Error: " + error.getMessage());
+                Log.d(_TAG, "Error: " + error.getMessage());
+            }
+        });
+        // Adding JsonObject request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
     }
 }
