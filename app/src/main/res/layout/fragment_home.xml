@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_marginTop="280dp"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -35,492 +36,481 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                    <LinearLayout
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="vertical">
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        card_view:cardCornerRadius="2dp"
+                        card_view:cardElevation="4dp">
 
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_view"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginTop="10dp"
-                            card_view:cardCornerRadius="2dp"
-                            card_view:cardElevation="4dp">
+                            android:layout_height="match_parent"
+                            android:background="@drawable/cardview_bg"
+                            android:orientation="horizontal">
 
-                            <LinearLayout
+                            <View
+                                android:layout_width="5dp"
+                                android:layout_height="100dp"
+                                android:background="@color/colorPrimary"></View>
+
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/cardview_bg"
-                                android:orientation="horizontal">
+                                android:layout_height="80dp"
+                                android:layout_marginTop="10dp">
 
-                                <View
-                                    android:layout_width="5dp"
-                                    android:layout_height="100dp"
-                                    android:background="@color/colorPrimary"></View>
+                                <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                    android:id="@+id/text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:text="Gachuriri Farm"
+                                    android:textColor="@color/colorGray"
+                                    android:textSize="14dp"
+                                    android:textStyle="bold" />
 
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="80dp"
-                                    android:layout_marginTop="10dp">
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginRight="20dp"
+                                    android:gravity="center_vertical">
+
+                                    <View
+                                        android:layout_width="7dp"
+                                        android:layout_height="7dp"
+                                        android:layout_alignParentRight="true"
+                                        android:background="@drawable/gree_circle"></View>
 
                                     <com.wolfsoft.teammeetingschedule.TextView_Lato
-                                        android:id="@+id/text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Active"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/linear"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/text"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="20dp"
-                                        android:text="Gachuriri Farm"
-                                        android:textColor="@color/colorGray"
-                                        android:textSize="14dp"
+                                        android:text="Gachuriri Farm Decsription hsdf kjsf sdjhf hsdj fsdjh "
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="12dp"
                                         android:textStyle="bold" />
 
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_marginRight="20dp"
-                                        android:gravity="center_vertical">
+                                </LinearLayout>
 
-                                        <View
-                                            android:layout_width="7dp"
-                                            android:layout_height="7dp"
-                                            android:layout_alignParentRight="true"
-                                            android:background="@drawable/gree_circle"></View>
-
-                                        <com.wolfsoft.teammeetingschedule.TextView_Lato
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="5dp"
-                                            android:text="Active"
-                                            android:textColor="@color/colorPrimary"
-                                            android:textSize="12dp"
-                                            android:textStyle="bold" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/linear"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/text"
-                                        android:layout_marginTop="3dp"
-                                        android:orientation="horizontal">
-
-                                        <com.wolfsoft.teammeetingschedule.Textview_lato_thin
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="20dp"
-                                            android:text="Gachuriri Farm Decsription hsdf kjsf sdjhf hsdj fsdjh "
-                                            android:textColor="@color/colorLightGray"
-                                            android:textSize="12dp"
-                                            android:textStyle="bold" />
-
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/linear2"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/linear"
-                                        android:layout_marginTop="3dp"
-                                        android:orientation="horizontal">
-
-                                        <com.wolfsoft.teammeetingschedule.Textview_lato_thin
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="20dp"
-                                            android:text="Location: "
-                                            android:textColor="@color/colorLightGray"
-                                            android:textSize="12dp"
-                                            android:textStyle="bold" />
-
-                                        <ImageView
-                                            android:layout_width="14dp"
-                                            android:layout_height="14dp"
-                                            android:layout_marginLeft="7dp"
-                                            android:src="@drawable/placeholder" />
-
-                                        <com.wolfsoft.teammeetingschedule.Textview_lato_thin
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="2dp"
-                                            android:text="Gachuriri"
-                                            android:textColor="@color/colorLightGray"
-                                            android:textSize="12dp"
-                                            android:textStyle="bold" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/linear"
-                                        android:layout_marginTop="22dp"
-                                        android:orientation="horizontal">
-
-                                        <com.wolfsoft.teammeetingschedule.TextView_Lato
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="20dp"
-                                            android:layout_marginLeft="20dp"
-                                            android:background="@drawable/roun_rect_lightgray"
-                                            android:gravity="center"
-                                            android:text="Projects (20)"
-                                            android:textColor="@color/colorGray"
-                                            android:textSize="10sp"
-                                            android:textStyle="bold" />
-
-                                        <com.wolfsoft.teammeetingschedule.TextView_Lato
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="20dp"
-                                            android:layout_marginLeft="10dp"
-                                            android:background="@drawable/roun_rect_lightgray"
-                                            android:gravity="center"
-                                            android:text="Edit/Update"
-                                            android:textColor="@color/colorGray"
-                                            android:textSize="10sp"
-                                            android:textStyle="bold" />
-
-                                        <com.wolfsoft.teammeetingschedule.TextView_Lato
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="20dp"
-                                            android:layout_marginLeft="10dp"
-                                            android:background="@drawable/roun_rect_lightgray"
-                                            android:gravity="center"
-                                            android:text="View Details"
-                                            android:textColor="@color/colorGray"
-                                            android:textSize="10sp"
-                                            android:textStyle="bold" />
-
-                                    </LinearLayout>
-                                </RelativeLayout>
-                             </LinearLayout>
-                        </android.support.v7.widget.CardView>
-
-
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_view2"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginTop="10dp"
-                            card_view:cardCornerRadius="2dp"
-                            card_view:cardElevation="4dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/cardview_bg"
-                                android:orientation="horizontal">
-
-                                <View
-                                    android:layout_width="5dp"
-                                    android:layout_height="100dp"
-                                    android:background="@color/colorPrimary"></View>
-
-                                <RelativeLayout
+                                <LinearLayout
+                                    android:id="@+id/linear2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="80dp"
-                                    android:layout_marginTop="10dp">
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
 
-                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
-                                        android:id="@+id/text2"
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="20dp"
-                                        android:text="Gachuriri Farm"
-                                        android:textColor="@color/colorGray"
-                                        android:textSize="14dp"
+                                        android:text="Location: "
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="12dp"
                                         android:textStyle="bold" />
 
-                                    <LinearLayout
+                                    <ImageView
+                                        android:layout_width="14dp"
+                                        android:layout_height="14dp"
+                                        android:layout_marginLeft="7dp"
+                                        android:src="@drawable/placeholder" />
+
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginLeft="2dp"
+                                        android:text="Gachuriri"
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="20dp"
+                                        android:layout_marginLeft="20dp"
+                                        android:background="@drawable/roun_rect_lightgray"
+                                        android:gravity="center"
+                                        android:text="Projects (20)"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="20dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:background="@drawable/roun_rect_lightgray"
+                                        android:gravity="center"
+                                        android:text="Edit/Update"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="20dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:background="@drawable/roun_rect_lightgray"
+                                        android:gravity="center"
+                                        android:text="View Details"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        card_view:cardCornerRadius="2dp"
+                        card_view:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/cardview_bg"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="5dp"
+                                android:layout_height="100dp"
+                                android:background="@color/colorPrimary"></View>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:layout_marginTop="10dp">
+
+                                <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                    android:id="@+id/text2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:text="Gachuriri Farm"
+                                    android:textColor="@color/colorGray"
+                                    android:textSize="14dp"
+                                    android:textStyle="bold" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginRight="20dp"
+                                    android:gravity="center_vertical">
+
+                                    <View
+                                        android:layout_width="7dp"
+                                        android:layout_height="7dp"
                                         android:layout_alignParentRight="true"
-                                        android:layout_marginRight="20dp"
-                                        android:gravity="center_vertical">
+                                        android:background="@drawable/gree_circle"></View>
 
-                                        <View
-                                            android:layout_width="7dp"
-                                            android:layout_height="7dp"
-                                            android:layout_alignParentRight="true"
-                                            android:background="@drawable/gree_circle"></View>
-
-                                        <com.wolfsoft.teammeetingschedule.TextView_Lato
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="5dp"
-                                            android:text="Active"
-                                            android:textColor="@color/colorPrimary"
-                                            android:textSize="12dp"
-                                            android:textStyle="bold" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/linear22"
-                                        android:layout_width="match_parent"
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_below="@+id/text2"
-                                        android:layout_marginTop="3dp"
-                                        android:orientation="horizontal">
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Active"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
 
-                                        <com.wolfsoft.teammeetingschedule.Textview_lato_thin
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="20dp"
-                                            android:text="Gachuriri Farm Decsription hsdf kjsf sdjhf hsdj fsdjh "
-                                            android:textColor="@color/colorLightGray"
-                                            android:textSize="12dp"
-                                            android:textStyle="bold" />
+                                <LinearLayout
+                                    android:id="@+id/linear22"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/text2"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
 
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/linear3"
-                                        android:layout_width="match_parent"
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_below="@+id/linear22"
-                                        android:layout_marginTop="3dp"
-                                        android:orientation="horizontal">
+                                        android:layout_marginLeft="20dp"
+                                        android:text="Gachuriri Farm Decsription hsdf kjsf sdjhf hsdj fsdjh "
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
 
-                                        <com.wolfsoft.teammeetingschedule.Textview_lato_thin
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="20dp"
-                                            android:text="Location: "
-                                            android:textColor="@color/colorLightGray"
-                                            android:textSize="12dp"
-                                            android:textStyle="bold" />
+                                </LinearLayout>
 
-                                        <ImageView
-                                            android:layout_width="14dp"
-                                            android:layout_height="14dp"
-                                            android:layout_marginLeft="7dp"
-                                            android:src="@drawable/placeholder" />
+                                <LinearLayout
+                                    android:id="@+id/linear3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear22"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
 
-                                        <com.wolfsoft.teammeetingschedule.Textview_lato_thin
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="2dp"
-                                            android:text="Gachuriri"
-                                            android:textColor="@color/colorLightGray"
-                                            android:textSize="12dp"
-                                            android:textStyle="bold" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_below="@+id/linear22"
-                                        android:layout_marginTop="22dp"
-                                        android:orientation="horizontal">
+                                        android:layout_marginLeft="20dp"
+                                        android:text="Location: "
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
 
-                                        <com.wolfsoft.teammeetingschedule.TextView_Lato
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="20dp"
-                                            android:layout_marginLeft="20dp"
-                                            android:background="@drawable/roun_rect_lightgray"
-                                            android:gravity="center"
-                                            android:text="Projects (20)"
-                                            android:textColor="@color/colorGray"
-                                            android:textSize="10sp"
-                                            android:textStyle="bold" />
+                                    <ImageView
+                                        android:layout_width="14dp"
+                                        android:layout_height="14dp"
+                                        android:layout_marginLeft="7dp"
+                                        android:src="@drawable/placeholder" />
 
-                                        <com.wolfsoft.teammeetingschedule.TextView_Lato
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="20dp"
-                                            android:layout_marginLeft="10dp"
-                                            android:background="@drawable/roun_rect_lightgray"
-                                            android:gravity="center"
-                                            android:text="Edit/Update"
-                                            android:textColor="@color/colorGray"
-                                            android:textSize="10sp"
-                                            android:textStyle="bold" />
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="2dp"
+                                        android:text="Gachuriri"
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
 
-                                        <com.wolfsoft.teammeetingschedule.TextView_Lato
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="20dp"
-                                            android:layout_marginLeft="10dp"
-                                            android:background="@drawable/roun_rect_lightgray"
-                                            android:gravity="center"
-                                            android:text="View Details"
-                                            android:textColor="@color/colorGray"
-                                            android:textSize="10sp"
-                                            android:textStyle="bold" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear22"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="horizontal">
 
-                                    </LinearLayout>
-                                </RelativeLayout>
-                            </LinearLayout>
-                        </android.support.v7.widget.CardView>
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="20dp"
+                                        android:layout_marginLeft="20dp"
+                                        android:background="@drawable/roun_rect_lightgray"
+                                        android:gravity="center"
+                                        android:text="Projects (20)"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="20dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:background="@drawable/roun_rect_lightgray"
+                                        android:gravity="center"
+                                        android:text="Edit/Update"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="20dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:background="@drawable/roun_rect_lightgray"
+                                        android:gravity="center"
+                                        android:text="View Details"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
 
 
-                    </LinearLayout>
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_view3"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        card_view:cardCornerRadius="2dp"
+                        card_view:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/cardview_bg"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="5dp"
+                                android:layout_height="100dp"
+                                android:background="@color/colorPrimary"></View>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:layout_marginTop="10dp">
+
+                                <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                    android:id="@+id/text3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:text="Gachuriri Farm"
+                                    android:textColor="@color/colorGray"
+                                    android:textSize="14dp"
+                                    android:textStyle="bold" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginRight="20dp"
+                                    android:gravity="center_vertical">
+
+                                    <View
+                                        android:layout_width="7dp"
+                                        android:layout_height="7dp"
+                                        android:layout_alignParentRight="true"
+                                        android:background="@drawable/gree_circle"></View>
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Active"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/linear33"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/text3"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:text="Gachuriri Farm Decsription hsdf kjsf sdjhf hsdj fsdjh "
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/linear4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear33"
+                                    android:layout_marginTop="3dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:text="Location: "
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
+
+                                    <ImageView
+                                        android:layout_width="14dp"
+                                        android:layout_height="14dp"
+                                        android:layout_marginLeft="7dp"
+                                        android:src="@drawable/placeholder" />
+
+                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="2dp"
+                                        android:text="Gachuriri"
+                                        android:textColor="@color/colorLightGray"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/linear33"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="horizontal">
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="20dp"
+                                        android:layout_marginLeft="20dp"
+                                        android:background="@drawable/roun_rect_lightgray"
+                                        android:gravity="center"
+                                        android:text="Projects (20)"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="20dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:background="@drawable/roun_rect_lightgray"
+                                        android:gravity="center"
+                                        android:text="Edit/Update"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="20dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:background="@drawable/roun_rect_lightgray"
+                                        android:gravity="center"
+                                        android:text="View Details"
+                                        android:textColor="@color/colorGray"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+
+                </LinearLayout>
             </LinearLayout>
 
-
-
-
-
-
-
-
         </ScrollView>
-
-        <android.support.v4.view.ViewPager
-
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <TableLayout
-            android:id="@+id/tableLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:padding="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TableRow
-                android:layout_width="368dp"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/income"
-                    android:layout_width="173dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:lineSpacingExtra="10sp"
-                    android:text="+ Income" />
-
-                <Button
-                    android:id="@+id/expense"
-                    android:layout_width="178dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="+ Expense"
-                    android:textAlignment="center" />
-
-            </TableRow>
-
-        </TableLayout>
-
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="?attr/colorPrimary"
-            app:tabIndicatorColor="@android:color/white"
-            app:tabIndicatorHeight="2dp"
-
-            />
-
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:layout_marginRight="16dp"
-        android:visibility="invisible"
-        android:src="@drawable/ic_add_black"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabSize="normal"
-        app:layout_anchor="@id/view_pager"
-        app:layout_anchorGravity="bottom|right|end" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:layout_marginRight="16dp"
-        android:visibility="invisible"
-        android:src="@drawable/ic_add_black"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabSize="normal"
-        app:layout_anchor="@id/view_pager"
-        app:layout_anchorGravity="bottom|right|end" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/ic_add_black"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabSize="normal"
-        app:layout_anchor="@id/view_pager"
-        app:layout_anchorGravity="bottom|right|end" />
-
-
-
 </android.support.design.widget.CoordinatorLayout>
-<!-- LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:layout_marginTop="100dp"
-    tools:context=".fragment.HomeFragment">
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="513dp"
-        android:orientation="vertical"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:paddingRight="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-
-        <TableLayout
-            android:id="@+id/tableLayout"
-            android:layout_width="match_parent"
-            android:layout_height="423dp"
-            android:gravity="bottom"
-            android:padding="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TableRow
-                android:layout_width="368dp"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/income"
-                    android:layout_width="173dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:lineSpacingExtra="10sp"
-                    android:text="+ Income" />
-
-                <Button
-                    android:id="@+id/expense"
-                    android:layout_width="178dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="+ Expense"
-                    android:textAlignment="center" />
-
-            </TableRow>
-
-        </TableLayout>
-
-    </LinearLayout>
-
-
-
-</LinearLayout -->

@@ -89,7 +89,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:layout_marginLeft="20dp"
-                                        android:text="Total Expense:"
+                                        android:text="Expenses"
                                         android:textColor="@color/colorLightGray"
                                         android:textSize="14dp"
                                         android:textStyle="bold" />
@@ -108,7 +108,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="20dp"
-                                        android:text="4566778"
+                                        android:text=""
                                         android:textColor="@color/colorGray"
                                         android:textSize="16dp"
                                         android:textStyle="normal" />
@@ -128,7 +128,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="20dp"
-                                        android:text="Total Income:"
+                                        android:text="Income(sum)"
                                         android:textColor="@color/colorLightGray"
                                         android:textSize="14dp"
                                         android:textStyle="bold" />
@@ -148,13 +148,13 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="20dp"
-                                        android:text="4645645"
+                                        android:text=""
                                         android:textColor="@color/colorGray"
                                         android:textSize="16dp"
                                         android:textStyle="normal" />
                                 </LinearLayout>
 
-                                <LinearLayout
+                                <!--LinearLayout
                                     android:id="@+id/linear3x"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                                         android:textColor="@color/colorGray"
                                         android:textSize="16dp"
                                         android:textStyle="normal" />
-                                </LinearLayout>
+                                </LinearLayout -->
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -259,7 +259,7 @@
                                             android:id="@+id/number_of_calories"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="1500/2000"
+                                            android:text=""
                                             android:textColor="@color/colorGray"
                                             android:textSize="16dp"
                                             android:textStyle="normal"

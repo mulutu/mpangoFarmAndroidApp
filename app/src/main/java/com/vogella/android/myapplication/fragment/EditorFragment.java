@@ -75,7 +75,7 @@ public class EditorFragment extends Fragment {
         TextView projectName = (TextView)result.findViewById(R.id.projectName);
         TextView textExpense = (TextView)result.findViewById(R.id.totalExpense);
         TextView textIncome = (TextView)result.findViewById(R.id.totalIncome);
-        TextView textGrossProfit = (TextView)result.findViewById(R.id.grossProfit);
+        //TextView textGrossProfit = (TextView)result.findViewById(R.id.grossProfit);
 
 
         Project project = (Project) getArguments().getSerializable("proj");
@@ -95,13 +95,13 @@ public class EditorFragment extends Fragment {
         projectName.setText(project.getProjectName());
         textIncome.setText( currencyFormat(totalIncomes.toString()));
         textExpense.setText( currencyFormat(totalExpenses.toString()));
-        textGrossProfit.setText( currencyFormat(profit.toString()));
+        //textGrossProfit.setText( currencyFormat(profit.toString()));
 
         int income = totalIncomes.intValueExact();
         int expense = totalExpenses.intValueExact();
 
         TextView numberOfCals = result.findViewById(R.id.number_of_calories);
-        numberOfCals.setText("Profit: \n" + currencyFormat(profit.toString()));
+        numberOfCals.setText("Gross Profit: \n" + currencyFormat(profit.toString()));
 
         ProgressBar pieChart = result.findViewById(R.id.stats_progressbar);
         double d = (double) income / (double) expense;

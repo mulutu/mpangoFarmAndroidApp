@@ -28,6 +28,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="bottom|left"
+        android:layout_marginLeft="10dp"
         android:src="@drawable/ic_arrow_back_black_48dp" />
 
     <ImageButton
@@ -35,6 +36,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="bottom|right"
+        android:layout_marginRight="10dp"
         android:src="@drawable/ic_arrow_forward_black_48dp" />
 
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -56,6 +57,7 @@
         android:background="@color/colorPrimary"
         app:itemIconTint="@drawable/nav_item_state_list"
         app:itemTextColor="@drawable/nav_item_state_list"
+        app:layout_behavior="com.vogella.android.myapplication.util.BottomNavigationBehavior"
         app:menu="@menu/navigation"/>
 
 

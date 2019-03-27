@@ -7,8 +7,8 @@
     android:orientation="horizontal">
 
     <View
-        android:layout_width="5dp"
-        android:layout_height="100dp"
+        android:layout_width="3dp"
+        android:layout_height="48dp"
         android:background="@color/colorPrimary"></View>
 
     <!--View
@@ -19,7 +19,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="3dp">
 
         <com.wolfsoft.teammeetingschedule.TextView_Lato
             android:id="@+id/transactionAmount"
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/transactionAmount"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="1dp"
             android:orientation="horizontal">
 
             <com.wolfsoft.teammeetingschedule.Textview_lato_thin
@@ -75,7 +75,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <!--LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear"
@@ -126,7 +126,7 @@
                 android:textSize="10sp"
                 android:textStyle="bold" />
 
-        </LinearLayout>
+        </LinearLayout -->
     </RelativeLayout>
 </LinearLayout>
 <!--RelativeLayout

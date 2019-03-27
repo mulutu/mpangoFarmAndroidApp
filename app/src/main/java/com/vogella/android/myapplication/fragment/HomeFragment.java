@@ -86,16 +86,15 @@ public class HomeFragment extends Fragment  {
 
         ArrayList<Farm> farmsList = (ArrayList<Farm>) this.getArguments().getSerializable("farmsArray");
 
-        btn1= (Button)rootView.findViewById(R.id.expense);
-        btn2= (Button)rootView.findViewById(R.id.income);
+        //btn1= (Button)rootView.findViewById(R.id.expense);
+        //btn2= (Button)rootView.findViewById(R.id.income);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.add_farm_recycler_view);
 
         transaction.setUserId(userId);
 
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        /*btn1.setOnClickListener(new View.OnClickListener() {
+            @Override            public void onClick(View v) {
                 Bundle extras = new Bundle();
                 extras.putString("Process", "NEW_TRANSACTION" );
 
@@ -118,7 +117,7 @@ public class HomeFragment extends Fragment  {
                 intent.putExtras(extras);
                 startActivity(intent);
             }
-        });
+        });*/
         return rootView;
     }
 
