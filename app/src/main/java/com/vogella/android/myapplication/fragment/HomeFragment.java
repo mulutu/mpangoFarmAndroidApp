@@ -23,6 +23,8 @@ import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.AddProjectActivity;
 import com.vogella.android.myapplication.activity.TransactionActivity;
 import com.vogella.android.myapplication.adapter.farmsAdapter;
+import com.vogella.android.myapplication.adapter.farmsListAdapter;
+import com.vogella.android.myapplication.adapter.projectsAdapter;
 import com.vogella.android.myapplication.model.Farm;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
@@ -63,7 +65,7 @@ public class HomeFragment extends Fragment  {
 
     private List<Farm> farmsList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private farmsAdapter mAdapter;
+    private farmsListAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,41 +85,10 @@ public class HomeFragment extends Fragment  {
 
         rootView =  inflater.inflate(R.layout.fragment_home, container, false);
 
-
         ArrayList<Farm> farmsList = (ArrayList<Farm>) this.getArguments().getSerializable("farmsArray");
 
-        //btn1= (Button)rootView.findViewById(R.id.expense);
-        //btn2= (Button)rootView.findViewById(R.id.income);
+        getListOfFarms(userId);
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.add_farm_recycler_view);
-
-        transaction.setUserId(userId);
-
-        /*btn1.setOnClickListener(new View.OnClickListener() {
-            @Override            public void onClick(View v) {
-                Bundle extras = new Bundle();
-                extras.putString("Process", "NEW_TRANSACTION" );
-
-                transaction.setTransactionTypeId(1);
-                extras.putSerializable("Transaction", transaction );
-                Intent intent = new Intent(getActivity(), TransactionActivity.class);
-                intent.putExtras(extras);
-                startActivity(intent);
-            }
-        });
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle extras = new Bundle();
-                extras.putString("Process", "NEW_TRANSACTION" );
-
-                transaction.setTransactionTypeId(0);
-                extras.putSerializable("Transaction", transaction );
-                Intent intent = new Intent(getActivity(), TransactionActivity.class);
-                intent.putExtras(extras);
-                startActivity(intent);
-            }
-        });*/
         return rootView;
     }
 
@@ -127,19 +98,85 @@ public class HomeFragment extends Fragment  {
         super.onAttach(activity);
     }
 
-    /*
-    public List<Fragment> getVisibleFragments() {
-        List<Fragment> allFragments = myContext.getSupportFragmentManager().getFragments();
-        if (allFragments == null || allFragments.isEmpty()) {
-            return Collections.emptyList();
-        }
-        List<Fragment> visibleFragments = new ArrayList<Fragment>();
-        /*for (Fragment fragment : allFragments) {
-            if (fragment.isVisible()) {
-                visibleFragments.add(fragment);
+    private void prepareProjectsData() {
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.farm_list_recycler_view);
+
+        mAdapter = new farmsListAdapter(farmsList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void getListOfFarms(int userID){
+        String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userID + "/farms";
+        final String  _TAG = "LIST OF FARMS: ";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                URL_PROJECTS,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for(int i=0;i<response.length();i++){
+                                JSONObject farmObj = response.getJSONObject(i);
+
+                                int id = farmObj.getInt("id");
+                                String description = farmObj.getString("description");
+                                String location = farmObj.getString("location");
+                                String dateCreated = farmObj.getString("dateCreated");
+                                String farmName = farmObj.getString("farmName");
+                                int userId = farmObj.getInt("userId");
+                                int size = farmObj.getInt("size");
+
+                                Farm farm = new Farm();
+
+                                farm.setId(id);
+                                farm.setLocation(location);
+                                farm.setSize(size);
+                                farm.setFarmName(farmName);
+                                farm.setDescription(description);
+                                farm.setUserId(userId);
+
+                                try {
+                                    Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreated);
+                                    farm.setDateCreated(date1);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                farmsList.add(farm);
+                                /*[
+                                {
+                                        "id": 1,
+                                        "description": "Gachuriri Farm",
+                                        "location": "Embu South, Gachuriri",
+                                        "dateCreated": "2018-07-16T00:00:00.000+0000",
+                                        "farmName": "Gachuriri",
+                                        "userId": 1,
+                                        "size": 10
+                                }
+                                ]*/
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d(_TAG, e.getMessage());
+                        }
+                        prepareProjectsData();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(_TAG, "Error: " + error.getMessage());
+                Log.d(_TAG, "Error: " + error.getMessage());
             }
-        }
-        return allFragments;
-    }*/
+        });
+        // Adding JsonObject request to request queue
+        AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
+    }
 
 }
