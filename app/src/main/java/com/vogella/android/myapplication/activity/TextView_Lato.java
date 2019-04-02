@@ -1,4 +1,4 @@
-package com.wolfsoft.teammeetingschedule;
+package com.vogella.android.myapplication.activity;
 
 import android.content.Context;
 import android.graphics.Typeface;

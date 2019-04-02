@@ -5,14 +5,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -22,6 +29,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.AddFarmActivity;
 import com.vogella.android.myapplication.activity.AddProjectActivity;
+import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.adapter.projectsAdapter;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
@@ -67,7 +75,7 @@ public class ProjectsSettingsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     //--------------------------------------------------------------------
 
-    private com.wolfsoft.teammeetingschedule.TextView_Lato btnAddProject, btnAddFarm;
+    private com.vogella.android.myapplication.activity.TextView_Lato btnAddProject, btnAddFarm;
 
     private List<Project> projectList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -77,6 +85,9 @@ public class ProjectsSettingsFragment extends Fragment {
     SessionManager session;
     private MyUser user;
     private int userId;
+
+    // Declaring the Toolbar Object
+    private Toolbar toolbar;
 
     public ProjectsSettingsFragment() {
         // Required empty public constructor
@@ -118,8 +129,12 @@ public class ProjectsSettingsFragment extends Fragment {
 
         View rootView =   inflater.inflate(R.layout.fragment_projects_settings, container, false);
 
-        btnAddProject = (com.wolfsoft.teammeetingschedule.TextView_Lato)rootView.findViewById(R.id.addproject);
-        btnAddFarm = (com.wolfsoft.teammeetingschedule.TextView_Lato)rootView.findViewById(R.id.addfarm);
+        setHasOptionsMenu(true);
+
+        populateTitleBar(rootView);
+
+        btnAddProject = (com.vogella.android.myapplication.activity.TextView_Lato)rootView.findViewById(R.id.addproject);
+        btnAddFarm = (com.vogella.android.myapplication.activity.TextView_Lato)rootView.findViewById(R.id.addfarm);
 
         btnAddProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +165,19 @@ public class ProjectsSettingsFragment extends Fragment {
 
         return rootView;
         //return inflater.inflate(R.layout.fragment_projects_settings, container, false);
+    }
+
+    private void populateTitleBar(View rootView){
+        toolbar = (Toolbar) rootView.findViewById(R.id.tool_bar);
+        // Setting toolbar as the ActionBar with setSupportActionBar() call
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setTitle("Projects");
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -295,5 +323,33 @@ public class ProjectsSettingsFragment extends Fragment {
 
             }
         }));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //finish();
+                return true;
+
+            case R.id.action_logout:
+                session.logoutUser();
+
+                Intent i = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+                //finish();
+                return true;
+
+            case R.id.action_favorite:
+                Toast.makeText(getActivity().getApplicationContext(), "Action clicked", Toast.LENGTH_LONG).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

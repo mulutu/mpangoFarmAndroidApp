@@ -1,54 +1,47 @@
 package com.vogella.android.myapplication.activity;
 
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.vogella.android.myapplication.model.Income;
+import com.vogella.android.myapplication.activity.user.LoginActivity;
+import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Transaction;
+import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.util.SessionManager;
 
-import android.widget.AdapterView.OnItemSelectedListener;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
-public class TransactionActivity extends AppCompatActivity{
+public class AddTransactionActivity extends AppCompatActivity{
 
     private static final String TAG = "TransactionActivity";
+
+    // Declaring the Toolbar Object
+    private Toolbar toolbar;
 
     private int userID = 1;
     private static final int REQUEST_CALENDAR = 0;
@@ -65,10 +58,22 @@ public class TransactionActivity extends AppCompatActivity{
     private String process =  "";
     private String transactionType =  "";
 
+    AlertDialogManager alert = new AlertDialogManager();
+    SessionManager session;
+    private MyUser user;
+    private int userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction);
+        setContentView(R.layout.activity_add_transaction);
+
+        populateTitleBar();
+
+        session = new SessionManager(getApplicationContext());
+
+        user = session.getUser();
+        userId = user.getId();
 
         _transactionAmount = (EditText) findViewById(R.id.trxAmount);
         _transactionDate = (EditText) findViewById(R.id.trxDate);
@@ -104,6 +109,24 @@ public class TransactionActivity extends AppCompatActivity{
                 submitTransaction();
             }
         });
+    }
+
+    private void populateTitleBar(){
+        // Attaching the layout to the toolbar object
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+
+        // Setting toolbar as the ActionBar with setSupportActionBar() call
+        setSupportActionBar(toolbar);
+
+        // Get access to the custom title view
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setTitle("Add Transaction");
+        }
     }
 
     private void populateData(Transaction transaction){
@@ -233,7 +256,7 @@ public class TransactionActivity extends AppCompatActivity{
 
         Log.d("submitTransaction::: ", "userId: " + trx.getUserId());
 
-        final ProgressDialog progressDialog = new ProgressDialog(TransactionActivity.this, R.style.AppTheme_Dark_Dialog);
+        final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Posting...");
         progressDialog.show();
@@ -271,5 +294,35 @@ public class TransactionActivity extends AppCompatActivity{
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,REQUEST_TAG);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
+            case R.id.action_logout:
+                session.logoutUser();
+
+                Intent i = new Intent(this, LoginActivity.class);
+                startActivity(i);
+                finish();
+                return true;
+
+            case R.id.action_favorite:
+                Toast.makeText(this, "Action clicked", Toast.LENGTH_LONG).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //public boolean onCreateOptionsMenu(Menu menu) {
+    //    return true;
+   // }
 }

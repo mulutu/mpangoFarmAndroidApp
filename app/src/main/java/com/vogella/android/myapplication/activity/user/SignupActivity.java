@@ -17,8 +17,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.MainActivity;
-import com.vogella.android.myapplication.activity.TransactionActivity;
-import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AppSingleton;
 
 import org.json.JSONException;

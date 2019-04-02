@@ -118,7 +118,7 @@ public class ProjectsViewActivity extends AppCompatActivity {
                 extras.putSerializable("Transaction", transaction);
 
                 if( process.equalsIgnoreCase("NEW_TRANSACTION") ){
-                    Intent intent = new Intent(getApplicationContext(), TransactionActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), AddTransactionActivity.class);
                     extras.putString("Process", "NEW_TRANSACTION");
                     intent.putExtras(extras);
                     finish();

@@ -1,12 +1,19 @@
 package com.vogella.android.myapplication.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.adapter.SampleAdapter;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
@@ -51,10 +59,16 @@ public class PagerFragment extends Fragment {
     private MyUser user;
     private int userId;
 
+    // Declaring the Toolbar Object
+    private Toolbar toolbar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.pager, container, false);
         pager=(ViewPager)result.findViewById(R.id.pager);
+        setHasOptionsMenu(true);
+
+        populateTitleBar(result);
 
         session = new SessionManager(getActivity().getApplicationContext());
         user = session.getUser();
@@ -106,6 +120,19 @@ public class PagerFragment extends Fragment {
        // });
 
         return(result);
+    }
+
+    private void populateTitleBar(View rootView){
+        toolbar = (Toolbar) rootView.findViewById(R.id.tool_bar);
+        // Setting toolbar as the ActionBar with setSupportActionBar() call
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setTitle("Farm Summary");
+        }
     }
 
     private PagerAdapter buildAdapter() {
@@ -221,5 +248,33 @@ public class PagerFragment extends Fragment {
         });
         // Adding JsonObject request to request queue
         AppSingleton.getInstance(getContext()).addToRequestQueue(jsonArrayRequest,_TAG);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //finish();
+                return true;
+
+            case R.id.action_logout:
+                session.logoutUser();
+
+                Intent i = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+                //finish();
+                return true;
+
+            case R.id.action_favorite:
+                Toast.makeText(getActivity().getApplicationContext(), "Action clicked", Toast.LENGTH_LONG).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

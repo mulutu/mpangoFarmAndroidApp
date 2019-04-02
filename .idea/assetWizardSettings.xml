@@ -19,8 +19,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="F:\JAVA_PROJECTS\ANDROID-APPS\TeamMeetingSchedule\app\src\main\res\drawable\placeholder.png" />
-                                      <entry key="outputName" value="placeholder" />
+                                      <entry key="imageAsset" value="C:\Users\jamulutu\Downloads\baseline-arrow_back-black-18\2x\baseline_arrow_back_black_18dp.png" />
+                                      <entry key="outputName" value="back_arrow" />
                                     </map>
                                   </option>
                                 </PersistentState>

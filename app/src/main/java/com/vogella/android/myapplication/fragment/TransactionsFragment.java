@@ -3,6 +3,7 @@ package com.vogella.android.myapplication.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,18 +11,23 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.vogella.android.myapplication.activity.TransactionActivity;
+import com.vogella.android.myapplication.activity.AddTransactionActivity;
 import com.vogella.android.myapplication.activity.TransactionViewActivity;
+import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
@@ -60,7 +66,7 @@ public class TransactionsFragment extends Fragment {
     final String  TAG = "REQUEST_QUEUE";
     private static final int REQUEST_TRANSACTION = 0;
 
-    private com.wolfsoft.teammeetingschedule.TextView_Lato btnAddIncome, btnAddExpense;
+    private com.vogella.android.myapplication.activity.TextView_Lato btnAddIncome, btnAddExpense;
 
     private Transaction transaction = new Transaction();
 
@@ -68,6 +74,9 @@ public class TransactionsFragment extends Fragment {
     SessionManager session;
     private MyUser user;
     private int userId;
+
+    // Declaring the Toolbar Object
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,12 +86,14 @@ public class TransactionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView =   inflater.inflate(R.layout.fragment_transactions, container, false);
+        setHasOptionsMenu(true);
 
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Transactions");
-        getActivity().setTitle("Transactions");
+        populateTitleBar(rootView);
 
-        btnAddIncome = (com.wolfsoft.teammeetingschedule.TextView_Lato)rootView.findViewById(R.id.addIncomeTransactions);
-        btnAddExpense = (com.wolfsoft.teammeetingschedule.TextView_Lato)rootView.findViewById(R.id.addExpenseTransactions);
+
+
+        btnAddIncome = (com.vogella.android.myapplication.activity.TextView_Lato)rootView.findViewById(R.id.addIncomeTransactions);
+        btnAddExpense = (com.vogella.android.myapplication.activity.TextView_Lato)rootView.findViewById(R.id.addExpenseTransactions);
 
         session = new SessionManager(getActivity().getApplicationContext());
         user = session.getUser();
@@ -100,7 +111,7 @@ public class TransactionsFragment extends Fragment {
                 transaction.setTransactionTypeId(0);
                 extras.putSerializable("Transaction", transaction );
 
-                Intent intent = new Intent(getActivity(), TransactionActivity.class);
+                Intent intent = new Intent(getActivity(), AddTransactionActivity.class);
                 intent.putExtras(extras);
                 startActivity(intent);
             }
@@ -116,7 +127,7 @@ public class TransactionsFragment extends Fragment {
                 transaction.setTransactionTypeId(1);
                 extras.putSerializable("Transaction", transaction );
 
-                Intent intent = new Intent(getActivity(), TransactionActivity.class);
+                Intent intent = new Intent(getActivity(), AddTransactionActivity.class);
                 intent.putExtras(extras);
                 startActivity(intent);
             }
@@ -128,6 +139,19 @@ public class TransactionsFragment extends Fragment {
 
         getTransactionList(userId);
         return rootView;
+    }
+
+    private void populateTitleBar(View rootView){
+        toolbar = (Toolbar) rootView.findViewById(R.id.tool_bar);
+        // Setting toolbar as the ActionBar with setSupportActionBar() call
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setTitle("Transactions");
+        }
     }
 
     private void getTransactionList( int userId ){
@@ -267,5 +291,31 @@ public class TransactionsFragment extends Fragment {
         Log.d("dispExpenseList", "displayTransactionList() METHOD:  LIST SIZE" + transactionList.size());
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //finish();
+                return true;
+
+            case R.id.action_logout:
+                session.logoutUser();
+
+                Intent i = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+                //finish();
+                return true;
+
+            case R.id.action_favorite:
+                Toast.makeText(getActivity().getApplicationContext(), "Action clicked", Toast.LENGTH_LONG).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

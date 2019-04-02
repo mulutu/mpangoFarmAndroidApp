@@ -283,7 +283,7 @@ public class LoginActivity extends AppCompatActivity  {
                     @Override
                     public void onResponse(JSONArray response) {
                         if(response == null){
-
+                            hasFarms = false;
                         }else{
                             hasFarms = true;
                             try {
@@ -338,8 +338,8 @@ public class LoginActivity extends AppCompatActivity  {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(_TAG, "Error: " + error.getMessage());
                 Log.d(_TAG, "Error: " + error.getMessage());
+                verifyData();
             }
         });
         // Adding JsonObject request to request queue

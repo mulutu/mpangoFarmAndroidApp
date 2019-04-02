@@ -1,4 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ToolbarTheme"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:elevation="2dp" >
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:gravity = "center"
+                android:textColor="@android:color/white"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_gravity="center"/>
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,46 +46,23 @@
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="138dp">
+        android:layout_height="80dp">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="80dp"
             android:background="@drawable/bg"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <com.wolfsoft.teammeetingschedule.TextView_Lato
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Projects | Farms"
-                    android:textColor="#fff"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="18dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
-            <com.wolfsoft.teammeetingschedule.TextView_Lato
+            <com.vogella.android.myapplication.activity.TextView_Lato
                 android:id="@+id/addproject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,11 +70,11 @@
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/roun_rect_white"
                 android:text="+ Project"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/gray"
                 android:textSize="14dp"
                 android:textStyle="bold" />
 
-            <com.wolfsoft.teammeetingschedule.TextView_Lato
+            <com.vogella.android.myapplication.activity.TextView_Lato
                 android:id="@+id/addfarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,73 +118,4 @@
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
-<!-- RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragment.ProjectsSettingsFragment">
-
-    <LinearLayout
-        android:id="@+id/buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:paddingRight="5dp">
-
-
-        <TableLayout
-            android:id="@+id/tableLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:padding="10dp">
-
-
-            <TableRow
-                android:layout_width="368dp"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/addproject"
-                    android:layout_width="173dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:lineSpacingExtra="10sp"
-                    android:text="+  P R O J E C T" />
-
-                <Button
-                    android:id="@+id/addfarm"
-                    android:layout_width="178dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:lineSpacingExtra="10sp"
-                    android:text="+  F A R M"
-                    android:textAlignment="center" />
-
-            </TableRow>
-
-        </TableLayout>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/your_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttons"
-        android:text="Ｓｅｎｄ ｕｓ" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_projects_setting_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/your_id"
-        android:numColumns="2"
-        android:scrollbars="vertical" />
-
-
-
-</RelativeLayout -->
+</android.support.design.widget.CoordinatorLayout>

@@ -21,13 +21,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
-        <com.wolfsoft.teammeetingschedule.TextView_Lato
+        <com.vogella.android.myapplication.activity.TextView_Lato
             android:id="@+id/listProjectName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="Amount"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/gray"
             android:textSize="14dp"
             android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
                 android:layout_alignParentRight="true"
                 android:background="@drawable/gree_circle"></View>
 
-            <com.wolfsoft.teammeetingschedule.TextView_Lato
+            <com.vogella.android.myapplication.activity.TextView_Lato
                 android:id="@+id/transactionDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,13 +63,13 @@
             android:layout_marginTop="3dp"
             android:orientation="horizontal">
 
-            <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+            <com.vogella.android.myapplication.activity.Textview_lato_thin
                 android:id="@+id/listProjectDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:text="Today : 5:40 pm"
-                android:textColor="@color/colorLightGray"
+                android:textColor="@color/lightgray"
                 android:textSize="12dp"
                 android:textStyle="bold" />
 
@@ -82,7 +82,7 @@
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
-            <com.wolfsoft.teammeetingschedule.TextView_Lato
+            <com.vogella.android.myapplication.activity.TextView_Lato
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginLeft="20dp"
@@ -93,7 +93,7 @@
                 android:textSize="10sp"
                 android:textStyle="bold" />
 
-            <com.wolfsoft.teammeetingschedule.TextView_Lato
+            <com.vogella.android.myapplication.activity.TextView_Lato
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"
@@ -104,7 +104,7 @@
                 android:textSize="10sp"
                 android:textStyle="bold" />
 
-            <com.wolfsoft.teammeetingschedule.TextView_Lato
+            <com.vogella.android.myapplication.activity.TextView_Lato
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"
@@ -115,7 +115,7 @@
                 android:textSize="10sp"
                 android:textStyle="bold" />
 
-            <com.wolfsoft.teammeetingschedule.TextView_Lato
+            <com.vogella.android.myapplication.activity.TextView_Lato
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"

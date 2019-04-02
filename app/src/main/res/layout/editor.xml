@@ -51,7 +51,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal" >
 
-                            <com.wolfsoft.teammeetingschedule.TextView_Lato
+                            <com.vogella.android.myapplication.activity.TextView_Lato
                                 android:id="@+id/projectName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                                 android:text="Project Name"
                                 android:layout_span="6"
                                 android:gravity="center"
-                                android:textColor="@color/colorGray"
+                                android:textColor="@color/gray"
                                 android:textSize="18dp"
                                 android:textStyle="bold" />
 
@@ -84,13 +84,13 @@
                                     android:layout_marginTop="3dp"
                                     android:orientation="horizontal">
 
-                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                    <com.vogella.android.myapplication.activity.TextView_Lato
                                         android:id="@+id/textExpense"
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:layout_marginLeft="20dp"
                                         android:text="Expenses"
-                                        android:textColor="@color/colorLightGray"
+                                        android:textColor="@color/lightgray"
                                         android:textSize="14dp"
                                         android:textStyle="bold" />
                                 </LinearLayout>
@@ -103,13 +103,13 @@
                                     android:layout_marginTop="1dp"
                                     android:orientation="horizontal">
 
-                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                    <com.vogella.android.myapplication.activity.Textview_lato_thin
                                         android:id="@+id/totalExpense"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="20dp"
                                         android:text=""
-                                        android:textColor="@color/colorGray"
+                                        android:textColor="@color/gray"
                                         android:textSize="16dp"
                                         android:textStyle="normal" />
 
@@ -123,13 +123,13 @@
                                     android:layout_marginTop="3dp"
                                     android:orientation="horizontal">
 
-                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                    <com.vogella.android.myapplication.activity.TextView_Lato
                                         android:id="@+id/textIncome"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="20dp"
                                         android:text="Income(sum)"
-                                        android:textColor="@color/colorLightGray"
+                                        android:textColor="@color/lightgray"
                                         android:textSize="14dp"
                                         android:textStyle="bold" />
 
@@ -143,13 +143,13 @@
                                     android:layout_marginTop="3dp"
                                     android:orientation="horizontal">
 
-                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                    <com.vogella.android.myapplication.activity.Textview_lato_thin
                                         android:id="@+id/totalIncome"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="20dp"
                                         android:text=""
-                                        android:textColor="@color/colorGray"
+                                        android:textColor="@color/gray"
                                         android:textSize="16dp"
                                         android:textStyle="normal" />
                                 </LinearLayout>
@@ -162,7 +162,7 @@
                                     android:layout_marginTop="3dp"
                                     android:orientation="horizontal">
 
-                                    <com.wolfsoft.teammeetingschedule.TextView_Lato
+                                    <com.vogella.android.myapplication.activity.TextView_Lato
                                         android:id="@+id/textGrossProfit"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -182,7 +182,7 @@
                                     android:layout_marginTop="3dp"
                                     android:orientation="horizontal">
 
-                                    <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                    <com.vogella.android.myapplication.activity.Textview_lato_thin
                                         android:id="@+id/grossProfit"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -255,12 +255,12 @@
                                             app:layout_constraintVertical_bias="0.502" />
 
                                         <!-- The text that goes in a center of the chart -->
-                                        <com.wolfsoft.teammeetingschedule.Textview_lato_thin
+                                        <com.vogella.android.myapplication.activity.Textview_lato_thin
                                             android:id="@+id/number_of_calories"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text=""
-                                            android:textColor="@color/colorGray"
+                                            android:textColor="@color/gray"
                                             android:textSize="16dp"
                                             android:textStyle="normal"
                                             app:layout_constraintBottom_toBottomOf="parent"

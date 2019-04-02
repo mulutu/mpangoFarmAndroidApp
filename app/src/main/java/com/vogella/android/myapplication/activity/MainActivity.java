@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,7 +28,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.fragment.HomeFragment;
 import com.vogella.android.myapplication.R;
-import com.vogella.android.myapplication.fragment.HomeFragmentNoFarm;
 import com.vogella.android.myapplication.fragment.ProjectsSettingsFragment;
 import com.vogella.android.myapplication.fragment.TransactionsFragment;
 import com.vogella.android.myapplication.model.Farm;
@@ -72,16 +72,16 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
         setContentView(R.layout.activity_main);
 
         // Attaching the layout to the toolbar object
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        //toolbar = (Toolbar) findViewById(R.id.tool_bar);
 
         // Setting toolbar as the ActionBar with setSupportActionBar() call
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         // Remove default title text
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Get access to the custom title view
-        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        //TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
 
         session = new SessionManager(getApplicationContext());
 
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        /*int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
         }else if (id == R.id.action_favorite) {
             Toast.makeText(MainActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
             return true;
-        }
+        }*/
 
 
         return super.onOptionsItemSelected(item);
@@ -303,9 +303,8 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
                     @Override
                     public void onResponse(JSONArray response) {
                         if(response == null){
-
+                            hasFarms = false;
                         }else{
-
                             try {
                                 for(int i=0;i<response.length();i++){
 
@@ -364,6 +363,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(_TAG, "Error: " + error.getMessage());
                 Log.d(_TAG, "Error: " + error.getMessage());
+                verifyData();
             }
         });
         // Adding JsonObject request to request queue
