@@ -37,26 +37,19 @@ import java.util.Date;
 
 
 public class AddTransactionActivity extends AppCompatActivity{
-
     private static final String TAG = "TransactionActivity";
-
-    // Declaring the Toolbar Object
     private Toolbar toolbar;
-
-    private int userID = 1;
+    //private int userID = 1;
     private static final int REQUEST_CALENDAR = 0;
-
     private Transaction transaction;
-
     private EditText _transactionAmount;
     private EditText _transactionDate;
     private EditText _projectName;
     private EditText _accountName;
     private EditText _description;
     private Button _btnSubmitTransaction;
-
     private String process =  "";
-    private String transactionType =  "";
+    //private String transactionType =  "";
 
     AlertDialogManager alert = new AlertDialogManager();
     SessionManager session;
@@ -70,18 +63,14 @@ public class AddTransactionActivity extends AppCompatActivity{
 
         populateTitleBar();
 
-        session = new SessionManager(getApplicationContext());
+        manageSession();
 
-        user = session.getUser();
-        userId = user.getId();
+        manageView();
 
-        _transactionAmount = (EditText) findViewById(R.id.trxAmount);
-        _transactionDate = (EditText) findViewById(R.id.trxDate);
-        _projectName = (EditText) findViewById(R.id.trxProjectName);
-        _accountName = (EditText) findViewById(R.id.trxAccountName);
-        _description = (EditText) findViewById(R.id.trxDescription);
-        _btnSubmitTransaction = (Button) findViewById(R.id.btnSubmitTransaction);
+        manageVariables();
+    }
 
+    private void manageVariables(){
         if(getIntent()!=null && getIntent().getExtras()!=null){
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
@@ -97,6 +86,15 @@ public class AddTransactionActivity extends AppCompatActivity{
                 }
             }
         }
+    }
+
+    private void manageView(){
+        _transactionAmount = (EditText) findViewById(R.id.trxAmount);
+        _transactionDate = (EditText) findViewById(R.id.trxDate);
+        _projectName = (EditText) findViewById(R.id.trxProjectName);
+        _accountName = (EditText) findViewById(R.id.trxAccountName);
+        _description = (EditText) findViewById(R.id.trxDescription);
+        _btnSubmitTransaction = (Button) findViewById(R.id.btnSubmitTransaction);
         _transactionDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,16 +109,16 @@ public class AddTransactionActivity extends AppCompatActivity{
         });
     }
 
+    private void manageSession(){
+        session = new SessionManager(getApplicationContext());
+        user = session.getUser();
+        userId = user.getId();
+    }
+
     private void populateTitleBar(){
-        // Attaching the layout to the toolbar object
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
-
-        // Setting toolbar as the ActionBar with setSupportActionBar() call
         setSupportActionBar(toolbar);
-
-        // Get access to the custom title view
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -207,7 +205,7 @@ public class AddTransactionActivity extends AppCompatActivity{
         extras.putSerializable("Transaction", getTransaction());
         extras.putString("Process","NEW_TRANSACTION");
 
-        Intent intent = new Intent(getApplicationContext(), ProjectsViewActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SelectProjectActivity.class);
         intent.putExtras(extras);
         startActivityForResult(intent, 0);
         finish();
@@ -231,16 +229,43 @@ public class AddTransactionActivity extends AppCompatActivity{
         return format2.format(date);
     }
 
+    private boolean validate(){
+        boolean valid = true;
+        String amount = _transactionAmount.getText().toString();
+        String desc = _description.getText().toString();
+
+        if (amount.isEmpty()) {
+            _transactionAmount.setError("enter amount");
+            valid = false;
+        } else {
+            _transactionAmount.setError(null);
+        }
+        if (desc.isEmpty()) {
+            _description.setError("enter transaction description");
+            valid = false;
+        } else {
+            _description.setError(null);
+        }
+
+        return valid;
+    }
+
+    private void onValidateFailed(){
+        _btnSubmitTransaction.setEnabled(true);
+    }
+
     public void submitTransaction() {
         Log.d(TAG, "submitTransaction");
-
         String URL_ADD_TRANSACTION= "http://45.56.73.81:8084/Mpango/api/v1/transactions";
-        //_btnSubmitExpense.setEnabled(false);
+        _btnSubmitTransaction.setEnabled(false);
+
+        if (!validate()) {
+            onValidateFailed();
+            return;
+        }
 
         String  REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
-
         Transaction trx =  getTransaction();
-
         JSONObject postparams = new JSONObject();
         try {
             postparams.put("transactionDate", dateToString(trx.getTransactionDate()));
@@ -253,14 +278,10 @@ public class AddTransactionActivity extends AppCompatActivity{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        Log.d("submitTransaction::: ", "userId: " + trx.getUserId());
-
         final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Posting...");
         progressDialog.show();
-
         JsonObjectRequest jsonObjectReq = new JsonObjectRequest(
                 Request.Method.POST,
                 URL_ADD_TRANSACTION,
@@ -290,13 +311,11 @@ public class AddTransactionActivity extends AppCompatActivity{
                 progressDialog.dismiss();
             }
         });
-        // Adding JsonObject request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,REQUEST_TAG);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -321,8 +340,4 @@ public class AddTransactionActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
-
-    //public boolean onCreateOptionsMenu(Menu menu) {
-    //    return true;
-   // }
 }

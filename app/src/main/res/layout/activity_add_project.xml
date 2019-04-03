@@ -27,7 +27,7 @@
                 android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Project"
+                android:text=""
                 android:textColor="@android:color/white"
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_gravity="center"/>
@@ -154,6 +154,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="24dp"
                     android:padding="12dp"
+                    android:textColor="@color/white"
                     android:text="Create Project"/>
 
                 <!-- TextView android:id="@+id/link_login"

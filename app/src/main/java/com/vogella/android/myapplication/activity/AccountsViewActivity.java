@@ -197,7 +197,7 @@ public class AccountsViewActivity extends AppCompatActivity {
                         finish();
                         startActivity(intent);
                     } else if (process.equalsIgnoreCase("EDIT_TRANSACTION")) {
-                        Intent intent = new Intent(getApplicationContext(), TransactionViewActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), EditTransactionActivity.class);
                         extras.putString("Process", "EDIT_TRANSACTION");
                         intent.putExtras(extras);
                         finish();

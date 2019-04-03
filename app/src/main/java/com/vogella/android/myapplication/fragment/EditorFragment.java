@@ -99,12 +99,13 @@ public class EditorFragment extends Fragment {
 
         int income = totalIncomes.intValueExact();
         int expense = totalExpenses.intValueExact();
+        int total = income + expense;
 
         TextView numberOfCals = result.findViewById(R.id.number_of_calories);
         numberOfCals.setText("Gross Profit: \n" + currencyFormat(profit.toString()));
 
         ProgressBar pieChart = result.findViewById(R.id.stats_progressbar);
-        double d = (double) income / (double) expense;
+        double d = (double) income / (double) total;
 
         int progress = (int) (d * 100);
         pieChart.setProgress(progress);

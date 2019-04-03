@@ -42,11 +42,11 @@
             android:theme="@style/AppTheme.Dark" />
         <activity android:name=".activity.AddTransactionActivity" />
         <activity android:name=".activity.CalendarActivity" />
-        <activity android:name=".activity.ProjectsViewActivity" />
-        <activity android:name=".activity.TransactionViewActivity" />
+        <activity android:name=".activity.SelectProjectActivity" />
+        <activity android:name=".activity.EditTransactionActivity" />
         <activity android:name=".activity.AddProjectActivity" />
         <activity android:name=".activity.AddFarmActivity" />
-        <activity android:name=".activity.FarmsViewActivity" />
+        <activity android:name=".activity.SelectFarmActivity" />
         <activity android:name=".activity.AccountsViewActivity" />
         <activity android:name=".activity.NoFarmActivity"></activity>
     </application>

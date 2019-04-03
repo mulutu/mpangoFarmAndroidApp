@@ -16,8 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,7 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.activity.AddTransactionActivity;
-import com.vogella.android.myapplication.activity.TransactionViewActivity;
+import com.vogella.android.myapplication.activity.EditTransactionActivity;
 import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.util.AlertDialogManager;
@@ -48,7 +46,6 @@ import java.math.MathContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -274,7 +271,7 @@ public class TransactionsFragment extends Fragment {
                     extras.putSerializable("Transaction", trx );
                     extras.putSerializable("Process", "EDIT_TRANSACTION" );
 
-                    Intent intent = new Intent(getActivity().getApplicationContext(), TransactionViewActivity.class);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), EditTransactionActivity.class);
                     intent.putExtras(extras);
 
                     startActivityForResult(intent, REQUEST_TRANSACTION);

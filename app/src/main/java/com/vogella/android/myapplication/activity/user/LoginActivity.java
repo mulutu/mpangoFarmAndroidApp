@@ -45,12 +45,11 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity  {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
-
-    private static final String SHARED_PREFERENCES_KEY_NAME = "vidslogin"; //  <--- Add this
-    private static final String SHARED_PREFERENCES_KEY_USER_ID = "userid";  //  <--- To save username
-    private static final String SHARED_PREFERENCES_KEY_USERNAME = "username";  //  <--- To save username
-    private static final String SHARED_PREFERENCES_KEY_PASSWORD = "password";  //  <--- To save password
-    private static final String SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT = "rememberAccount";
+    //private static final String SHARED_PREFERENCES_KEY_NAME = "vidslogin"; //  <--- Add this
+    //private static final String SHARED_PREFERENCES_KEY_USER_ID = "userid";  //  <--- To save username
+    //private static final String SHARED_PREFERENCES_KEY_USERNAME = "username";  //  <--- To save username
+    //private static final String SHARED_PREFERENCES_KEY_PASSWORD = "password";  //  <--- To save password
+    //private static final String SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT = "rememberAccount";
 
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
@@ -59,13 +58,9 @@ public class LoginActivity extends AppCompatActivity  {
 
     private Boolean hasFarms =  false;
     private Boolean hasProjects =  false;
-
     private ArrayList<Farm> farmsList = new ArrayList<>();
 
-    // Alert Dialog Manager
     AlertDialogManager alert = new AlertDialogManager();
-
-    // Session Manager Class
     SessionManager session;
 
     String email = "";
@@ -80,20 +75,19 @@ public class LoginActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        final Context context = getApplicationContext();
+        manageSession();
 
-        // Session Manager
-        session = new SessionManager(getApplicationContext());
+        manageView();
+    }
 
+    private void manageView(){
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
-
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
             }
         });
-
         _signupLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,26 +100,22 @@ public class LoginActivity extends AppCompatActivity  {
         });
     }
 
+    private void manageSession(){
+        session = new SessionManager(getApplicationContext());
+    }
+
     public void login() {
         Log.d(TAG, "Login");
-
         email = _emailText.getText().toString();
         password = _passwordText.getText().toString();
-
         if (!validate()) {
             onLoginFailed();
             return;
         }
-
         _loginButton.setEnabled(false);
-
-        //String email = _emailText.getText().toString();
-        //String password = _passwordText.getText().toString();
-
-        // TODO: Implement your own authentication logic here.
         volleyJsonObjectRequest(email, password);
-
    }
+
 
     public void volleyJsonObjectRequest(final String email, final String password){
 
@@ -191,8 +181,6 @@ public class LoginActivity extends AppCompatActivity  {
                 onLoginFailed();
             }
         });
-
-        // Adding JsonObject request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,REQUEST_TAG);
     }
 
@@ -211,17 +199,13 @@ public class LoginActivity extends AppCompatActivity  {
 
     @Override
     public void onBackPressed() {
-        // Disable going back to the MainActivity
         moveTaskToBack(true);
     }
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         session.createLoginSession(firstName, lastName, email, userId);
-
         getListOfFarms(userId);
-
-
     }
 
     private void verifyData(){
@@ -261,7 +245,7 @@ public class LoginActivity extends AppCompatActivity  {
         } else {
             _emailText.setError(null);
         }
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty() || password.length() < 4 || password.length() > 15) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {

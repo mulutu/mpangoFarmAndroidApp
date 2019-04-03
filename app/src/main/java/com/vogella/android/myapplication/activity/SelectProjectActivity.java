@@ -2,13 +2,19 @@ package com.vogella.android.myapplication.activity;
 
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -16,9 +22,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
+import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.adapter.projectsAdapter;
-import com.vogella.android.myapplication.model.Expense;
-import com.vogella.android.myapplication.model.Income;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Transaction;
@@ -32,15 +37,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ProjectsViewActivity extends AppCompatActivity {
+public class SelectProjectActivity extends AppCompatActivity {
 
     private List<Project> projectList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -56,20 +59,33 @@ public class ProjectsViewActivity extends AppCompatActivity {
     private MyUser user;
     private int userId;
 
+    // Declaring the Toolbar Object
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_projects_view);
+        setContentView(R.layout.activity_select_project);
 
-        recyclerView = (RecyclerView) findViewById(R.id.projects_recycler_view);
+        populateTitleBar();
 
-        mAdapter = new projectsAdapter(projectList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        prepareView();
 
+        manageVariables();
+
+        userSession();
+
+        getListOfProjects(userId);
+    }
+
+    private void userSession(){
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+        user = session.getUser();
+        userId = user.getId();
+    }
+
+    private void manageVariables(){
         if(getIntent()!=null && getIntent().getExtras()!=null){
             Bundle bundle = getIntent().getExtras();
             if(!bundle.getSerializable("Transaction").equals(null)){
@@ -81,13 +97,28 @@ public class ProjectsViewActivity extends AppCompatActivity {
                 process = "EDIT_TRANSACTION";
             }
         }
+    }
 
-        session = new SessionManager(getApplicationContext());
-        session.checkLogin();
-        user = session.getUser();
-        userId = user.getId();
+    private void prepareView(){
+        recyclerView = (RecyclerView) findViewById(R.id.projects_recycler_view);
+        mAdapter = new projectsAdapter(projectList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+    }
 
-        getListOfProjects(userId);
+    private void populateTitleBar(){
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setTitle("Select project");
+        }
     }
 
     public void showSnackbar(View view, String message, int duration){
@@ -124,7 +155,7 @@ public class ProjectsViewActivity extends AppCompatActivity {
                     finish();
                     startActivity(intent);
                 }else if( process.equalsIgnoreCase("EDIT_TRANSACTION") ){
-                    Intent intent = new Intent(getApplicationContext(), TransactionViewActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), EditTransactionActivity.class);
                     extras.putString("Process", "EDIT_TRANSACTION");
                     intent.putExtras(extras);
                     finish();
@@ -226,7 +257,33 @@ public class ProjectsViewActivity extends AppCompatActivity {
                 Log.d(_TAG, "Error: " + error.getMessage());
             }
         });
-        // Adding JsonObject request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
+            case R.id.action_logout:
+                session.logoutUser();
+
+                Intent i = new Intent(this, LoginActivity.class);
+                startActivity(i);
+                finish();
+                return true;
+
+            case R.id.action_favorite:
+                Toast.makeText(this, "Action clicked", Toast.LENGTH_LONG).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
