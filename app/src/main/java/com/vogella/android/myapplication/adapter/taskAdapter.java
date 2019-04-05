@@ -11,7 +11,9 @@ import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class taskAdapter extends RecyclerView.Adapter<taskAdapter.ViewHolder> {
@@ -42,8 +44,12 @@ public class taskAdapter extends RecyclerView.Adapter<taskAdapter.ViewHolder> {
         //holder.txtNo.setText("#" + String.valueOf(task.getTaskId()));
         holder.txtNo.setText("#" + String.valueOf(position+1));
         holder.txtDesc.setText(task.getDescription());
-        holder.txtCategory.setText(task.getTaskName());
+        holder.txtCategory.setText(dateToString(task.getTaskDate()));
+    }
 
+    private String dateToString(Date date){
+        SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
+        return format2.format(date);
     }
 
     @Override

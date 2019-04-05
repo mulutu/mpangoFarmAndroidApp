@@ -77,7 +77,6 @@ public class TaskNoteActivity extends AppCompatActivity {
         manageView();
 
         manageVariables();
-
     }
 
     private void manageVariables(){
@@ -118,14 +117,20 @@ public class TaskNoteActivity extends AppCompatActivity {
     private void manageView(){
         _taskName = (EditText) findViewById(R.id.inTitle);
         _taskDate = (EditText) findViewById(R.id.inDate);
-        _taskDate.setOnClickListener(new View.OnClickListener() {
+        _taskDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onFocusChange(View v, boolean hasFocus) {
                 displayDatePicker();
             }
         });
         _taskDescription = (EditText) findViewById(R.id.inDescription);
         _btnDeleteTask = (Button) findViewById(R.id.btnDelete);
+        _btnDeleteTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteTask();
+            }
+        });
         _btnSubmitTask = (Button) findViewById(R.id.btnDone);
         _btnSubmitTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +142,50 @@ public class TaskNoteActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void deleteTask(){
+        _btnDeleteTask.setEnabled(false);
+        task = getTask();
+        String URL = "http://45.56.73.81:8084/Mpango/api/v1/tasks/" + task.getTaskId();
+        String  REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
+
+        final ProgressDialog progressDialog = new ProgressDialog(TaskNoteActivity.this, R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Posting...");
+        progressDialog.show();
+
+        JsonObjectRequest jsonObjectReq = new JsonObjectRequest(
+                Request.Method.DELETE,
+                URL,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            int status = response.getInt("status");
+                            String message = response.getString("message");
+                            if(status == 0 && message.equalsIgnoreCase("CREATED")){
+                                //progressDialog.hide();
+                                progressDialog.dismiss();
+                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } catch (JSONException e) {
+                            progressDialog.dismiss();
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("LOGIN RESPONSE", "Error: " + error.getMessage());
+                progressDialog.dismiss();
+            }
+        });
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,REQUEST_TAG);
     }
 
     private boolean validate(){
