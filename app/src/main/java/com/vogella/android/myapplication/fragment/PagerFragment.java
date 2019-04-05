@@ -47,36 +47,34 @@ import java.util.Date;
 import java.util.List;
 
 public class PagerFragment extends Fragment {
-
     ViewPager pager;
-
+    View result;
     private ImageButton leftNav, rightNav;
-
     ArrayList<Project> projects = new ArrayList<>();
-
     AlertDialogManager alert = new AlertDialogManager();
     SessionManager session;
     private MyUser user;
     private int userId;
-
-    // Declaring the Toolbar Object
     private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View result = inflater.inflate(R.layout.pager, container, false);
+        result = inflater.inflate(R.layout.pager, container, false);
         pager=(ViewPager)result.findViewById(R.id.pager);
         setHasOptionsMenu(true);
 
         populateTitleBar(result);
 
-        session = new SessionManager(getActivity().getApplicationContext());
-        user = session.getUser();
-        userId = user.getId();
+        manageSession();
 
         getListOfProjects(userId);
 
+        manageView();
 
+        return(result);
+    }
+
+    private void manageView(){
         //viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         leftNav = (ImageButton) result.findViewById(R.id.left_nav);
         rightNav = (ImageButton) result.findViewById(R.id.right_nav);
@@ -102,24 +100,12 @@ public class PagerFragment extends Fragment {
                 pager.setCurrentItem(tab);
             }
         });
+    }
 
-
-        //Button button = (Button) result.findViewById(R.id.first);
-
-        //button.setOnClickListener(new View.OnClickListener() {
-            //public void onClick(View v) {
-               // pager.setCurrentItem(0);
-           // }
-       // });
-
-       // button = (Button) result.findViewById(R.id.last);
-       // button.setOnClickListener(new View.OnClickListener() {
-            //public void onClick(View v) {
-               // pager.setCurrentItem(buildAdapter().getCount() - 1);
-           // }
-       // });
-
-        return(result);
+    private void manageSession(){
+        session = new SessionManager(getActivity().getApplicationContext());
+        user = session.getUser();
+        userId = user.getId();
     }
 
     private void populateTitleBar(View rootView){

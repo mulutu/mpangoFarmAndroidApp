@@ -29,6 +29,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.AddFarmActivity;
 import com.vogella.android.myapplication.activity.AddProjectActivity;
+import com.vogella.android.myapplication.activity.EditTransactionActivity;
+import com.vogella.android.myapplication.activity.tasks.TaskActivity;
 import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.adapter.projectsAdapter;
 import com.vogella.android.myapplication.model.MyUser;
@@ -309,13 +311,22 @@ public class ProjectsSettingsFragment extends Fragment {
     }
 
     private void prepareProjectsData() {
-
         mAdapter.notifyDataSetChanged();
-
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-               // ------
+                Project project = projectList.get(position);
+
+                Bundle extras = new Bundle();
+                extras.putSerializable("Project", project );
+                extras.putSerializable("Process", "EDIT_PROJECT" );
+
+                Intent intent = new Intent(getActivity().getApplicationContext(), TaskActivity.class);
+                intent.putExtras(extras);
+
+                startActivityForResult(intent, 0);
+                //getActivity().finish();
+                getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
 
             @Override

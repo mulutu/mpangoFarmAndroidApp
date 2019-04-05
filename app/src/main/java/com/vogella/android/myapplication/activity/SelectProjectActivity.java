@@ -58,8 +58,6 @@ public class SelectProjectActivity extends AppCompatActivity {
     SessionManager session;
     private MyUser user;
     private int userId;
-
-    // Declaring the Toolbar Object
     private Toolbar toolbar;
 
     @Override
@@ -133,9 +131,7 @@ public class SelectProjectActivity extends AppCompatActivity {
     }
 
     private void prepareProjectsData() {
-
         mAdapter.notifyDataSetChanged();
-
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {

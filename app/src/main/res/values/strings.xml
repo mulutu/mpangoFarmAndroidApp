@@ -24,5 +24,6 @@
     <string name="hint">Editor #%d</string>
     <string name="title_activity_projects_view">ProjectsViewActivity</string>
     <string name="title_activity_expense_view">ExpenseViewActivity</string>
+    <string name="title_activity_task">TaskActivity</string>
 
 </resources>
