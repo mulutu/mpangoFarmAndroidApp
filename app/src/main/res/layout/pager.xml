@@ -34,48 +34,46 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="4dip"
-    android:layout_marginTop="50dp">
-
-    <android.support.v4.view.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pager"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_below="@id/tool_bar"
-        android:layout_height="210dp"
-        >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="57dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="4dip">
 
-        <!--android.support.v4.view.PagerTabStrip
+        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_below="@id/tool_bar">
+
+            <!--android.support.v4.view.PagerTabStrip
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top" / -->
-    </android.support.v4.view.ViewPager>
+        </android.support.v4.view.ViewPager>
 
-    <ImageButton
-        android:id="@+id/left_nav"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom|left"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/ic_arrow_back_black_48dp" />
+        <ImageButton
+            android:id="@+id/left_nav"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|left"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_arrow_back_black_48dp" />
 
-    <ImageButton
-        android:id="@+id/right_nav"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/ic_arrow_forward_black_48dp" />
+        <ImageButton
+            android:id="@+id/right_nav"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_arrow_forward_black_48dp" />
 
 
-    <!--LinearLayout
+        <!--LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
@@ -95,5 +93,5 @@
             android:layout_height="wrap_content"
             android:text="Last"></Button>
     </LinearLayout -->
-</FrameLayout>
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

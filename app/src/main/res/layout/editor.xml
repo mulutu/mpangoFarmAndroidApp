@@ -14,15 +14,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card_view"
                 android:layout_width="match_parent"
                 android:layout_height="210dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 card_view:cardCornerRadius="2dp"
                 card_view:cardElevation="4dp">
 
@@ -33,33 +33,28 @@
                     android:orientation="horizontal">
 
 
-
-
-
-
-
                     <TableLayout
                         android:id="@+id/tableLayout1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:shrinkColumns="*"
-                        android:stretchColumns="*" >
+                        android:stretchColumns="*">
 
                         <TableRow
                             android:id="@+id/tableRow1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal" >
+                            android:gravity="center_horizontal">
 
                             <com.vogella.android.myapplication.activity.TextView_Lato
                                 android:id="@+id/projectName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
                                 android:layout_marginLeft="20dp"
-                                android:text="Project Name"
+                                android:layout_marginTop="6dp"
                                 android:layout_span="6"
                                 android:gravity="center"
+                                android:text="Project Name"
                                 android:textColor="@color/gray"
                                 android:textSize="18dp"
                                 android:textStyle="bold" />
@@ -69,7 +64,7 @@
                         <TableRow
                             android:id="@+id/tableRow2"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" >
+                            android:layout_height="wrap_content">
 
 
                             <RelativeLayout
@@ -196,8 +191,8 @@
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_marginTop="10dp"
-                                android:layout_gravity="top">
+                                android:layout_gravity="top"
+                                android:layout_marginTop="10dp">
 
                                 <LinearLayout
                                     android:id="@+id/graphx"
@@ -280,8 +275,7 @@
 
                         </TableRow>
 
-            </TableLayout>
-
+                    </TableLayout>
 
 
                 </LinearLayout>
