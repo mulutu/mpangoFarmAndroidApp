@@ -373,14 +373,10 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
     @Override
     public void onResponse(Object response) {
         if (response != null) {
-            //Toast.makeText(MainActivity.this, response.toString() + " SUCCESS RESPONSE ", Toast.LENGTH_SHORT).show();
-            //Log.d("RESPONSE:: ", response.toString() + " SUCCESS RESPONSE ");
             if (response instanceof JSONArray) {
                 JSONArray respArray = (JSONArray) response;
                 try {
-
                     String type = respArray.getString(0);
-
                     if (type.equalsIgnoreCase("getTransactionList")) {
                         displayTransactionsList(respArray);
                     } else if (type.equalsIgnoreCase("getListOfProjects")) {
@@ -509,16 +505,15 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
                 projectList.add(project);
 
+                // call fragment::: to display
+                ProjectsSettingsFragment fragment = new ProjectsSettingsFragment();
+                fragment = (ProjectsSettingsFragment) getSupportFragmentManager().findFragmentByTag("txnsProjectsSettings");
+                if (fragment != null) {
+                    fragment.prepareProjectsData(projectList);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-
-        // call fragment::: to display
-        ProjectsSettingsFragment fragment = new ProjectsSettingsFragment();
-        fragment = (ProjectsSettingsFragment) getSupportFragmentManager().findFragmentByTag("txnsProjectsSettings");
-        if (fragment != null) {
-            fragment.prepareProjectsData(projectList);
         }
     }
 
