@@ -27,6 +27,7 @@ import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
+import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
 import com.vogella.android.myapplication.util.RecyclerTouchListener;
 import com.vogella.android.myapplication.util.SessionManager;
@@ -94,10 +95,10 @@ public class HomeFragment extends Fragment  {
         super.onAttach(activity);
     }
 
-    private void prepareProjectsData() {
+    public void prepareFarmsData( List<Farm> farmsList2 ) {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.farm_list_recycler_view);
 
-        mAdapter = new farmsListAdapter(farmsList);
+        mAdapter = new farmsListAdapter(farmsList2);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 3));
         recyclerView.setLayoutManager(mLayoutManager);
@@ -110,7 +111,11 @@ public class HomeFragment extends Fragment  {
     public void getListOfFarms(int userID){
         String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userID + "/farms";
         final String  _TAG = "LIST OF FARMS: ";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+        CustomJsonArrayRequest req = new CustomJsonArrayRequest(Request.Method.GET, URL_PROJECTS, null, (Response.Listener<JSONArray>) getActivity(), (Response.ErrorListener) getActivity(), "getListOfFarmsHomeFragment");
+        AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(req, _TAG);
+
+
+        /*JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL_PROJECTS,
                 null,
@@ -146,17 +151,7 @@ public class HomeFragment extends Fragment  {
                                 }
 
                                 farmsList.add(farm);
-                                /*[
-                                {
-                                        "id": 1,
-                                        "description": "Gachuriri Farm",
-                                        "location": "Embu South, Gachuriri",
-                                        "dateCreated": "2018-07-16T00:00:00.000+0000",
-                                        "farmName": "Gachuriri",
-                                        "userId": 1,
-                                        "size": 10
-                                }
-                                ]*/
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -172,7 +167,7 @@ public class HomeFragment extends Fragment  {
             }
         });
         // Adding JsonObject request to request queue
-        AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
+        AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG); */
     }
 
 }

@@ -42,7 +42,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     //private static final String SHARED_PREFERENCES_KEY_NAME = "vidslogin"; //  <--- Add this
@@ -51,13 +51,17 @@ public class LoginActivity extends AppCompatActivity  {
     //private static final String SHARED_PREFERENCES_KEY_PASSWORD = "password";  //  <--- To save password
     //private static final String SHARED_PREFERENCES_KEY_REMEMBER_ACCOUNT = "rememberAccount";
 
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_password) EditText _passwordText;
-    @BindView(R.id.btn_login) Button _loginButton;
-    @BindView(R.id.link_signup) TextView _signupLink;
+    @BindView(R.id.input_email)
+    EditText _emailText;
+    @BindView(R.id.input_password)
+    EditText _passwordText;
+    @BindView(R.id.btn_login)
+    Button _loginButton;
+    @BindView(R.id.link_signup)
+    TextView _signupLink;
 
-    private Boolean hasFarms =  false;
-    private Boolean hasProjects =  false;
+    private Boolean hasFarms = false;
+    private Boolean hasProjects = false;
     private ArrayList<Farm> farmsList = new ArrayList<>();
 
     AlertDialogManager alert = new AlertDialogManager();
@@ -80,7 +84,7 @@ public class LoginActivity extends AppCompatActivity  {
         manageView();
     }
 
-    private void manageView(){
+    private void manageView() {
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +104,7 @@ public class LoginActivity extends AppCompatActivity  {
         });
     }
 
-    private void manageSession(){
+    private void manageSession() {
         session = new SessionManager(getApplicationContext());
     }
 
@@ -114,10 +118,10 @@ public class LoginActivity extends AppCompatActivity  {
         }
         _loginButton.setEnabled(false);
         volleyJsonObjectRequest(email, password);
-   }
+    }
 
 
-    public void volleyJsonObjectRequest(final String email, final String password){
+    public void volleyJsonObjectRequest(final String email, final String password) {
 
         String url = "http://45.56.73.81:8084/Mpango/api/v1/users/login/";
 
@@ -132,7 +136,7 @@ public class LoginActivity extends AppCompatActivity  {
             e.printStackTrace();
         }
 
-        String  REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
+        String REQUEST_TAG = "com.vogella.android.volleyJsonObjectRequest";
         //progressDialog.setMessage("Loading...");
         //progressDialog.show();
 
@@ -161,13 +165,13 @@ public class LoginActivity extends AppCompatActivity  {
                             Log.d("LOGIN JSON E", e.getMessage());
                         }
 
-                        if(userEnabled){
+                        if (userEnabled) {
                             Log.d("LOGIN ENABLED ?", userType);
                             //boolean rememberAccount = true;
                             //writeToSharedPreferences(getApplicationContext(), userId, email, password, rememberAccount);
                             onLoginSuccess();
                             progressDialog.dismiss();
-                        }else{
+                        } else {
                             Log.d("LOGIN ENABLED ?", "NOT ENABLED:::: ");
                         }
                     }
@@ -181,7 +185,7 @@ public class LoginActivity extends AppCompatActivity  {
                 onLoginFailed();
             }
         });
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq,REQUEST_TAG);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq, REQUEST_TAG);
     }
 
     @Override
@@ -208,10 +212,10 @@ public class LoginActivity extends AppCompatActivity  {
         getListOfFarms(userId);
     }
 
-    private void verifyData(){
-        Log.d("MY FARMS  :  ", "verifyData" );
-        if(hasFarms){
-            Log.d("MY FARMS : ", String.valueOf(farmsList.size()) );
+    private void verifyData() {
+        Log.d("MY FARMS  :  ", "verifyData");
+        if (hasFarms) {
+            Log.d("MY FARMS : ", String.valueOf(farmsList.size()));
 
             Bundle bundle = new Bundle();
             bundle.putString("Process", "LOGIN");
@@ -222,8 +226,8 @@ public class LoginActivity extends AppCompatActivity  {
             startActivity(i);
             finish();
 
-        }else{
-            Log.d("MY FARMS : ", " NO FARMSmobee" );
+        } else {
+            Log.d("MY FARMS : ", " NO FARMSmobee");
             //pushFragment(new HomeFragmentNoFarm(), "homefragmentNoFarm");
 
             Intent i = new Intent(getApplicationContext(), NoFarmActivity.class);
@@ -255,10 +259,10 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
 
-    public void getListOfFarms(int userId){
+    public void getListOfFarms(int userId) {
 
         String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userId + "/farms";
-        final String  _TAG = "LIST OF FARMS: ";
+        final String _TAG = "LIST OF FARMSX: ";
         CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(
                 Request.Method.GET,
                 URL_PROJECTS,
@@ -266,13 +270,25 @@ public class LoginActivity extends AppCompatActivity  {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        if(response == null){
+
+                        Log.d("getListOfFarms:: ", response.toString());
+                        if (response == null) {
                             hasFarms = false;
-                        }else{
+                        } else {
                             hasFarms = true;
                             try {
-                                for(int i=1;i<response.length();i++){
-                                    JSONObject farmObj = response.getJSONObject(i);
+                                JSONObject farmObjx = response.getJSONObject(0);
+                                String rdxType = farmObjx.getString("Type");
+
+                                Log.d("getListOfFarmsFFFFFF:: ", rdxType);
+
+                                JSONArray farmObjy = response.getJSONArray(1);
+
+                                Log.d("getListOfFarmsBBB:: ", farmObjy.toString());
+
+                                for (int k = 0; k < farmObjy.length(); k++) {
+                                    JSONObject farmObj = farmObjy.getJSONObject(k);
+                                    Log.d("getListOfFarmsxxxxx:: ", farmObj.toString());
 
                                     int id = farmObj.getInt("id");
                                     String description = farmObj.getString("description");
@@ -299,17 +315,7 @@ public class LoginActivity extends AppCompatActivity  {
                                     }
 
                                     farmsList.add(farm);
-                                    /*[
-                                    {
-                                            "id": 1,
-                                            "description": "Gachuriri Farm",
-                                            "location": "Embu South, Gachuriri",
-                                            "dateCreated": "2018-07-16T00:00:00.000+0000",
-                                            "farmName": "Gachuriri",
-                                            "userId": 1,
-                                            "size": 10
-                                    }
-                                    ]*/
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -324,8 +330,8 @@ public class LoginActivity extends AppCompatActivity  {
                 Log.d(_TAG, "Error: " + error.getMessage());
                 verifyData();
             }
-        },"LoginActivity");
+        }, "LoginActivity");
         // Adding JsonObject request to request queue
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest, _TAG);
     }
 }

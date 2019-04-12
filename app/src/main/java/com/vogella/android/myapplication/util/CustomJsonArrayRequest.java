@@ -61,14 +61,31 @@ public class CustomJsonArrayRequest extends JsonArrayRequest {
 
 
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+            //String jsonx = "{ \"type\":" + this.reqType + " }";
+
+            JSONArray result2 = new JSONArray();
 
             JSONArray result = null;
 
+            JSONArray result3 = new JSONArray();
+            result3.put("sfsdfsd");
+
+            JSONObject mainObject = new JSONObject();
+
+            JSONObject mainObject1 = new JSONObject();
+            mainObject1.put("Type", this.reqType);
+
+
             if (jsonString != null && jsonString.length() > 0) {
                 result = new JSONArray(jsonString);
-                result.put(0, this.reqType);
+
+                mainObject.put(this.reqType, result);
+                //result2.put(result3);
+                result2.put(mainObject1);
+                result2.put(result);
+
             }
-            return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
+            return Response.success(result2, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JSONException je) {

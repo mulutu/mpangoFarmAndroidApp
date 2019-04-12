@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
     private String process = "";
 
     private ArrayList<Farm> farmsList = new ArrayList<>();
+    private ArrayList<Farm> farmsListHomeFragment = new ArrayList<>();
     private List<Transaction> transactionList = new ArrayList<>();
     private List<Project> projectList = new ArrayList<>();
 
@@ -278,73 +279,9 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
         progressDialog.show();
 
         String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userId + "/farms";
-        final String _TAG = "LIST OF FARMS: ";
+        final String _TAG = "LIST OF FARMSY: ";
         CustomJsonArrayRequest req = new CustomJsonArrayRequest(Request.Method.GET, URL_PROJECTS, null, (Response.Listener<JSONArray>) this, (Response.ErrorListener) this, "getListOfFarmsMainActivity");
-
         progressDialog.hide();
-        /*CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(
-                Request.Method.GET,
-                URL_PROJECTS,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        if (response == null) {
-                            hasFarms = false;
-                        } else {
-                            try {
-                                for (int i = 1; i < response.length(); i++) {
-
-                                    hasFarms = true;
-
-                                    JSONObject farmObj = response.getJSONObject(i);
-
-                                    int id = farmObj.getInt("id");
-                                    String description = farmObj.getString("description");
-                                    String location = farmObj.getString("location");
-                                    String dateCreated = farmObj.getString("dateCreated");
-                                    String farmName = farmObj.getString("farmName");
-                                    int userId = farmObj.getInt("userId");
-                                    int size = farmObj.getInt("size");
-
-                                    Farm farm = new Farm();
-
-                                    farm.setId(id);
-                                    farm.setLocation(location);
-                                    farm.setSize(size);
-                                    farm.setFarmName(farmName);
-                                    farm.setDescription(description);
-                                    farm.setUserId(userId);
-                                    try {
-                                        Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreated);
-                                        farm.setDateCreated(date1);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    farmsList.add(farm);
-
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Log.d(_TAG, "TRY ERROR" + e.getMessage());
-                            }
-                        }
-                        verifyData();
-
-                        progressDialog.hide();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(_TAG, "Error: " + error.getMessage());
-                Log.d(_TAG, "Error: " + error.getMessage());
-                verifyData();
-            }
-        }, "getListOfFarmsMainActivity");
-        // Adding JsonObject request to request queue
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest, _TAG); */
-
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(req, _TAG);
     }
 
@@ -373,16 +310,29 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
     @Override
     public void onResponse(Object response) {
         if (response != null) {
+            Log.d("ERROR:: ", "RESPONSE-> NOT NULL");
             if (response instanceof JSONArray) {
-                JSONArray respArray = (JSONArray) response;
+
+                Log.d("ERROR:: ", "RESPONSE-> IS ARRAY");
+
                 try {
-                    String type = respArray.getString(0);
+
+                    JSONObject farmObjx = ((JSONArray) response).getJSONObject(0);
+                    String type = farmObjx.getString("Type");
+
+                    JSONArray respArray = ((JSONArray) response).getJSONArray(1);
+
+                    Log.d("ERROR:: ", "RESPONSE-> " + response.toString());
+                    Log.d("ERROR:: ", "RESPONSE -> respArray -> " + respArray.toString());
+
                     if (type.equalsIgnoreCase("getTransactionList")) {
                         displayTransactionsList(respArray);
                     } else if (type.equalsIgnoreCase("getListOfProjects")) {
                         displayProjectsList(respArray);
                     } else if (type.equalsIgnoreCase("getListOfFarmsMainActivity")) {
                         displayFarmsList(respArray);
+                    } else if (type.equalsIgnoreCase("getListOfFarmsHomeFragment")) {
+                        displayFarmsListHomeFragment(respArray);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -391,11 +341,54 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
         }
     }
 
+    private void displayFarmsListHomeFragment(JSONArray respArray) {
+        farmsListHomeFragment.clear();
+        for (int i = 0; i < respArray.length(); i++) {
+            JSONObject farmObj = null;
+            try {
+                farmObj = respArray.getJSONObject(i);
+                int id = farmObj.getInt("id");
+                String description = farmObj.getString("description");
+                String location = farmObj.getString("location");
+                String dateCreated = farmObj.getString("dateCreated");
+                String farmName = farmObj.getString("farmName");
+                int userId = farmObj.getInt("userId");
+                int size = farmObj.getInt("size");
+
+                Farm farm = new Farm();
+
+                farm.setId(id);
+                farm.setLocation(location);
+                farm.setSize(size);
+                farm.setFarmName(farmName);
+                farm.setDescription(description);
+                farm.setUserId(userId);
+
+                try {
+                    Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreated);
+                    farm.setDateCreated(date1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                farmsListHomeFragment.add(farm);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        // call fragment::: to display
+        HomeFragment fragment = new HomeFragment();
+        fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("homefragment");
+        if (fragment != null) {
+            fragment.prepareFarmsData(farmsListHomeFragment);
+        }
+    }
+
     private void displayTransactionsList(JSONArray respArray) {
         // initialise the TransactionsArray
         transactionList.clear();
 
-        for (int i = 1; i < respArray.length(); i++) {
+        for (int i = 0; i < respArray.length(); i++) {
 
             JSONObject transactionObj = null;
             try {
@@ -443,16 +436,16 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
                 obj.setAccountName(accountName);
 
                 transactionList.add(obj);
-
-                // call fragment::: to display
-                TransactionsFragment fragment = new TransactionsFragment();
-                fragment = (TransactionsFragment) getSupportFragmentManager().findFragmentByTag("txnsFragment");
-                if (fragment != null) {
-                    fragment.displayTransactionList(transactionList);
-                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+
+        // call fragment::: to display
+        TransactionsFragment fragment = new TransactionsFragment();
+        fragment = (TransactionsFragment) getSupportFragmentManager().findFragmentByTag("txnsFragment");
+        if (fragment != null) {
+            fragment.displayTransactionList(transactionList);
         }
     }
 
@@ -460,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
         projectList.clear();
 
-        for (int i = 1; i < respArray.length(); i++) {
+        for (int i = 0; i < respArray.length(); i++) {
 
             JSONObject projObj = null;
             try {
@@ -504,16 +497,15 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
                 project.setDateCreated(dateCreated);
 
                 projectList.add(project);
-
-                // call fragment::: to display
-                ProjectsSettingsFragment fragment = new ProjectsSettingsFragment();
-                fragment = (ProjectsSettingsFragment) getSupportFragmentManager().findFragmentByTag("txnsProjectsSettings");
-                if (fragment != null) {
-                    fragment.prepareProjectsData(projectList);
-                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+        // call fragment::: to display
+        ProjectsSettingsFragment fragment = new ProjectsSettingsFragment();
+        fragment = (ProjectsSettingsFragment) getSupportFragmentManager().findFragmentByTag("txnsProjectsSettings");
+        if (fragment != null) {
+            fragment.prepareProjectsData(projectList);
         }
     }
 
@@ -521,7 +513,7 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
         farmsList.clear();
 
-        for (int i = 1; i < respArray.length(); i++) {
+        for (int i = 0; i < respArray.length(); i++) {
             hasFarms = true;
             JSONObject farmObj = null;
             try {
