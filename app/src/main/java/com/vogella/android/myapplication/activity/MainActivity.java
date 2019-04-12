@@ -3,6 +3,7 @@ package com.vogella.android.myapplication.activity;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.vogella.android.myapplication.fragment.ProjectsSettingsFragment;
 import com.vogella.android.myapplication.fragment.TransactionsFragment;
 import com.vogella.android.myapplication.model.Farm;
 import com.vogella.android.myapplication.model.MyUser;
+import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
@@ -42,14 +44,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+//public class MainActivity extends AppCompatActivity  implements ProjectsSettingsFragment.OnFragmentInteractionListener, Response.Listener<JSONObject>, Response.ErrorListener {
 
-public class MainActivity extends AppCompatActivity  implements ProjectsSettingsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements Response.Listener, Response.ErrorListener, ProjectsSettingsFragment.OnFragmentInteractionListener {
 
     // Declaring the Toolbar Object
     private Toolbar toolbar;
@@ -59,12 +64,14 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
     private MyUser user;
     private int userId;
 
-    private Boolean hasFarms =  false;
-    private Boolean hasProjects =  false;
+    private Boolean hasFarms = false;
+    private Boolean hasProjects = false;
 
-    private String process =  "";
+    private String process = "";
 
     private ArrayList<Farm> farmsList = new ArrayList<>();
+    private List<Transaction> transactionList = new ArrayList<>();
+    private List<Project> projectList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +92,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
 
         session = new SessionManager(getApplicationContext());
 
-        if(!session.isLoggedIn()) {
+        if (!session.isLoggedIn()) {
             //session.checkLogin();
             //user = session.getUser();
             //userId = user.getId();
@@ -94,7 +101,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
             finish();
-        }else{
+        } else {
             /*if(getIntent()!=null && getIntent().getExtras()!=null){
                 Bundle bundle = getIntent().getExtras();
                 if(!bundle.getSerializable("HasFarms").equals(null)){
@@ -110,20 +117,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
         }
     }
 
-    private void verifyData(){
-        Log.d("MY FARMS :  ", "verifyData" );
-        if(hasFarms){
-            Log.d("MY FARMS : ", String.valueOf(farmsList.size()) );
-            setupNavigationView();
-        }else{
-            Log.d("MY FARMS : ", " NO FARMSmobee" );
-            //pushFragment(new HomeFragmentNoFarm(), "homefragmentNoFarm");
 
-            Intent i = new Intent(getApplicationContext(), NoFarmActivity.class);
-            startActivity(i);
-            finish();
-        }
-    }
 
     private void setupNavigationView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -149,23 +143,23 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
 
             case R.id.navigation_home:
 
-                    List<Fragment> allFragmentsHome = getSupportFragmentManager().getFragments();
-                    for (Fragment fragment : allFragmentsHome) {
-                        if (fragment != null) {
-                            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-                            //trx.hide(fragment);
-                            trx.remove(fragment);
-                            trx.commit();
-                        }
+                List<Fragment> allFragmentsHome = getSupportFragmentManager().getFragments();
+                for (Fragment fragment : allFragmentsHome) {
+                    if (fragment != null) {
+                        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+                        //trx.hide(fragment);
+                        trx.remove(fragment);
+                        trx.commit();
                     }
+                }
 
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("farmsArray", farmsList);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("farmsArray", farmsList);
 
-                    HomeFragment hf = new HomeFragment();
-                    hf.setArguments(bundle);
+                HomeFragment hf = new HomeFragment();
+                hf.setArguments(bundle);
 
-                    pushFragment(hf, "homefragment");
+                pushFragment(hf, "homefragment");
 
 
                 /*Fragment fr = getSupportFragmentManager().findFragmentByTag("homefragment");
@@ -200,7 +194,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
 
                 List<Fragment> allFragmentsNav = getSupportFragmentManager().getFragments();
                 for (Fragment fragment : allFragmentsNav) {
-                    if(fragment!=null){
+                    if (fragment != null) {
                         FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
                         //trx.hide(fragment);
                         trx.remove(fragment);
@@ -215,7 +209,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
 
                 List<Fragment> allFragmentsProj = getSupportFragmentManager().getFragments();
                 for (Fragment fragment : allFragmentsProj) {
-                    if(fragment!=null){
+                    if (fragment != null) {
                         FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
                         //trx.hide(fragment);
                         trx.remove(fragment);
@@ -235,13 +229,6 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
         transaction.show(fragment);
         transaction.commit();
     }
-
-
-
-
-
-
-
 
 
     @Override
@@ -284,9 +271,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
     }
 
 
-
-
-    public void getListOfFarms(int userId){
+    public void getListOfFarms(int userId) {
 
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
@@ -294,19 +279,22 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
         progressDialog.show();
 
         String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userId + "/farms";
-        final String  _TAG = "LIST OF FARMS: ";
-        CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(
+        final String _TAG = "LIST OF FARMS: ";
+        CustomJsonArrayRequest req = new CustomJsonArrayRequest(Request.Method.GET, URL_PROJECTS, null, (Response.Listener<JSONArray>) this, (Response.ErrorListener) this, "getListOfFarmsMainActivity");
+
+        progressDialog.hide();
+        /*CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(
                 Request.Method.GET,
                 URL_PROJECTS,
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        if(response == null){
+                        if (response == null) {
                             hasFarms = false;
-                        }else{
+                        } else {
                             try {
-                                for(int i=0;i<response.length();i++){
+                                for (int i = 1; i < response.length(); i++) {
 
                                     hasFarms = true;
 
@@ -328,7 +316,6 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
                                     farm.setFarmName(farmName);
                                     farm.setDescription(description);
                                     farm.setUserId(userId);
-
                                     try {
                                         Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreated);
                                         farm.setDateCreated(date1);
@@ -337,17 +324,7 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
                                     }
 
                                     farmsList.add(farm);
-                                    /*[
-                                    {
-                                            "id": 1,
-                                            "description": "Gachuriri Farm",
-                                            "location": "Embu South, Gachuriri",
-                                            "dateCreated": "2018-07-16T00:00:00.000+0000",
-                                            "farmName": "Gachuriri",
-                                            "userId": 1,
-                                            "size": 10
-                                    }
-                                    ]*/
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -365,8 +342,194 @@ public class MainActivity extends AppCompatActivity  implements ProjectsSettings
                 Log.d(_TAG, "Error: " + error.getMessage());
                 verifyData();
             }
-        });
+        }, "getListOfFarmsMainActivity");
         // Adding JsonObject request to request queue
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest, _TAG); */
+
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(req, _TAG);
+    }
+
+    private void verifyData() {
+        Log.d("MY FARMS MAIN :  ", "verifyData");
+        if (hasFarms) {
+            Log.d("MY FARMS MAIN : ", String.valueOf(farmsList.size()));
+            setupNavigationView();
+        } else {
+            Log.d("MY FARMS MAIN: ", " NO FARMSmobee");
+            //pushFragment(new HomeFragmentNoFarm(), "homefragmentNoFarm");
+
+            Intent i = new Intent(getApplicationContext(), NoFarmActivity.class);
+            startActivity(i);
+            finish();
+        }
+    }
+
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Toast.makeText(MainActivity.this, error + " ::: ERRROR RESPONSE", Toast.LENGTH_SHORT).show();
+        Log.d("ERROR:: ", error + " ::: ERRROR RESPONSE");
+    }
+
+    @Override
+    public void onResponse(Object response) {
+        if (response != null) {
+            //Toast.makeText(MainActivity.this, response.toString() + " SUCCESS RESPONSE ", Toast.LENGTH_SHORT).show();
+            //Log.d("RESPONSE:: ", response.toString() + " SUCCESS RESPONSE ");
+            if (response instanceof JSONArray) {
+                JSONArray respArray = (JSONArray) response;
+                try {
+                    String type = respArray.getString(0);
+
+                    if (type.equalsIgnoreCase("getTransactionList")) {
+                        // initialise the TransactionsArray
+                        transactionList.clear();
+                        for (int i = 1; i < respArray.length(); i++) {
+
+                            JSONObject transactionObj = respArray.getJSONObject(i);
+
+                            Transaction obj = new Transaction();
+
+                            int id = transactionObj.getInt("id");
+                            int accountId = transactionObj.getInt("accountId");
+
+                            MathContext mc = MathContext.DECIMAL32;
+                            BigDecimal amount = new BigDecimal(transactionObj.getString("amount"), mc);
+
+                            String dateStr = transactionObj.getString("transactionDate"); // "expenseDate": "30-07-2018",
+                            Date transDate = null;
+                            try {
+                                transDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
+                                obj.setTransactionDate(transDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            int transactionTypeId = transactionObj.getInt("transactionTypeId");
+                            String transactionType = transactionObj.getString("transactionType");
+                            String description = transactionObj.getString("description");
+                            int projectId = transactionObj.getInt("projectId");
+                            String projectName = transactionObj.getString("projectName");
+                            int userId = transactionObj.getInt("userId");
+                            int farmId = transactionObj.getInt("farmId");
+                            String farmName = transactionObj.getString("farmName");
+                            String accountName = transactionObj.getString("accountName");
+
+                            obj.setId(id);
+                            obj.setAccountId(accountId);
+                            obj.setAmount(amount);
+                            obj.setTransactionDate(transDate);
+                            obj.setTransactionTypeId(transactionTypeId);
+                            obj.setTransactionType(transactionType);
+                            obj.setDescription(description);
+                            obj.setProjectId(projectId);
+                            obj.setProjectName(projectName);
+                            obj.setUserId(userId);
+                            obj.setFarmId(farmId);
+                            obj.setFarmName(farmName);
+                            obj.setAccountName(accountName);
+
+                            transactionList.add(obj);
+                        }
+                        // call fragment::: to display
+                        TransactionsFragment fragment = new TransactionsFragment();
+                        fragment = (TransactionsFragment) getSupportFragmentManager().findFragmentByTag("txnsFragment");
+                        if (fragment != null) {
+                            fragment.displayTransactionList(transactionList);
+                        }
+                    } else if (type.equalsIgnoreCase("getListOfProjects")) {
+
+                        projectList.clear();
+
+                        for (int i = 1; i < respArray.length(); i++) {
+
+                            JSONObject projObj = respArray.getJSONObject(i);
+
+                            int id = projObj.getInt("id");
+                            int expectedOutput = projObj.getInt("expectedOutput");
+                            int actualOutput = projObj.getInt("actualOutput");
+                            int unitId = projObj.getInt("unitId");
+                            String unitDescription = projObj.getString("unitDescription");
+                            String description = projObj.getString("description");
+                            int userId = projObj.getInt("userId");
+                            String projectName = projObj.getString("projectName");
+                            int farmId = projObj.getInt("farmId");
+
+                            String dateStr = projObj.getString("dateCreated"); // "expenseDate": "30-07-2018",
+                            Date dateCreated = null;
+                            try {
+                                dateCreated = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            //MathContext mc = MathContext.DECIMAL32;
+                            //BigDecimal totalExpenses = new BigDecimal( projObj.getString("totalExpeses"), mc);
+                            // BigDecimal totalIncomes = new BigDecimal( projObj.getString("totalIncomes"), mc);
+
+                            Project project = new Project();
+                            project.setId(id);
+                            project.setExpectedOutput(expectedOutput);
+                            project.setActualOutput(actualOutput);
+                            project.setUnitId(unitId);
+
+                            //project.setTotalExpenses(totalExpenses);
+                            //project.setTotalIncomes(totalIncomes);
+
+                            project.setUnitDescription(unitDescription);
+                            project.setDescription(description);
+                            project.setUserId(userId);
+                            project.setProjectName(projectName);
+                            project.setFarmId(farmId);
+                            project.setDateCreated(dateCreated);
+
+                            projectList.add(project);
+                        }
+
+                        // call fragment::: to display
+                        ProjectsSettingsFragment fragment = new ProjectsSettingsFragment();
+                        fragment = (ProjectsSettingsFragment) getSupportFragmentManager().findFragmentByTag("txnsProjectsSettings");
+                        if (fragment != null) {
+                            fragment.prepareProjectsData(projectList);
+                        }
+                    } else if (type.equalsIgnoreCase("getListOfFarmsMainActivity")) {
+
+                        farmsList.clear();
+
+                        for (int i = 1; i < respArray.length(); i++) {
+                            hasFarms = true;
+                            JSONObject farmObj = respArray.getJSONObject(i);
+
+                            int id = farmObj.getInt("id");
+                            String description = farmObj.getString("description");
+                            String location = farmObj.getString("location");
+                            String dateCreated = farmObj.getString("dateCreated");
+                            String farmName = farmObj.getString("farmName");
+                            int userId = farmObj.getInt("userId");
+                            int size = farmObj.getInt("size");
+
+                            Farm farm = new Farm();
+
+                            farm.setId(id);
+                            farm.setLocation(location);
+                            farm.setSize(size);
+                            farm.setFarmName(farmName);
+                            farm.setDescription(description);
+                            farm.setUserId(userId);
+                            try {
+                                Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreated);
+                                farm.setDateCreated(date1);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            farmsList.add(farm);
+                        }
+                        verifyData();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

@@ -209,7 +209,7 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
     private void verifyData(){
-        Log.d("MY FARMS :  ", "verifyData" );
+        Log.d("MY FARMS  :  ", "verifyData" );
         if(hasFarms){
             Log.d("MY FARMS : ", String.valueOf(farmsList.size()) );
 
@@ -271,7 +271,7 @@ public class LoginActivity extends AppCompatActivity  {
                         }else{
                             hasFarms = true;
                             try {
-                                for(int i=0;i<response.length();i++){
+                                for(int i=1;i<response.length();i++){
                                     JSONObject farmObj = response.getJSONObject(i);
 
                                     int id = farmObj.getInt("id");
@@ -316,7 +316,6 @@ public class LoginActivity extends AppCompatActivity  {
                                 Log.d(_TAG, "TRY ERROR" + e.getMessage());
                             }
                         }
-
                         verifyData();
                     }
                 }, new Response.ErrorListener() {
@@ -325,7 +324,7 @@ public class LoginActivity extends AppCompatActivity  {
                 Log.d(_TAG, "Error: " + error.getMessage());
                 verifyData();
             }
-        });
+        },"LoginActivity");
         // Adding JsonObject request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
     }

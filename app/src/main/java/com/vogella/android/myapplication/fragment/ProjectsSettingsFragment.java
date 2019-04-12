@@ -38,6 +38,7 @@ import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
+import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
 import com.vogella.android.myapplication.util.RecyclerTouchListener;
 import com.vogella.android.myapplication.util.SessionManager;
@@ -129,14 +130,14 @@ public class ProjectsSettingsFragment extends Fragment {
         user = session.getUser();
         userId = user.getId();
 
-        View rootView =   inflater.inflate(R.layout.fragment_projects_settings, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_projects_settings, container, false);
 
         setHasOptionsMenu(true);
 
         populateTitleBar(rootView);
 
-        btnAddProject = (com.vogella.android.myapplication.activity.TextView_Lato)rootView.findViewById(R.id.addproject);
-        btnAddFarm = (com.vogella.android.myapplication.activity.TextView_Lato)rootView.findViewById(R.id.addfarm);
+        btnAddProject = (com.vogella.android.myapplication.activity.TextView_Lato) rootView.findViewById(R.id.addproject);
+        btnAddFarm = (com.vogella.android.myapplication.activity.TextView_Lato) rootView.findViewById(R.id.addfarm);
 
         btnAddProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,14 +155,7 @@ public class ProjectsSettingsFragment extends Fragment {
             }
         });
 
-        recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_projects_setting_view);
-
-        mAdapter = new projectsAdapter(projectList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_projects_setting_view);
 
         getListOfProjects(userId);
 
@@ -169,12 +163,12 @@ public class ProjectsSettingsFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_projects_settings, container, false);
     }
 
-    private void populateTitleBar(View rootView){
+    private void populateTitleBar(View rootView) {
         toolbar = (Toolbar) rootView.findViewById(R.id.tool_bar);
         // Setting toolbar as the ActionBar with setSupportActionBar() call
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayShowHomeEnabled(false);
@@ -220,10 +214,13 @@ public class ProjectsSettingsFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void getListOfProjects(int userID){
+    public void getListOfProjects(int userID) {
         String URL_PROJECTS = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userID + "/projects";
-        final String  _TAG = "LIST OF PROJECTS: ";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+        final String _TAG = "LIST OF PROJECTS: ";
+
+        CustomJsonArrayRequest req = new CustomJsonArrayRequest(Request.Method.GET, URL_PROJECTS, null, (Response.Listener<JSONArray>) getActivity(), (Response.ErrorListener) getActivity(), "getListOfProjects");
+
+        /*JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL_PROJECTS,
                 null,
@@ -272,21 +269,7 @@ public class ProjectsSettingsFragment extends Fragment {
                                 project.setFarmId(farmId);
                                 project.setDateCreated(dateCreated);
 
-                                /*
-                                "id": 97,
-                                "expectedOutput": 1,
-                                "actualOutput": 1,
-                                "unitId": 1,
-                                "unitDescription": null,
-                                "transactions": null,
-                                "totalExpeses": null,
-                                "totalIncomes": null,
-                                "description": "fg hdfg hdfg hdf hdfg ",
-                                "userId": 1,
-                                "projectName": "fghfghf hdfgh dfg hdfgh",
-                                "farmId": 1,
-                                "dateCreated": "29-08-2018"
-                                */
+
 
                                 projectList.add(project);
 
@@ -307,7 +290,41 @@ public class ProjectsSettingsFragment extends Fragment {
             }
         });
         // Adding JsonObject request to request queue
-        AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
+        AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG); */
+
+        AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(req, _TAG);
+    }
+
+    public void prepareProjectsData(final List<Project> projectList2) {
+        mAdapter = new projectsAdapter(projectList2);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Project project = projectList2.get(position);
+
+                Bundle extras = new Bundle();
+                extras.putSerializable("Project", project);
+                extras.putSerializable("Process", "EDIT_PROJECT");
+
+                Intent intent = new Intent(getActivity().getApplicationContext(), TaskActivity.class);
+                intent.putExtras(extras);
+
+                startActivityForResult(intent, 0);
+                //getActivity().finish();
+                getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     private void prepareProjectsData() {
@@ -318,8 +335,8 @@ public class ProjectsSettingsFragment extends Fragment {
                 Project project = projectList.get(position);
 
                 Bundle extras = new Bundle();
-                extras.putSerializable("Project", project );
-                extras.putSerializable("Process", "EDIT_PROJECT" );
+                extras.putSerializable("Project", project);
+                extras.putSerializable("Process", "EDIT_PROJECT");
 
                 Intent intent = new Intent(getActivity().getApplicationContext(), TaskActivity.class);
                 intent.putExtras(extras);
@@ -343,7 +360,7 @@ public class ProjectsSettingsFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 //finish();

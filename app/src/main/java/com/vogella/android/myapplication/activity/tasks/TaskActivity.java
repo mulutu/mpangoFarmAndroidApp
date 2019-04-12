@@ -232,7 +232,7 @@ public class TaskActivity extends AppCompatActivity implements taskAdapter.Click
                 VolleyLog.d(_TAG, "Error: " + error.getMessage());
                 Log.d(_TAG, "Error: " + error.getMessage());
             }
-        });
+        }, "TaskActivity");
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
     }
 
