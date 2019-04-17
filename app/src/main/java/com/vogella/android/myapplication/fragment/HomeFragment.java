@@ -44,22 +44,15 @@ import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment  {
-
     View rootView;
-
     private Button btn1, btn2;
-
     private FragmentActivity myContext;
-
     private Transaction transaction = new Transaction();
-
     private Project _project;
-
     AlertDialogManager alert = new AlertDialogManager();
     SessionManager session;
     private MyUser user;
     private int userId;
-
     private List<Farm> farmsList = new ArrayList<>();
     private RecyclerView recyclerView;
     private farmsListAdapter mAdapter;
@@ -67,11 +60,9 @@ public class HomeFragment extends Fragment  {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         session = new SessionManager(getActivity().getApplicationContext());
         user = session.getUser();
         userId = user.getId();
-
         if (myContext.getSupportFragmentManager().findFragmentById(android.R.id.content) == null) {
             myContext.getSupportFragmentManager().beginTransaction().add(android.R.id.content, new PagerFragment(), "pagerfragment").commit();
         }
@@ -79,13 +70,9 @@ public class HomeFragment extends Fragment  {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         rootView =  inflater.inflate(R.layout.fragment_home, container, false);
-
         ArrayList<Farm> farmsList = (ArrayList<Farm>) this.getArguments().getSerializable("farmsArray");
-
         getListOfFarms(userId);
-
         return rootView;
     }
 
@@ -97,14 +84,12 @@ public class HomeFragment extends Fragment  {
 
     public void prepareFarmsData( List<Farm> farmsList2 ) {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.farm_list_recycler_view);
-
         mAdapter = new farmsListAdapter(farmsList2);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 3));
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-
         mAdapter.notifyDataSetChanged();
     }
 
@@ -113,61 +98,5 @@ public class HomeFragment extends Fragment  {
         final String  _TAG = "LIST OF FARMS: ";
         CustomJsonArrayRequest req = new CustomJsonArrayRequest(Request.Method.GET, URL_PROJECTS, null, (Response.Listener<JSONArray>) getActivity(), (Response.ErrorListener) getActivity(), "getListOfFarmsHomeFragment");
         AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(req, _TAG);
-
-
-        /*JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                URL_PROJECTS,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            for(int i=0;i<response.length();i++){
-                                JSONObject farmObj = response.getJSONObject(i);
-
-                                int id = farmObj.getInt("id");
-                                String description = farmObj.getString("description");
-                                String location = farmObj.getString("location");
-                                String dateCreated = farmObj.getString("dateCreated");
-                                String farmName = farmObj.getString("farmName");
-                                int userId = farmObj.getInt("userId");
-                                int size = farmObj.getInt("size");
-
-                                Farm farm = new Farm();
-
-                                farm.setId(id);
-                                farm.setLocation(location);
-                                farm.setSize(size);
-                                farm.setFarmName(farmName);
-                                farm.setDescription(description);
-                                farm.setUserId(userId);
-
-                                try {
-                                    Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreated);
-                                    farm.setDateCreated(date1);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                farmsList.add(farm);
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d(_TAG, e.getMessage());
-                        }
-                        prepareProjectsData();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(_TAG, "Error: " + error.getMessage());
-                Log.d(_TAG, "Error: " + error.getMessage());
-            }
-        });
-        // Adding JsonObject request to request queue
-        AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG); */
     }
-
 }

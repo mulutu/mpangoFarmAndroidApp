@@ -25,6 +25,7 @@ import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.AddTransactionActivity;
 import com.vogella.android.myapplication.activity.CalendarActivity;
 import com.vogella.android.myapplication.activity.EditTransactionActivity;
+import com.vogella.android.myapplication.activity.MainActivity;
 import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.adapter.projectsAdapter;
 import com.vogella.android.myapplication.adapter.taskAdapter;
@@ -137,11 +138,13 @@ public class TaskActivity extends AppCompatActivity implements taskAdapter.Click
     private void prepareView(){
         recyclerView = (RecyclerView) findViewById(R.id.projects_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //Toast.makeText(TaskActivity.this, "prepareView()-> taskList<> " + taskList.toString(), Toast.LENGTH_LONG).show();
         mAdapter = new taskAdapter( taskList, this);
         recyclerView.setAdapter(mAdapter);
     }
 
     private void prepareTasksData() {
+        //Toast.makeText(TaskActivity.this, "prepareTasksData", Toast.LENGTH_LONG).show();
         mAdapter.notifyDataSetChanged();
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -177,54 +180,50 @@ public class TaskActivity extends AppCompatActivity implements taskAdapter.Click
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        try {
-                            for(int i=0;i<response.length();i++){
-                                JSONObject projObj = response.getJSONObject(i);
-
-                                int taskId = projObj.getInt("taskId");
-                                int projectId = projObj.getInt("projectId");
-                                String taskName = projObj.getString("taskName");
-                                String description = projObj.getString("description");
-                                int priority = projObj.getInt("priority");
-                                boolean active = projObj.getBoolean("active");
-
-                                String dateStr = projObj.getString("taskDate"); // "expenseDate": "30-07-2018",
-                                Date taskDate = null;
+                        if (response != null) {
+                            if (response instanceof JSONArray) {
                                 try {
-                                    taskDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
-                                } catch (ParseException e) {
+                                    JSONObject farmObjx = ((JSONArray) response).getJSONObject(0);
+                                    String type = farmObjx.getString("Type");
+
+                                    JSONArray respArray = ((JSONArray) response).getJSONArray(1);
+
+                                    for (int i = 0; i < respArray.length(); i++) {
+                                        JSONObject projObj = respArray.getJSONObject(i);
+
+                                        int taskId = projObj.getInt("taskId");
+                                        int projectId = projObj.getInt("projectId");
+                                        String taskName = projObj.getString("taskName");
+                                        String description = projObj.getString("description");
+                                        int priority = projObj.getInt("priority");
+                                        boolean active = projObj.getBoolean("active");
+
+                                        String dateStr = projObj.getString("taskDate"); // "expenseDate": "30-07-2018",
+                                        Date taskDate = null;
+                                        try {
+                                            taskDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        Task task = new Task();
+                                        task.setTaskId(taskId);
+                                        task.setProjectId(projectId);
+                                        task.setTaskName(taskName);
+                                        task.setTaskDate(taskDate);
+                                        task.setDescription(description);
+                                        task.setPriority(priority);
+                                        task.setActive(active);
+
+                                        taskList.add(task);
+                                    }
+                                } catch (JSONException e) {
                                     e.printStackTrace();
+                                    Log.d(_TAG, e.getMessage());
                                 }
-
-                                Task task = new Task();
-                                task.setTaskId(taskId);
-                                task.setProjectId(projectId);
-                                task.setTaskName(taskName);
-                                task.setTaskDate(taskDate);
-                                task.setDescription(description);
-                                task.setPriority(priority);
-                                task.setActive(active);
-
-                                /*
-                                {
-        "taskId": 1,
-        "projectId": 2,
-        "taskName": "test task 11 update",
-        "description": "test task 1 desc",
-        "taskDate": "30-09-2018",
-        "priority": 1,
-        "active": true
-    }
-                                */
-
-                                taskList.add(task);
+                                prepareTasksData();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d(_TAG, e.getMessage());
                         }
-                        prepareTasksData();
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -232,7 +231,7 @@ public class TaskActivity extends AppCompatActivity implements taskAdapter.Click
                 VolleyLog.d(_TAG, "Error: " + error.getMessage());
                 Log.d(_TAG, "Error: " + error.getMessage());
             }
-        }, "TaskActivity");
+        }, "DisplayTaskActivity");
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,_TAG);
     }
 
