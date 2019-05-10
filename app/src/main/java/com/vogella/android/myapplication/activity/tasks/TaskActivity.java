@@ -5,7 +5,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,23 +19,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
-import com.vogella.android.myapplication.activity.AddTransactionActivity;
-import com.vogella.android.myapplication.activity.CalendarActivity;
-import com.vogella.android.myapplication.activity.EditTransactionActivity;
-import com.vogella.android.myapplication.activity.MainActivity;
 import com.vogella.android.myapplication.activity.user.LoginActivity;
-import com.vogella.android.myapplication.adapter.projectsAdapter;
-import com.vogella.android.myapplication.adapter.taskAdapter;
+import com.vogella.android.myapplication.adapter.TaskAdapter;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Task;
-import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
-import com.vogella.android.myapplication.util.MyDividerItemDecoration;
 import com.vogella.android.myapplication.util.RecyclerTouchListener;
 import com.vogella.android.myapplication.util.SessionManager;
 
@@ -48,9 +39,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class TaskActivity extends AppCompatActivity implements taskAdapter.ClickListener {
+public class TaskActivity extends AppCompatActivity implements TaskAdapter.ClickListener {
 
     AlertDialogManager alert = new AlertDialogManager();
     SessionManager session;
@@ -64,7 +54,7 @@ public class TaskActivity extends AppCompatActivity implements taskAdapter.Click
     private ArrayList<Task> taskList = new ArrayList<>();
 
     private RecyclerView recyclerView;
-    private taskAdapter mAdapter;
+    private TaskAdapter mAdapter;
 
     public static final int NEW_TODO_REQUEST_CODE = 200;
     public static final int UPDATE_TODO_REQUEST_CODE = 300;
@@ -139,7 +129,7 @@ public class TaskActivity extends AppCompatActivity implements taskAdapter.Click
         recyclerView = (RecyclerView) findViewById(R.id.projects_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //Toast.makeText(TaskActivity.this, "prepareView()-> taskList<> " + taskList.toString(), Toast.LENGTH_LONG).show();
-        mAdapter = new taskAdapter( taskList, this);
+        mAdapter = new TaskAdapter( taskList, this);
         recyclerView.setAdapter(mAdapter);
     }
 

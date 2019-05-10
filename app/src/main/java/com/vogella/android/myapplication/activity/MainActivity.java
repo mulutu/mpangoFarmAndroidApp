@@ -30,10 +30,12 @@ import com.vogella.android.myapplication.activity.user.LoginActivity;
 import com.vogella.android.myapplication.fragment.HomeFragment;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.fragment.ProjectsSettingsFragment;
+import com.vogella.android.myapplication.fragment.TasksFragment;
 import com.vogella.android.myapplication.fragment.TransactionsFragment;
 import com.vogella.android.myapplication.model.Farm;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
+import com.vogella.android.myapplication.model.Task;
 import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
@@ -54,7 +56,7 @@ import java.util.List;
 
 //public class MainActivity extends AppCompatActivity  implements ProjectsSettingsFragment.OnFragmentInteractionListener, Response.Listener<JSONObject>, Response.ErrorListener {
 
-public class MainActivity extends AppCompatActivity implements Response.Listener, Response.ErrorListener, ProjectsSettingsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements Response.Listener, Response.ErrorListener, ProjectsSettingsFragment.OnFragmentInteractionListener , TasksFragment.OnFragmentInteractionListener {
 
     // Declaring the Toolbar Object
     private Toolbar toolbar;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
     private ArrayList<Farm> farmsListHomeFragment = new ArrayList<>();
     private List<Transaction> transactionList = new ArrayList<>();
     private List<Project> projectList = new ArrayList<>();
+    private List<Task> taskList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,6 +221,20 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
                 }
                 pushFragment(new ProjectsSettingsFragment(), "txnsProjectsSettings");
                 break;
+
+            case R.id.navigation_tasks:
+
+                List<Fragment> allFragmentsTasks = getSupportFragmentManager().getFragments();
+                for (Fragment fragment : allFragmentsTasks) {
+                    if (fragment != null) {
+                        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+                        //trx.hide(fragment);
+                        trx.remove(fragment);
+                        trx.commit();
+                    }
+                }
+                pushFragment(new TasksFragment(), "TasksFragment");
+                break;
         }
     }
 
@@ -272,7 +289,6 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
 
     public void getListOfFarms(int userId) {
-
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
@@ -299,7 +315,6 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
             finish();
         }
     }
-
 
     @Override
     public void onErrorResponse(VolleyError error) {
@@ -333,11 +348,56 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
                         displayFarmsList(respArray);
                     } else if (type.equalsIgnoreCase("getListOfFarmsHomeFragment")) {
                         displayFarmsListHomeFragment(respArray);
+                    }else if (type.equalsIgnoreCase("getTaskListFragment")) {
+                        displayTasksListTasksFragment(respArray);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private void displayTasksListTasksFragment(JSONArray respArray) {
+        taskList.clear();
+        for (int i = 0; i < respArray.length(); i++) {
+            JSONObject taskObj = null;
+            try {
+                taskObj = respArray.getJSONObject(i);
+                int taskId = taskObj.getInt("taskId");
+                int projectId = taskObj.getInt("projectId");
+                String taskName = taskObj.getString("taskName");
+                String description = taskObj.getString("description");
+                int priority = taskObj.getInt("priority");
+                boolean active = taskObj.getBoolean("active");
+
+                String dateStr = taskObj.getString("taskDate"); // "expenseDate": "30-07-2018",
+                Date taskDate = null;
+                try {
+                    taskDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Task task = new Task();
+                task.setTaskId(taskId);
+                task.setProjectId(projectId);
+                task.setTaskName(taskName);
+                task.setTaskDate(taskDate);
+                task.setDescription(description);
+                task.setPriority(priority);
+                task.setActive(active);
+
+                taskList.add(task);
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        // call fragment::: to display
+        TasksFragment fragment = new TasksFragment();
+        fragment = (TasksFragment) getSupportFragmentManager().findFragmentByTag("TasksFragment");
+        if (fragment != null) {
+            fragment.displayTasksList(taskList);
         }
     }
 

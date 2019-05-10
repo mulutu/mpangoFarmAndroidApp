@@ -23,7 +23,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.user.LoginActivity;
-import com.vogella.android.myapplication.adapter.projectsAdapter;
+import com.vogella.android.myapplication.adapter.ProjectsAdapter;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Transaction;
@@ -47,7 +47,7 @@ public class SelectProjectActivity extends AppCompatActivity {
 
     private List<Project> projectList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private projectsAdapter mAdapter;
+    private ProjectsAdapter mAdapter;
 
     private Transaction transaction;
     private String process =  "";
@@ -99,7 +99,7 @@ public class SelectProjectActivity extends AppCompatActivity {
 
     private void prepareView(){
         recyclerView = (RecyclerView) findViewById(R.id.projects_recycler_view);
-        mAdapter = new projectsAdapter(projectList);
+        mAdapter = new ProjectsAdapter(projectList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setLayoutManager(mLayoutManager);

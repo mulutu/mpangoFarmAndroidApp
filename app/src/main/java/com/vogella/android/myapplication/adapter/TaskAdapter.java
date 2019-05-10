@@ -8,37 +8,39 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.vogella.android.myapplication.R;
-import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.model.Task;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class taskAdapter extends RecyclerView.Adapter<taskAdapter.ViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private List<Task> taskList;
-    private taskAdapter.ClickListener clickListener;
+    private TaskAdapter.ClickListener clickListener;
 
-    /*public taskAdapter(ClickListener clickListener) {
+    /*public TaskAdapter(ClickListener clickListener) {
         this.clickListener = clickListener;
         taskList = new ArrayList<>();
     }*/
 
-    public taskAdapter(List<Task> taskList, ClickListener clickListener) {
+    public TaskAdapter(List<Task> taskList, ClickListener clickListener) {
         this.taskList = taskList;
         this.clickListener = clickListener;
     }
 
+    public TaskAdapter(List<Task> taskList) {
+        this.taskList = taskList;
+    }
+
     @Override
-    public taskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
+    public TaskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_list_row, parent, false);
-        taskAdapter.ViewHolder viewHolder = new taskAdapter.ViewHolder(view);
+        TaskAdapter.ViewHolder viewHolder = new TaskAdapter.ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(taskAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(TaskAdapter.ViewHolder holder, int position) {
         Task task = taskList.get(position);
         holder.txtName.setText(task.getTaskName());
         //holder.txtNo.setText("#" + String.valueOf(task.getTaskId()));

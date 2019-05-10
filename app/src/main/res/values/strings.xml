@@ -12,6 +12,7 @@
     <string name="title_logout">Logout</string>
     <string name="title_spending">Spending</string>
     <string name="title_transactions">Transactions</string>
+    <string name="title_tasks">Tasks</string>
 
     <string name="transactions_fragment">Transactions</string>
 

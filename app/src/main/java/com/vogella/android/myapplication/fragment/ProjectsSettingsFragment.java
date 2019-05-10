@@ -11,31 +11,24 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.AddFarmActivity;
 import com.vogella.android.myapplication.activity.AddProjectActivity;
-import com.vogella.android.myapplication.activity.EditTransactionActivity;
 import com.vogella.android.myapplication.activity.tasks.TaskActivity;
 import com.vogella.android.myapplication.activity.user.LoginActivity;
-import com.vogella.android.myapplication.adapter.projectsAdapter;
+import com.vogella.android.myapplication.adapter.ProjectsAdapter;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
-import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AlertDialogManager;
 import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
@@ -44,15 +37,8 @@ import com.vogella.android.myapplication.util.RecyclerTouchListener;
 import com.vogella.android.myapplication.util.SessionManager;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,7 +68,7 @@ public class ProjectsSettingsFragment extends Fragment {
 
     private List<Project> projectList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private projectsAdapter mAdapter;
+    private ProjectsAdapter mAdapter;
 
     AlertDialogManager alert = new AlertDialogManager();
     SessionManager session;
@@ -296,7 +282,7 @@ public class ProjectsSettingsFragment extends Fragment {
     }
 
     public void prepareProjectsData(final List<Project> projectList2) {
-        mAdapter = new projectsAdapter(projectList2);
+        mAdapter = new ProjectsAdapter(projectList2);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
         recyclerView.setLayoutManager(mLayoutManager);

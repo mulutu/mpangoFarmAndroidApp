@@ -11,7 +11,7 @@ import com.vogella.android.myapplication.model.Project;
 
 import java.util.List;
 
-public class projectsAdapter extends RecyclerView.Adapter<projectsAdapter.MyViewHolder> {
+public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.MyViewHolder> {
 
     private List<Project> projectsList;
 
@@ -26,7 +26,7 @@ public class projectsAdapter extends RecyclerView.Adapter<projectsAdapter.MyView
     }
 
 
-    public projectsAdapter(List<Project> projectsList) {
+    public ProjectsAdapter(List<Project> projectsList) {
         this.projectsList = projectsList;
     }
 

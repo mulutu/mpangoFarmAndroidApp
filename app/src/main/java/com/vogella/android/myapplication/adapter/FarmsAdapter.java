@@ -11,7 +11,7 @@ import com.vogella.android.myapplication.model.Farm;
 
 import java.util.List;
 
-public class farmsListAdapter extends RecyclerView.Adapter<farmsListAdapter.MyViewHolder> {
+public class FarmsAdapter extends RecyclerView.Adapter<FarmsAdapter.MyViewHolder> {
 
     private List<Farm> farmsList;
 
@@ -26,21 +26,20 @@ public class farmsListAdapter extends RecyclerView.Adapter<farmsListAdapter.MyVi
     }
 
 
-    public farmsListAdapter(List<Farm> farmsList) {
+    public FarmsAdapter(List<Farm> farmsList) {
         this.farmsList = farmsList;
     }
 
     @Override
-    public farmsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.farms_list_row_home, parent, false);
+                .inflate(R.layout.farms_list_row, parent, false);
 
-        return new farmsListAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
-
     @Override
-    public void onBindViewHolder(farmsListAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
         Farm farm = farmsList.get(position);
         holder.listFarmName.setText(farm.getFarmName());
         holder.listFarmDescription.setText(farm.getDescription());

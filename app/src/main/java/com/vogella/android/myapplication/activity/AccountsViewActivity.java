@@ -15,7 +15,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
-import com.vogella.android.myapplication.adapter.accountsAdapter;
+import com.vogella.android.myapplication.adapter.AccountsAdapter;
 import com.vogella.android.myapplication.model.Account;
 import com.vogella.android.myapplication.model.ChartOfAccounts;
 import com.vogella.android.myapplication.model.MyUser;
@@ -39,7 +39,7 @@ public class AccountsViewActivity extends AppCompatActivity {
     private List<Account> accountList = new ArrayList<>();
     private List<SectionOrRow> mData = new ArrayList<>();
     private RecyclerView recyclerView;
-    private accountsAdapter mAdapter;
+    private AccountsAdapter mAdapter;
 
     private Transaction transaction;
     private String process =  "";
@@ -165,7 +165,7 @@ public class AccountsViewActivity extends AppCompatActivity {
     public void prepareAccountsData(){
         recyclerView = (RecyclerView) findViewById(R.id.accounts_recycler_view);
 
-        mAdapter = new accountsAdapter(mData);
+        mAdapter = new AccountsAdapter(mData);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setLayoutManager(mLayoutManager);

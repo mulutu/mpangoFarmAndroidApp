@@ -8,13 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.vogella.android.myapplication.R;
-import com.vogella.android.myapplication.model.Account;
-import com.vogella.android.myapplication.model.Project;
 import com.vogella.android.myapplication.util.SectionOrRow;
 
 import java.util.List;
 
-public class accountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AccountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<SectionOrRow> mData;
 
@@ -35,7 +33,7 @@ public class accountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public accountsAdapter(List<SectionOrRow> data) {
+    public AccountsAdapter(List<SectionOrRow> data) {
         mData = data;
     }
 
@@ -44,10 +42,10 @@ public class accountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType==0) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.accounts_list_section, parent, false);
-            return new accountsAdapter.SectionViewHolder(itemView);
+            return new AccountsAdapter.SectionViewHolder(itemView);
         }else{
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.accounts_list_row, parent, false);
-            return new accountsAdapter.RowViewHolder(itemView);
+            return new AccountsAdapter.RowViewHolder(itemView);
         }
     }
 

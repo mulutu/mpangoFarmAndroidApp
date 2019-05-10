@@ -22,7 +22,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.user.LoginActivity;
-import com.vogella.android.myapplication.adapter.farmsAdapter;
+import com.vogella.android.myapplication.adapter.FarmsAdapter;
 import com.vogella.android.myapplication.model.Farm;
 import com.vogella.android.myapplication.model.MyUser;
 import com.vogella.android.myapplication.model.Project;
@@ -48,7 +48,7 @@ public class SelectFarmActivity extends AppCompatActivity {
 
     private List<Farm> farmsList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private farmsAdapter mAdapter;
+    private FarmsAdapter mAdapter;
 
     AlertDialogManager alert = new AlertDialogManager();
     SessionManager session;
@@ -106,7 +106,7 @@ public class SelectFarmActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.add_farm_recycler_view);
 
-        mAdapter = new farmsAdapter(farmsList);
+        mAdapter = new FarmsAdapter(farmsList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setLayoutManager(mLayoutManager);

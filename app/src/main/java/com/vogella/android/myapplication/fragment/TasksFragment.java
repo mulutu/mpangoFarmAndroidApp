@@ -1,6 +1,8 @@
 package com.vogella.android.myapplication.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -20,43 +22,49 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.AddTransactionActivity;
 import com.vogella.android.myapplication.activity.EditTransactionActivity;
-import com.vogella.android.myapplication.activity.MainActivity;
+import com.vogella.android.myapplication.activity.tasks.TaskActivity;
+import com.vogella.android.myapplication.activity.tasks.TaskNoteActivity;
 import com.vogella.android.myapplication.activity.user.LoginActivity;
+import com.vogella.android.myapplication.adapter.TaskAdapter;
 import com.vogella.android.myapplication.model.MyUser;
+import com.vogella.android.myapplication.model.Task;
+import com.vogella.android.myapplication.model.Transaction;
 import com.vogella.android.myapplication.util.AlertDialogManager;
+import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.CustomJsonArrayRequest;
 import com.vogella.android.myapplication.util.MyDividerItemDecoration;
-import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.util.RecyclerTouchListener;
-import com.vogella.android.myapplication.adapter.TransactionAdapter;
-import com.vogella.android.myapplication.model.Transaction;
-import com.vogella.android.myapplication.util.AppSingleton;
 import com.vogella.android.myapplication.util.SessionManager;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link TasksFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link TasksFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class TasksFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-public class TransactionsFragment extends Fragment {
-    private List<Transaction> transactionList = new ArrayList<>();
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+    private OnFragmentInteractionListener mListener;
+    private ArrayList<Task> taskList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private TransactionAdapter transactionAdapter;
+    private TaskAdapter taskAdapter;
     private List<Transaction> expenseList = new ArrayList<>();
     private List<Transaction> incomeList = new ArrayList<>();
     final String _TAG = "TRANSACTIONS FRAGMENT: ";
@@ -70,14 +78,42 @@ public class TransactionsFragment extends Fragment {
     private int userId;
     private Toolbar toolbar;
 
+
+
+    public TasksFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment TasksFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static TasksFragment newInstance(String param1, String param2) {
+        TasksFragment fragment = new TasksFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_transactions, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
         setHasOptionsMenu(true);
 
         populateTitleBar(rootView);
@@ -94,10 +130,13 @@ public class TransactionsFragment extends Fragment {
         btnAddIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Bundle extras = new Bundle();
                 extras.putString("Process", "NEW_TRANSACTION");
+
                 transaction.setTransactionTypeId(0);
                 extras.putSerializable("Transaction", transaction);
+
                 Intent intent = new Intent(getActivity(), AddTransactionActivity.class);
                 intent.putExtras(extras);
                 startActivity(intent);
@@ -107,10 +146,13 @@ public class TransactionsFragment extends Fragment {
         btnAddExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Bundle extras = new Bundle();
                 extras.putString("Process", "NEW_TRANSACTION");
+
                 transaction.setTransactionTypeId(1);
                 extras.putSerializable("Transaction", transaction);
+
                 Intent intent = new Intent(getActivity(), AddTransactionActivity.class);
                 intent.putExtras(extras);
                 startActivity(intent);
@@ -121,7 +163,7 @@ public class TransactionsFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        getTransactionList(userId);
+        getTasksList(userId);
         return rootView;
     }
 
@@ -134,36 +176,37 @@ public class TransactionsFragment extends Fragment {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayShowHomeEnabled(false);
-            actionBar.setTitle("Transactions");
+            actionBar.setTitle("Tasks");
         }
     }
 
-    private void getTransactionList(int userId) {
-        String URL_EXPENSES = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userId + "/transactions";
-        CustomJsonArrayRequest req = new CustomJsonArrayRequest(Request.Method.GET, URL_EXPENSES, null, (Response.Listener<JSONArray>) getActivity(), (Response.ErrorListener) getActivity(), "getTransactionList");
+    private void getTasksList(int userId) {
+        String URL_ = "http://45.56.73.81:8084/Mpango/api/v1/users/" + userId + "/tasks";
+        CustomJsonArrayRequest req = new CustomJsonArrayRequest(Request.Method.GET, URL_, null, (Response.Listener<JSONArray>) getActivity(), (Response.ErrorListener) getActivity(), "getTaskListFragment");
         AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(req, TAG);
     }
 
-    public void displayTransactionList(final List<Transaction> transactionList2) {
+    public void displayTasksList(final List<Task> tasklist2) {
 
-        if (transactionList2.size() > 0) {
-            transactionAdapter = new TransactionAdapter(transactionList2);
-            transactionAdapter.notifyDataSetChanged();
+        if (tasklist2.size() > 0) {
+            taskAdapter = new TaskAdapter(taskList);
+            taskAdapter.notifyDataSetChanged();
 
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL));
             recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
-            recyclerView.setAdapter(transactionAdapter);
+            recyclerView.setAdapter(taskAdapter);
             recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    Transaction trx = transactionList2.get(position);
+                    Task task = tasklist2.get(position);
 
                     Bundle extras = new Bundle();
-                    extras.putSerializable("Transaction", trx);
-                    extras.putSerializable("Process", "EDIT_TRANSACTION");
+                    extras.putSerializable("Task", task );
+                    extras.putInt("id", task.getTaskId() );
+                    extras.putSerializable("Process", "EDIT_TASK" );
 
-                    Intent intent = new Intent(getActivity().getApplicationContext(), EditTransactionActivity.class);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), TaskNoteActivity.class);
                     intent.putExtras(extras);
 
                     startActivityForResult(intent, REQUEST_TRANSACTION);
@@ -177,7 +220,7 @@ public class TransactionsFragment extends Fragment {
                 }
             }));
         }
-        Log.d("dispExpenseList", "displayTransactionList() METHOD:  LIST SIZE" + transactionList2.size());
+        Log.d("displayTasksList", "displayTasksList() METHOD:  LIST SIZE" + tasklist2.size());
     }
 
     @Override
@@ -190,15 +233,12 @@ public class TransactionsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                //finish();
                 return true;
 
             case R.id.action_logout:
                 session.logoutUser();
-
                 Intent i = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
                 startActivity(i);
-                //finish();
                 return true;
 
             case R.id.action_favorite:
@@ -208,5 +248,42 @@ public class TransactionsFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
 }
