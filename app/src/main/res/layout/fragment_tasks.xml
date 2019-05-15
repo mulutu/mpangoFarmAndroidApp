@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:fitsSystemWindows="true"
     android:layout_height="match_parent">
@@ -44,52 +45,6 @@
         android:layout_height="match_parent"
         tools:context=".fragment.TransactionsFragment">
 
-        <FrameLayout
-            android:id="@+id/frameLayout"
-            android:layout_width="match_parent"
-            android:layout_height="80dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@drawable/bg"/>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <com.vogella.android.myapplication.activity.TextView_Lato
-                    android:id="@+id/addIncomeTransactions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/roun_rect_white"
-                    android:text="+ Income"
-                    android:textColor="@color/gray"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-
-                <com.vogella.android.myapplication.activity.TextView_Lato
-                    android:id="@+id/addExpenseTransactions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:background="@drawable/roun_rect_gray"
-                    android:text="+ Expense"
-                    android:textColor="@color/colorBackroundWhite"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </FrameLayout>
-
-
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -121,6 +76,123 @@
         </ScrollView>
     </RelativeLayout>
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/fab1lay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:visibility="invisible" >
+
+            <TextView
+                android:id="@+id/fab1text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="left|center_vertical|center_horizontal"
+                android:gravity="left"
+                android:text="ADD EXPENSE" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab3"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right|center_horizontal|end"
+                android:layout_margin="5dp"
+                android:background="?android:attr/selectableItemBackground"
+                app:srcCompat="@android:drawable/ic_btn_speak_now" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fab2lay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:visibility="invisible" >
+
+            <TextView
+                android:id="@+id/fab2text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="left|center_vertical|center_horizontal"
+                android:gravity="left"
+                android:text="ADD EXPENSE" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab2"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="5dp"
+                android:background="?android:attr/selectableItemBackground"
+                app:srcCompat="@android:drawable/ic_menu_camera" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fab3lay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:visibility="invisible" >
+
+            <TextView
+                android:id="@+id/fab3text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="left|center_vertical|center_horizontal"
+                android:gravity="left"
+                android:text="ADD EXPENSE" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab1"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="5dp"
+                android:background="?android:attr/selectableItemBackground"
+                app:srcCompat="@android:drawable/ic_dialog_map" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/bottom_navigation"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="70dp"
+            android:foregroundGravity="top"
+            android:src="@android:drawable/ic_input_add"
+            app:elevation="25dp"
+            app:layout_anchorGravity="bottom|right|end" />
+
+
+    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -117,7 +117,7 @@ public class TransactionsFragment extends Fragment {
             }
         });
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_tasks);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 

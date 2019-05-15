@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,13 +19,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.vogella.android.myapplication.R;
 import com.vogella.android.myapplication.activity.AddTransactionActivity;
-import com.vogella.android.myapplication.activity.EditTransactionActivity;
 import com.vogella.android.myapplication.activity.tasks.TaskActivity;
 import com.vogella.android.myapplication.activity.tasks.TaskNoteActivity;
 import com.vogella.android.myapplication.activity.user.LoginActivity;
@@ -42,6 +44,7 @@ import com.vogella.android.myapplication.util.SessionManager;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -77,8 +80,10 @@ public class TasksFragment extends Fragment {
     private MyUser user;
     private int userId;
     private Toolbar toolbar;
+    FloatingActionButton floatingActionButton, fab1, fab2, fab3;
+    private boolean isFABOpen = false;
 
-
+    private LinearLayout layoutFab1, layoutFab2, layoutFab3;
 
     public TasksFragment() {
         // Required empty public constructor
@@ -127,45 +132,66 @@ public class TasksFragment extends Fragment {
 
         transaction.setUserId(userId);
 
-        btnAddIncome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Bundle extras = new Bundle();
-                extras.putString("Process", "NEW_TRANSACTION");
-
-                transaction.setTransactionTypeId(0);
-                extras.putSerializable("Transaction", transaction);
-
-                Intent intent = new Intent(getActivity(), AddTransactionActivity.class);
-                intent.putExtras(extras);
-                startActivity(intent);
-            }
-        });
-
-        btnAddExpense.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Bundle extras = new Bundle();
-                extras.putString("Process", "NEW_TRANSACTION");
-
-                transaction.setTransactionTypeId(1);
-                extras.putSerializable("Transaction", transaction);
-
-                Intent intent = new Intent(getActivity(), AddTransactionActivity.class);
-                intent.putExtras(extras);
-                startActivity(intent);
-            }
-        });
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_tasks);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
         getTasksList(userId);
+
+        manageFloatingButton(rootView);
+
         return rootView;
     }
+
+    private void manageFloatingButton(View rootView){
+        floatingActionButton = (FloatingActionButton)rootView.findViewById(R.id.fab);
+        fab1 = (FloatingActionButton) rootView.findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) rootView.findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton) rootView.findViewById(R.id.fab3);
+
+        layoutFab1 = (LinearLayout) rootView.findViewById(R.id.fab1lay);
+        layoutFab2 = (LinearLayout) rootView.findViewById(R.id.fab2lay);
+        layoutFab3 = (LinearLayout) rootView.findViewById(R.id.fab3lay);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isFABOpen){
+                    showFABMenu();
+                }else{
+                    closeFABMenu();
+                }
+
+                /*Bundle extras = new Bundle();
+                extras.putInt("projectId", 1 );
+                Intent intent = new Intent(getActivity().getApplicationContext(), TaskNoteActivity.class);
+                intent.putExtras(extras);
+                startActivityForResult(intent, REQUEST_TRANSACTION);*/
+
+            }
+        });
+    }
+
+    private void showFABMenu(){
+        isFABOpen=true;
+        layoutFab1.setVisibility(View.VISIBLE);
+        layoutFab2.setVisibility(View.VISIBLE);
+        layoutFab3.setVisibility(View.VISIBLE);
+        //fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        //fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+        //fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
+    }
+
+    private void closeFABMenu(){
+        isFABOpen=false;
+        layoutFab1.setVisibility(View.INVISIBLE);
+        layoutFab2.setVisibility(View.INVISIBLE);
+        layoutFab3.setVisibility(View.INVISIBLE);
+        //fab1.animate().translationY(0);
+        //fab2.animate().translationY(0);
+        //fab3.animate().translationY(0);
+    }
+
 
     private void populateTitleBar(View rootView) {
         toolbar = (Toolbar) rootView.findViewById(R.id.tool_bar);
@@ -189,7 +215,7 @@ public class TasksFragment extends Fragment {
     public void displayTasksList(final List<Task> tasklist2) {
 
         if (tasklist2.size() > 0) {
-            taskAdapter = new TaskAdapter(taskList);
+            taskAdapter = new TaskAdapter(tasklist2);
             taskAdapter.notifyDataSetChanged();
 
             recyclerView.setItemAnimator(new DefaultItemAnimator());
