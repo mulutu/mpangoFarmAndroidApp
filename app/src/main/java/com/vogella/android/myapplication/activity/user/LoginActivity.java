@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
         email = _emailText.getText().toString();
         password = _passwordText.getText().toString();
         if (!validate()) {
+            Log.d(TAG, "Login:  validation failed");
             onLoginFailed();
             return;
         }
@@ -123,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void volleyJsonObjectRequest(final String email, final String password) {
 
-        String url = "http://45.56.73.81:8084/Mpango/api/v1/users/login/";
+        String url = "http://10.0.2.2:8084/Mpango/api/v1/users/login/";
 
         JSONObject postparams = new JSONObject();
         try {
